@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.nearbyshops.android.communitylibrary.HomeActivity"
+    tools:showIn="@layout/app_bar_home">
+
+    <RelativeLayout
+        android:id="@+id/content_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:background="@color/buttonColor"
+            android:id="@+id/usage_instructions"
+            android:textColor="@color/white"
+            android:text="Show / Hide usage Instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <LinearLayout
+            android:layout_below="@id/usage_instructions"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/row_one"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/option_all_books"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@color/blueGrey800"
+                android:layout_width="0dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:gravity="right"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/text_option_one"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:text="All Books"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_menu_gallery"
+                    android:id="@+id/image_allbooks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/text_option_one"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/option_books_by_category"
+                android:layout_weight="1"
+                android:background="@color/gplus_color_2"
+                android:layout_width="0dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/text_option_two"
+                    android:textColor="#ffffff"
+                    android:gravity="right"
+                    android:textSize="20sp"
+                    android:text="Books\nby Category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_import_contacts_white_36px"
+                    android:id="@+id/image_books_by_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/text_option_two"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/row_one"
+            android:id="@+id/row_two"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+<!--
+            <RelativeLayout
+
+                android:layout_weight="1"
+                android:background="#543223"
+                android:layout_width="0dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/text_option_three"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:text="Submit Book"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:padding="10dp"
+                    android:src="@drawable/ic_menu_gallery"
+                    android:id="@+id/image_submit_book"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/text_option_three"/>
+
+            </RelativeLayout>
+
+-->
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>
