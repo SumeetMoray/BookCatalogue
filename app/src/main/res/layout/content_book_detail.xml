@@ -141,6 +141,7 @@
 
 
             <RatingBar
+                android:numStars="5"
                 android:id="@+id/ratingBar_rate"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
