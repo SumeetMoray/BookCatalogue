@@ -42,7 +42,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class AddItemCategory extends AppCompatActivity implements Callback<Image>, View.OnClickListener {
+public class AddBookCategory extends AppCompatActivity implements Callback<Image>, View.OnClickListener {
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;

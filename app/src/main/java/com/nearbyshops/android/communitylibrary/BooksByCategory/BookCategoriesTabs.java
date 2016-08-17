@@ -2,6 +2,7 @@ package com.nearbyshops.android.communitylibrary.BooksByCategory;
 
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -11,23 +12,38 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyBackPressed;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyCategoryChanged;
+import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyFABClick;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.FragmentsNotificationReceiver;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.NotifyPagerAdapter;
+import com.nearbyshops.android.communitylibrary.Dialogs.SortFIlterBookDialog;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNotificationReceiver,NotifyPagerAdapter{
+public class BookCategoriesTabs extends AppCompatActivity
+        implements
+        FragmentsNotificationReceiver, NotifyPagerAdapter,
+        ViewPager.OnPageChangeListener, SortFIlterBookDialog.NotifySort{
 
 
+    FloatingActionMenu fab_menu;
+
+    @BindView(R.id.fab_add)
+    FloatingActionButton fab_add;
+
+    @BindView(R.id.fab_change_parent)
+    FloatingActionButton fab_change_parent;
 
     private PagerAdapter mSectionsPagerAdapter;
 
@@ -38,9 +54,17 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
 
     Unbinder unbinder;
 
+    @BindView(R.id.example_button)
+    TextView exampleButton;
+
 
     private NotifyBackPressed notificationReceiver;
     private NotifyCategoryChanged tabsNotificationReceiver;
+
+    public NotifyFABClick notifyFABClick_bookCategory;
+    public NotifyFABClick notifyFABClick_book;
+
+    public SortFIlterBookDialog.NotifySort notifySort;
 
 
     @Override
@@ -58,6 +82,7 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
         // primary sections of the activity.
         mSectionsPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
+        fab_menu = (FloatingActionMenu) findViewById(R.id.menu_red);
 
         getSupportActionBar().setTitle("Book Categories");
 
@@ -65,6 +90,8 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(this);
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -96,10 +123,34 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if(id == R.id.action_sort)
+        {
+
+//            showToastMessage("Sort !");
+
+            action_sort();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    void action_sort()
+    {
+        FragmentManager fm = getSupportFragmentManager();
+        SortFIlterBookDialog loginDialog = new SortFIlterBookDialog();
+        loginDialog.show(fm,"sort");
+    }
+
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
 
     /**
      * A placeholder fragment containing a simple view.
@@ -160,7 +211,8 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
     @Override
     public void showAppBar() {
 
-        appBar.setVisibility(View.VISIBLE);
+//        appBar.setVisibility(View.VISIBLE);
+        fab_menu.animate().translationY(0);
 
 
 //      mViewPager.setTranslationY(-appBar.getHeight());
@@ -170,9 +222,10 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
     @Override
     public void hideAppBar() {
 
+        fab_menu.animate().translationY(120);
 //
 
-        appBar.setVisibility(View.GONE);
+//        appBar.setVisibility(View.GONE);
 
 
 //        appBar.setTranslationY(0);
@@ -183,11 +236,73 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
     @Override
     public void translationZ(int dy) {
 
-        dy = -dy;
+//        dy = -dy;
+
+        Log.d("translationz", String.valueOf(dy));
+
+
+        /*if(exampleButton.getTranslationY()==0)
+        {
+            exampleButton.setTranslationY(exampleButton.getHeight());
+        }
+        else if(exampleButton.getTranslationY()==exampleButton.getHeight())
+        {
+            exampleButton.setTranslationY(0);
+        }*/
+
+
+
+        if((exampleButton.getTranslationY()+dy) >= 0 && (exampleButton.getTranslationY() + dy) < exampleButton.getHeight())
+        {
+            exampleButton.setTranslationY(exampleButton.getTranslationY() + dy);
+
+        }
+        else if((exampleButton.getTranslationY()+dy)<0)
+        {
+            exampleButton.setTranslationY(0);
+        }
+        else if((exampleButton.getTranslationY()+dy)>exampleButton.getHeight())
+        {
+            exampleButton.setTranslationY(exampleButton.getHeight());
+        }
+
+/*
+        if(dy<0 )
+        {
+            fab_menu.setTranslationY(fab_menu.getTranslationY()+dy);
+        }
+        else if(dy>0)
+        {
+
+//            fab_menu.setTranslationY(fab_menu.getY());
+
+            fab_menu.setTranslationY(fab_menu.getTranslationY()+dy);
+        }*/
+
+
+/*
+        if(fab_menu.getTranslationY()<=0 && fab_menu.getTranslationY()>=fab_menu.getHeight())
+        {
+            fab_menu.setTranslationY(fab_menu.getTranslationY()+dy);
+        }
+*/
+
+        if(dy>0)
+        {
+//            fab_menu.hideMenu(true);
+
+        }else
+        {
+//            fab_menu.hideMenu(false);
+
+//            fab_menu.showMenu(true);
+        }
+
+
 
 //        appBar.setTranslationY(appBar.getTranslationY() - dy);
 
-        ViewGroup.LayoutParams params=mViewPager.getLayoutParams();
+   /*     ViewGroup.LayoutParams params=mViewPager.getLayoutParams();
 
 
         if((appBar.getTranslationY()+dy) < 0 && (appBar.getTranslationY() + dy) > -appBar.getHeight())
@@ -215,14 +330,15 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
 //            mViewPager.setY(0);
 //            mViewPager.setMinimumHeight(mViewPager.getHeight()+appBar.getHeight());
 
+*/
 
-        }
-
-
-
+//      }
 
 
 
+
+
+/*
 
         Log.d("appbar",String.valueOf(appBar.getTranslationY()));
         if(appBar.getTranslationY()==-appBar.getHeight())
@@ -233,7 +349,7 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
         if(appBar.getTranslationY()==0)
         {
 //            appBar.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 //        mViewPager.setY(appBar.getTranslationY()+dy);
 
@@ -314,6 +430,93 @@ public class BookCategoriesTabs extends AppCompatActivity implements FragmentsNo
 
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    int currentPage = 0;
+
+    @Override
+    public void onPageSelected(int position) {
+
+//        Log.d("applog","Page : " + String.valueOf(position));
+
+
+        currentPage = position;
+
+        if(position==0)
+        {
+            fab_add.setLabelText("Add Book Category");
+            fab_change_parent.setLabelText("Change Parent for Selected Categories");
+
+        }else if(position == 1)
+        {
+            fab_add.setLabelText("Add Book");
+            fab_change_parent.setLabelText("Change Category for Selected Books");
+        }
+
+    }
+
+
+
+
+    @OnClick(R.id.fab_add)
+    void fabClick_addButton()
+    {
+        if(currentPage==0)
+        {
+            if(notifyFABClick_bookCategory!=null)
+            {
+                notifyFABClick_bookCategory.add();
+            }
+        }
+        else if(currentPage== 1)
+        {
+            if(notifyFABClick_book!=null)
+            {
+                notifyFABClick_book.add();
+            }
+        }
+    }
+
+
+    @OnClick(R.id.fab_change_parent)
+    void fabClick_changeParentButton()
+    {
+
+        if(currentPage == 0)
+        {
+            if(notifyFABClick_bookCategory!=null)
+            {
+                notifyFABClick_bookCategory.changeParent();
+            }
+        }
+        else if (currentPage == 1)
+        {
+            if(notifyFABClick_book!=null)
+            {
+                notifyFABClick_book.changeParent();
+            }
+        }
+    }
+
+
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void applySort(int sortBy, boolean wheatherDescendingLocal) {
+
+        if(notifySort!=null)
+        {
+//            showToastMessage("Applied Activity !");
+            notifySort.applySort(sortBy,wheatherDescendingLocal);
+        }
+    }
 
 
     public interface ReceiveNotificationFromTabsForItems {

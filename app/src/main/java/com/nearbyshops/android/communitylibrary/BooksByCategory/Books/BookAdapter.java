@@ -92,7 +92,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
     @Override
     public BookAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book_,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book,parent,false);
 
         return new ViewHolder(v);
     }
@@ -343,8 +343,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
                 case R.id.action_edit:
 
-//                    Intent intent = new Intent(context,EditItemCategory.class);
-//                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+//                    Intent intent = new Intent(context,EditBookCategory.class);
+//                    intent.putExtra(EditBookCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
 //                    context.startActivity(intent);
 
                     Intent intentEdit = new Intent(context,EditBook.class);

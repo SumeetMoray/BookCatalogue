@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.EditItemCategory;
+import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.EditBookCategory;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.R;
@@ -335,8 +335,8 @@ public class BookCategoriesParentAdapter extends RecyclerView.Adapter<BookCatego
 
                 case R.id.action_edit:
 
-                    Intent intent = new Intent(context,EditItemCategory.class);
-                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+                    Intent intent = new Intent(context,EditBookCategory.class);
+                    intent.putExtra(EditBookCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
                     context.startActivity(intent);
 
                     break;

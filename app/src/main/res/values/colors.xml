@@ -36,6 +36,9 @@
     <color name="grey800">#424242</color>
     <color name="blueGrey800">#37474F</color>
     <color name="cyan900">#006064</color>
+    <color name="Gray88Alpha">#88000000</color>
+    <color name="Gray44Alpha">#44000000</color>
+    <color name="light_grey_sort_option">#22000000</color>
 
 
     <color name="blueGrey800Selected">#3337474F</color>

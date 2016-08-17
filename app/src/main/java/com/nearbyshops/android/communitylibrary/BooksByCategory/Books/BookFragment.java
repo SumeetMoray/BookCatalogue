@@ -19,9 +19,11 @@ import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyCategoryChanged;
+import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyFABClick;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.FragmentsNotificationReceiver;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.NotifyPagerAdapter;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
+import com.nearbyshops.android.communitylibrary.Dialogs.SortFIlterBookDialog;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookEndpoint;
@@ -46,7 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookFragment extends Fragment
-        implements  BookAdapter.NotificationReceiver, SwipeRefreshLayout.OnRefreshListener, NotifyCategoryChanged {
+        implements  BookAdapter.NotificationReceiver, SwipeRefreshLayout.OnRefreshListener, NotifyCategoryChanged, NotifyFABClick , SortFIlterBookDialog.NotifySort{
 
     public static final String ADD_ITEM_INTENT_KEY = "add_item_intent_key";
 
@@ -60,7 +62,7 @@ public class BookFragment extends Fragment
 //    ItemCategoryDataRouter dataRouter;
 
 
-    @State boolean show = false;
+    @State boolean show = true;
 //    boolean isDragged = false;
 
     @Inject
@@ -69,16 +71,18 @@ public class BookFragment extends Fragment
 //    @Bind(R.id.tablayout)
 //    TabLayout tabLayout;
 
-    @BindView(R.id.options)
-    RelativeLayout options;
 
-    @BindView(R.id.appbar)
-    AppBarLayout appBar;
+//    @BindView(R.id.appbar)
+//    AppBarLayout appBar;
 
 
     FragmentsNotificationReceiver notificationReceiverFragment;
 
     NotifyPagerAdapter notifyPagerAdapter;
+
+
+    int sort_by = SortFIlterBookDialog.SORT_BY_RATING;
+    boolean whether_descending = false;
 
 
 
@@ -132,6 +136,8 @@ public class BookFragment extends Fragment
         {
             BookCategoriesTabs activity = (BookCategoriesTabs)getActivity();
             activity.setTabsNotificationReceiver(this);
+            activity.notifyFABClick_book = this;
+            activity.notifySort = this;
         }
 
         if(getActivity() instanceof FragmentsNotificationReceiver)
@@ -254,12 +260,12 @@ public class BookFragment extends Fragment
 
 
 
-                if(dy > 20)
+                if(dy < -20)
                 {
 
                     boolean previous = show;
 
-                    show = false ;
+                    show = true ;
 
                     if(show!=previous)
                     {
@@ -270,15 +276,15 @@ public class BookFragment extends Fragment
 //                        options.animate().translationY(200);
 
 //                        options.setVisibility(View.VISIBLE);
-//                        notificationReceiverFragment.showAppBar();
+                        notificationReceiverFragment.showAppBar();
                     }
 
-                }else if(dy < -20)
+                }else if(dy > 20)
                 {
 
                     boolean previous = show;
 
-                    show = true;
+                    show = false;
 
 
 
@@ -292,7 +298,7 @@ public class BookFragment extends Fragment
 //                        options.animate().translationY(0);
 
 //                        options.setVisibility(View.GONE);
-//                        notificationReceiverFragment.hideAppBar();
+                        notificationReceiverFragment.hideAppBar();
                     }
                 }
 
@@ -345,8 +351,36 @@ public class BookFragment extends Fragment
         }
 
 
+
+
+
+        String sort_string = "";
+
+        if(sort_by == SortFIlterBookDialog.SORT_BY_RATING)
+        {
+            sort_string = "avg_rating";
+        }
+        else if(sort_by == SortFIlterBookDialog.SORT_BY_RELEASE_DATE)
+        {
+            sort_string = "";
+        }
+        else if(sort_by == SortFIlterBookDialog.SORT_BY_TITLE)
+        {
+            sort_string = "BOOK_NAME";
+        }
+
+
+        if(whether_descending)
+        {
+            sort_string = sort_string + " " + "desc";
+        }
+
+
+//        showToastMessage(sort_string);
+
+
         Call<BookEndpoint> endPointCall = itemService.getBooks(
-                bookCategoryID,null,
+                bookCategoryID,sort_string,
                 limit,offset, null);
 
         endPointCall.enqueue(new Callback<BookEndpoint>() {
@@ -380,46 +414,6 @@ public class BookFragment extends Fragment
 
             }
         });
-
-
-        /*Call<List<Item>> itemCategoryCall = itemService.getItems(notifiedCurrentCategory.getItemCategoryID());
-
-
-        itemCategoryCall.enqueue(new Callback<List<Item>>() {
-            @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-
-//                dataset.clear();
-
-
-
-
-
-                if(response.body()!=null) {
-
-                    dataset.addAll(response.body());
-                }
-
-                swipeContainer.setRefreshing(false);
-                listAdapter.notifyDataSetChanged();
-
-                if(notifyPagerAdapter!=null)
-                {
-                    notifyPagerAdapter.NotifyTitleChanged("Items (" + String.valueOf(dataset.size()) + ")",1);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
-
-                showToastMessage("Network request failed. Please check your connection !");
-
-                swipeContainer.setRefreshing(false);
-
-            }
-        });
-*/
 
     }
 
@@ -584,7 +578,6 @@ public class BookFragment extends Fragment
     }
 
 
-    @OnClick(R.id.changeParentBulk)
     void changeParentBulk()
     {
 
@@ -669,7 +662,7 @@ public class BookFragment extends Fragment
 
     void exitFullScreen()
     {
-        options.setVisibility(View.VISIBLE);
+//        options.setVisibility(View.VISIBLE);
         notificationReceiverFragment.showAppBar();
 
 
@@ -699,8 +692,8 @@ public class BookFragment extends Fragment
     }
 
 
-    @OnClick(R.id.addItemCategory)
-    void addItemCategoryClick()
+
+    void addBookClick()
     {
         Intent addIntent = new Intent(getActivity(), AddBook.class);
 
@@ -708,7 +701,7 @@ public class BookFragment extends Fragment
 
         startActivity(addIntent);
 
-//        addIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+//        addIntent.putExtra(AddBookCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
 //
 //        startActivity(addIntent);
 
@@ -721,7 +714,6 @@ public class BookFragment extends Fragment
         dataset.clear();
         offset = 0 ; // reset the offset
         makeRequestRetrofit();
-
 
         Log.d("applog","refreshed");
     }
@@ -795,5 +787,27 @@ public class BookFragment extends Fragment
     @Override
     public void notifySwipeToRight() {
 
+    }
+
+    @Override
+    public void add() {
+
+        addBookClick();
+    }
+
+    @Override
+    public void changeParent() {
+
+        changeParentBulk();
+    }
+
+    @Override
+    public void applySort(int sortBy, boolean whetherDescendingLocal) {
+
+//        showToastMessage("Applied Fragment !");
+
+        this.sort_by = sortBy;
+        whether_descending = whetherDescendingLocal;
+        onRefresh();
     }
 }

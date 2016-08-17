@@ -42,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditItemCategory extends AppCompatActivity implements Callback<Image> {
+public class EditBookCategory extends AppCompatActivity implements Callback<Image> {
 
 
     @Inject
@@ -107,7 +107,7 @@ public class EditItemCategory extends AppCompatActivity implements Callback<Imag
 
 
 
-    public EditItemCategory() {
+    public EditBookCategory() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -328,7 +328,7 @@ public class EditItemCategory extends AppCompatActivity implements Callback<Imag
 
                 if (response.code() == 200)
                 {
-                    Toast.makeText(EditItemCategory.this,"Update Successful !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBookCategory.this,"Update Successful !",Toast.LENGTH_SHORT).show();
                 }
 
             }

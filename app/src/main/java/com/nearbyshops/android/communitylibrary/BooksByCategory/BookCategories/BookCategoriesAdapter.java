@@ -21,6 +21,7 @@ import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookCategoryService;
+import com.nearbyshops.android.communitylibrary.SelectParent.BookCategoriesParent;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +59,7 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
     List<BookCategory> dataset;
 
     Context context;
-    ItemCategoriesFragment activity;
+    BookCategoriesFragment activity;
 
 
     BookCategory requestedChangeParent = null;
@@ -69,7 +70,7 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
     final String IMAGE_ENDPOINT_URL = "/api/Images";
 
-    public BookCategoriesAdapter(List<BookCategory> dataset, Context context, ItemCategoriesFragment activity, ReceiveNotificationsFromAdapter notificationReceiver) {
+    public BookCategoriesAdapter(List<BookCategory> dataset, Context context, BookCategoriesFragment activity, ReceiveNotificationsFromAdapter notificationReceiver) {
 
 
         DaggerComponentBuilder.getInstance()
@@ -101,9 +102,11 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
     public void onBindViewHolder(BookCategoriesAdapter.ViewHolder holder, final int position) {
 
 
-        holder.bookCategoryName.setText(String.valueOf(dataset.get(position).getBookCategoryID()) + ". " + dataset.get(position).getBookCategoryName());
+//        holder.bookCategoryName.setText(String.valueOf(position+1) + ". " + dataset.get(position).getBookCategoryName());
 
-        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " " + "Books in " + dataset.get(position).getBookCategoryName());
+        holder.bookCategoryName.setText(dataset.get(position).getBookCategoryName());
+
+        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " " + "Books");
 
         if(selectedItems.containsKey(dataset.get(position).getBookCategoryID()))
         {
@@ -320,8 +323,8 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
                 case R.id.action_edit:
 
-                    Intent intent = new Intent(context,EditItemCategory.class);
-                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+                    Intent intent = new Intent(context,EditBookCategory.class);
+                    intent.putExtra(EditBookCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
                     context.startActivity(intent);
 
                     break;
@@ -331,7 +334,6 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
 
 //                    showToastMessage("Change parent !");
-/*
                     Intent intentParent = new Intent(context, BookCategoriesParent.class);
 
                     requestedChangeParent = dataset.get(getLayoutPosition());
@@ -342,10 +344,9 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
                     BookCategoriesParent.clearExcludeList(); // it is a safe to clear the list before adding any items in it.
                     BookCategoriesParent.excludeList
-                            .put(requestedChangeParent.getItemCategoryID(),requestedChangeParent);
+                            .put(requestedChangeParent.getBookCategoryID(),requestedChangeParent);
 
-
-                    activity.startActivityForResult(intentParent,1,null);*/
+                    activity.startActivityForResult(intentParent,1,null);
 
 
                     break;

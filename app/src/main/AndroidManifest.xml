@@ -36,7 +36,7 @@
             android:label="@string/title_activity_basic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BooksByCategory.BookCategories.AddItemCategory"
+            android:name=".BooksByCategory.BookCategories.AddBookCategory"
             android:label="Add Book Category"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,7 +45,7 @@
                 android:value=".HomeActivity" />
         </activity>
         <activity
-            android:name=".BooksByCategory.BookCategories.EditItemCategory"
+            android:name=".BooksByCategory.BookCategories.EditBookCategory"
             android:label="Edit Item Category"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">

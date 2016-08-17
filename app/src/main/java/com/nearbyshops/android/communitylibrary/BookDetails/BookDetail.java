@@ -121,7 +121,6 @@ public class BookDetail extends AppCompatActivity implements Target{
             }
 
 
-
             // set Book Cover Image
 
 

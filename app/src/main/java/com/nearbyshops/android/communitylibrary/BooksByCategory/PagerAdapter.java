@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.ItemCategoriesFragment;
+import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.BookCategoriesFragment;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.Books.BookFragment;
 
 /**
@@ -17,7 +17,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             super(fm);
         }
 
-    private ItemCategoriesFragment itemCategoriesFragment;
+    private BookCategoriesFragment bookCategoriesFragment;
     BookFragment bookFragment;
 
     @Override
@@ -28,11 +28,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position == 0)
             {
-                itemCategoriesFragment = new ItemCategoriesFragment();
+                bookCategoriesFragment = new BookCategoriesFragment();
 
-//            activity.setNotificationReceiver(itemCategoriesFragment);
+//            activity.setNotificationReceiver(bookCategoriesFragment);
 
-                return itemCategoriesFragment;
+                return bookCategoriesFragment;
             }
             else if (position == 1)
             {

@@ -15,12 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+
 import android.widget.Toast;
 
 
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyBackPressed;
+import com.nearbyshops.android.communitylibrary.BooksByCategory.Interfaces.NotifyFABClick;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.FragmentsNotificationReceiver;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.NotifyPagerAdapter;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
@@ -38,7 +39,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 import okhttp3.ResponseBody;
@@ -46,8 +46,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemCategoriesFragment extends Fragment
-        implements BookCategoriesAdapter.ReceiveNotificationsFromAdapter, SwipeRefreshLayout.OnRefreshListener, NotifyBackPressed {
+public class BookCategoriesFragment extends Fragment
+        implements BookCategoriesAdapter.ReceiveNotificationsFromAdapter, SwipeRefreshLayout.OnRefreshListener, NotifyBackPressed , NotifyFABClick{
 
 
 
@@ -71,8 +71,6 @@ public class ItemCategoriesFragment extends Fragment
 //    @Bind(R.id.tablayout)
 //    TabLayout tabLayout;
 
-    @BindView(R.id.options)
-    RelativeLayout options;
 
     @BindView(R.id.appbar)
     AppBarLayout appBar;
@@ -90,7 +88,7 @@ public class ItemCategoriesFragment extends Fragment
     BookCategory currentCategory = null;
 
 
-    public ItemCategoriesFragment() {
+    public BookCategoriesFragment() {
         super();
 
         // Inject the dependencies using Dependency Injection
@@ -136,6 +134,7 @@ public class ItemCategoriesFragment extends Fragment
         {
             BookCategoriesTabs activity = (BookCategoriesTabs)getActivity();
             activity.setNotificationReceiver(this);
+            activity.notifyFABClick_bookCategory = this;
 //            Log.d("applog","DetachedItemFragment: Fragment Recreated");
         }
 
@@ -306,26 +305,6 @@ public class ItemCategoriesFragment extends Fragment
                 }*/
 
 
-                if(options.getY()<600 && options.getY()>500)
-                {
-
-                }
-
-//                if(options.getY()<600 && dy>0)
-//                {
-//                    options.setY(options.getY() + dy);
-//                }
-//                else if (dy<0 && options.getY()>500)
-//                {
-//                    options.setY(options.getY() + dy);
-//                }
-
-
-                Log.d("scroll",String.valueOf(options.getTranslationY()));
-
-
-//                Log.d("scroll",String.valueOf(dy));
-
 
 
 
@@ -376,7 +355,7 @@ public class ItemCategoriesFragment extends Fragment
 
 
 //                        options.setVisibility(View.VISIBLE);
-//                        notificationReceiverFragment.showAppBar();
+                        notificationReceiverFragment.showAppBar();
                     }
 
                 }else if(dy > 20)
@@ -398,7 +377,7 @@ public class ItemCategoriesFragment extends Fragment
 //                        options.animate().translationY(0);
 //
 //                        options.setVisibility(View.GONE);
-//                        notificationReceiverFragment.hideAppBar();
+                        notificationReceiverFragment.hideAppBar();
                     }
                 }
 
@@ -433,23 +412,9 @@ public class ItemCategoriesFragment extends Fragment
     public void makeRequestRetrofit(final boolean notifyItemCategoryChanged)
     {
 
-//        Call<List<ItemCategory>> itemCategoryCall2 = itemCategoryService
-//                .getItemCategories(currentCategory.getItemCategoryID());
-
-
-//        Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(
-//                null,currentCategory.getItemCategoryID(),null,null,null,null,null,null,"id",limit,offset);
 
         Call<BookCategoryEndpoint> endPointCall = bookCategoryService.getBookCategories(
-                currentCategory.getBookCategoryID(),null,limit,offset,false);
-
-
-
-
-
-
-        Log.d("applog","DetachedTabs: Network call made !");
-
+                currentCategory.getBookCategoryID(),"BOOK_CATEGORY_NAME",limit,offset,false);
 
 
         endPointCall.enqueue(new Callback<BookCategoryEndpoint>() {
@@ -481,9 +446,6 @@ public class ItemCategoriesFragment extends Fragment
 
                     if(notifyPagerAdapter!=null)
                     {
-//                        notifyPagerAdapter.NotifyTitleChanged("Subcategories ( " +  String.valueOf(dataset.size())
-//                                + " / " + item_count + " )",0);
-
                         notifyTitleChanged();
                     }
 
@@ -503,9 +465,7 @@ public class ItemCategoriesFragment extends Fragment
             @Override
             public void onFailure(Call<BookCategoryEndpoint> call, Throwable t) {
 
-
                 showToastMessage("Network request failed. Please check your connection !");
-
 
                 if(swipeContainer!=null)
                 {
@@ -534,32 +494,6 @@ public class ItemCategoriesFragment extends Fragment
         offset = 0 ; // reset the offset
         makeRequestRetrofit(false);
     }
-
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//
-//        swipeContainer.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                swipeContainer.setRefreshing(true);
-//
-//                try {
-//
-//                    makeRequestRetrofit();
-//
-//                } catch (IllegalArgumentException ex)
-//                {
-//                    ex.printStackTrace();
-//
-//                }
-//
-////                adapter.notifyDataSetChanged();
-//            }
-//        });
-//    }
 
 
 
@@ -645,7 +579,7 @@ public class ItemCategoriesFragment extends Fragment
     }
 
 
-    @OnClick(R.id.changeParentBulk)
+
     void changeParentBulk()
     {
 
@@ -740,7 +674,7 @@ public class ItemCategoriesFragment extends Fragment
 //                notificationReceiverFragment.showAppBar();
 
 
-        options.setVisibility(View.VISIBLE);
+//        options.setVisibility(View.VISIBLE);
         notificationReceiverFragment.showAppBar();
 
         if(show)
@@ -763,12 +697,11 @@ public class ItemCategoriesFragment extends Fragment
     }
 
 
-    @OnClick(R.id.addItemCategory)
     void addItemCategoryClick()
     {
-        Intent addIntent = new Intent(getActivity(), AddItemCategory.class);
+        Intent addIntent = new Intent(getActivity(), AddBookCategory.class);
 
-        addIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+        addIntent.putExtra(AddBookCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
 
         startActivity(addIntent);
     }
@@ -779,7 +712,6 @@ public class ItemCategoriesFragment extends Fragment
 
         // reset the offset and make a network call
         offset = 0;
-
         dataset.clear();
         makeRequestRetrofit(false);
     }
@@ -915,13 +847,8 @@ public class ItemCategoriesFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-
         Icepick.saveInstanceState(this, outState);
-
-
         outState.putParcelableArrayList("dataset",dataset);
-//        outState.putParcelable("currentCat",currentCategory);
-
     }
 
 
@@ -931,10 +858,7 @@ public class ItemCategoriesFragment extends Fragment
         if(notifyPagerAdapter!=null)
         {
             notifyPagerAdapter.NotifyTitleChanged("Subcategories (" +  String.valueOf(item_count) + ")",0);
-
-//            notifyPagerAdapter.NotifyTitleChanged("Subcategories (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count )+ ")",0);
         }
-
     }
 
 
@@ -962,5 +886,15 @@ public class ItemCategoriesFragment extends Fragment
     }
 
 
+    @Override
+    public void add() {
 
+        addItemCategoryClick();
+    }
+
+    @Override
+    public void changeParent() {
+
+        changeParentBulk();
+    }
 }
