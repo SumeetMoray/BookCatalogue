@@ -1,7 +1,12 @@
 package com.nearbyshops.android.communitylibrary.BooksByCategory;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,11 +30,14 @@ import com.nearbyshops.android.communitylibrary.BooksByCategory.InterfacesOld.No
 import com.nearbyshops.android.communitylibrary.Dialogs.SortFIlterBookDialog;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.R;
+import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 
 public class BookCategoriesTabs extends AppCompatActivity
         implements
@@ -67,11 +75,20 @@ public class BookCategoriesTabs extends AppCompatActivity
     public SortFIlterBookDialog.NotifySort notifySort;
 
 
+    @State int current_sort_by = SortFIlterBookDialog.SORT_BY_RATING;
+    @State boolean current_whether_descending = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_by_category);
         unbinder = ButterKnife.bind(this);
+
+        // assign background to the FAB's
+        fab_add.setImageResource(R.drawable.fab_add);
+        Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_low_priority_black_24px, getTheme());
+        fab_change_parent.setImageDrawable(drawable);
 
 
 
@@ -137,11 +154,17 @@ public class BookCategoriesTabs extends AppCompatActivity
     }
 
 
+
+
     void action_sort()
     {
+        current_sort_by = UtilityGeneral.getBookSortOptions(this).getSort_by();
+        current_whether_descending = UtilityGeneral.getBookSortOptions(this).isWhether_descending();
+
         FragmentManager fm = getSupportFragmentManager();
-        SortFIlterBookDialog loginDialog = new SortFIlterBookDialog();
-        loginDialog.show(fm,"sort");
+        SortFIlterBookDialog sortDialog = new SortFIlterBookDialog();
+        sortDialog.setCurrentSort(current_sort_by,current_whether_descending);
+        sortDialog.show(fm,"sort");
     }
 
 
@@ -442,13 +465,15 @@ public class BookCategoriesTabs extends AppCompatActivity
 
 //        Log.d("applog","Page : " + String.valueOf(position));
 
-
         currentPage = position;
 
         if(position==0)
         {
             fab_add.setLabelText("Add Book Category");
             fab_change_parent.setLabelText("Change Parent for Selected Categories");
+
+
+
 
         }else if(position == 1)
         {
@@ -508,13 +533,18 @@ public class BookCategoriesTabs extends AppCompatActivity
 
     }
 
+
+
     @Override
     public void applySort(int sortBy, boolean wheatherDescendingLocal) {
 
         if(notifySort!=null)
         {
+
 //            showToastMessage("Applied Activity !");
             notifySort.applySort(sortBy,wheatherDescendingLocal);
+            current_sort_by = sortBy;
+            current_whether_descending = wheatherDescendingLocal;
         }
     }
 
@@ -527,5 +557,20 @@ public class BookCategoriesTabs extends AppCompatActivity
 
     //        mSectionsPagerAdapter.setTitle("",tabPosition);
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Icepick.saveInstanceState(this,outState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Icepick.restoreInstanceState(this,savedInstanceState);
+    }
 }
 

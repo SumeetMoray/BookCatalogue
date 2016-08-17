@@ -26,7 +26,6 @@
             android:layout_height="wrap_content">
 
             <ImageView
-
                 android:background="#7737474F"
                 android:scaleType="centerCrop"
                 android:id="@+id/uploadImage"

@@ -84,12 +84,13 @@
         app:menu_colorRipple="@color/white"
         fab:menu_fab_label="Options">
 
+        <!--android:src="@drawable/fab_add"-->
+
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_import_contacts_white_36px"
-            android:src="@drawable/fab_add"
+            app:srcCompat="@drawable/fab_add"
             fab:fab_size="mini"
             app:fab_colorNormal="@color/phonographyBlue"
             app:fab_colorPressed="@color/blueGrey800"
@@ -102,11 +103,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            android:src="@drawable/ic_low_priority_black_24px"
             app:srcCompat="@drawable/ic_low_priority_black_24px"
             app:fab_colorNormal="@color/phonographyBlue"
             app:fab_colorPressed="@color/blueGrey800"
             fab:fab_label="Change Parent for Selected" />
+
+        <!--android:src="@drawable/ic_low_priority_black_24px"-->
 
         <!--android:src="@drawable/ic_low_priority_black_24px"-->
 

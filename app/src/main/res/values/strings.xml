@@ -16,4 +16,6 @@
     <string name="preference_distributor_id_key">distributor_id_key</string>
     <string name="user_id">user_id_key</string>
     <string name="title_activity_book_detail">Book Details</string>
+    <string name="sort_books_by">sort_books_key</string>
+    <string name="whether_descending">sort_books_whether_descending</string>
 </resources>

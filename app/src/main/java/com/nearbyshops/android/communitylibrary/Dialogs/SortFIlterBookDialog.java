@@ -1,11 +1,13 @@
 package com.nearbyshops.android.communitylibrary.Dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nearbyshops.android.communitylibrary.BooksByCategory.PlaceholderFragment;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.MemberService;
@@ -24,6 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 
 /**
  * Created by sumeet on 12/8/16.
@@ -59,8 +64,9 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
     public final static int SORT_BY_RATING = 2;
     public final static int SORT_BY_RELEASE_DATE = 3;
 
-    int sort_by = SORT_BY_RATING;
-    boolean whetherDescending = false;
+    @State int sort_by = SORT_BY_RATING;
+    @State boolean whetherDescending = false;
+
 
 
     Unbinder unbinder;
@@ -75,7 +81,6 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
 
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +90,7 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
         View view = inflater.inflate(R.layout.dialog_sort_filter_book, container);
 
         unbinder = ButterKnife.bind(this,view);
+        applyCurrentSort();
 
 
         dismiss_dialog_button = (ImageView) view.findViewById(R.id.dialog_dismiss_icon);
@@ -258,6 +264,8 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
     @OnClick(R.id.cancel_button)
     void cancel_click()
     {
+
+        showToastMessage("Cancelled !");
         dismiss();
     }
 
@@ -334,4 +342,54 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
         void applySort(int sortBy, boolean whetherDescendingLocal);
     }
 
+
+    public void setCurrentSort(int sort_by,boolean whetherDescending)
+    {
+        this.sort_by = sort_by;
+        this.whetherDescending = whetherDescending;
+
+
+//        clearAscending();
+//        clearSortOptions();
+    }
+
+
+    void applyCurrentSort()
+    {
+        if(sort_by == SORT_BY_RATING)
+        {
+            sortByRating_click();
+
+        }else if (sort_by == SORT_BY_TITLE)
+        {
+            sortByTitle_click();
+
+        }else if (sort_by == SORT_BY_RELEASE_DATE)
+        {
+            sortByReleaseDate_click();
+        }
+
+        if(whetherDescending)
+        {
+            sortDescending_Click();
+        }
+        else
+        {
+            sortByAscending_Click();
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this,outState);
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Icepick.restoreInstanceState(this,savedInstanceState);
+    }
 }

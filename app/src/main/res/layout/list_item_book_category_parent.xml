@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:background="#44000000"
             android:textColor="@color/white"
-            android:text="1456 Items"
+            android:text="1456 Books"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

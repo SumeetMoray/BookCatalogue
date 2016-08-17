@@ -30,6 +30,7 @@ import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookEndpoint;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.SelectParent.BookCategoriesParent;
+import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +82,8 @@ public class BookFragment extends Fragment
     NotifyPagerAdapter notifyPagerAdapter;
 
 
-    int sort_by = SortFIlterBookDialog.SORT_BY_RATING;
-    boolean whether_descending = false;
+    @State int sort_by = SortFIlterBookDialog.SORT_BY_RATING;
+    @State boolean whether_descending = false;
 
 
 
@@ -161,9 +162,12 @@ public class BookFragment extends Fragment
                 public void run() {
                     swipeContainer.setRefreshing(true);
 
+                        // set sort options before making the first request
+                        sort_by = UtilityGeneral.getBookSortOptions(getActivity()).getSort_by();
+                        whether_descending = UtilityGeneral.getBookSortOptions(getActivity()).isWhether_descending();
+
                         dataset.clear();
                         makeRequestRetrofit();
-
                 }
             });
 
@@ -171,8 +175,8 @@ public class BookFragment extends Fragment
 
 
 
-        return  rootView;
 
+        return  rootView;
     }
 
 
@@ -719,6 +723,20 @@ public class BookFragment extends Fragment
     }
 
 
+    void onRefreshSwipeIndicator()
+    {
+
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeContainer.setRefreshing(true);
+
+                onRefresh();
+            }
+        });
+    }
+
+
 
 
     public void itemCategoryChanged(BookCategory currentCategory) {
@@ -808,6 +826,9 @@ public class BookFragment extends Fragment
 
         this.sort_by = sortBy;
         whether_descending = whetherDescendingLocal;
-        onRefresh();
+
+        UtilityGeneral.saveSortBooks(sortBy,whetherDescendingLocal);
+
+        onRefreshSwipeIndicator();
     }
 }
