@@ -20,7 +20,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
-
         <TextView
             android:gravity="center"
             android:id="@+id/header_title"

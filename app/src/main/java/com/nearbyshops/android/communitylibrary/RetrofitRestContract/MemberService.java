@@ -43,10 +43,10 @@ public interface MemberService {
 
 
     @GET("/api/v1/Member/{id}")
-    Call<BookCategory> getMember(@Path("id") int memberID);
+    Call<Member> getMember(@Path("id") int memberID);
 
     @POST("/api/v1/Member")
-    Call<BookCategory> insertMember(@Body Member member);
+    Call<Member> insertMember(@Body Member member);
 
     @PUT("/api/v1/Member/{id}")
     Call<ResponseBody> updateMember(@Body Member member, @Path("id") int id);

@@ -1,11 +1,14 @@
 package com.nearbyshops.android.communitylibrary.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Timestamp;
 
 /**
  * Created by sumeet on 8/8/16.
  */
-public class Member {
+public class Member implements Parcelable{
 
     // Table Name
     public static final String TABLE_NAME = "MEMBER";
@@ -41,7 +44,7 @@ public class Member {
 
     // Instance Variables
 
-    private Integer memberID;
+    private int memberID;
     private String userName;
     private String password;
     private String memberName;
@@ -53,6 +56,44 @@ public class Member {
 
     // Getter and Setter Methods
 
+
+    protected Member(Parcel in) {
+        memberID = in.readInt();
+        userName = in.readString();
+        password = in.readString();
+        memberName = in.readString();
+        profileImageURL = in.readString();
+        city = in.readString();
+        about = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(memberID);
+        dest.writeString(userName);
+        dest.writeString(password);
+        dest.writeString(memberName);
+        dest.writeString(profileImageURL);
+        dest.writeString(city);
+        dest.writeString(about);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Member> CREATOR = new Creator<Member>() {
+        @Override
+        public Member createFromParcel(Parcel in) {
+            return new Member(in);
+        }
+
+        @Override
+        public Member[] newArray(int size) {
+            return new Member[size];
+        }
+    };
 
     public Integer getMemberID() {
         return memberID;

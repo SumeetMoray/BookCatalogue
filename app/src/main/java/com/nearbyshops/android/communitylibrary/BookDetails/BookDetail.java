@@ -1,5 +1,6 @@
 package com.nearbyshops.android.communitylibrary.BookDetails;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -7,29 +8,48 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nearbyshops.android.communitylibrary.BookReviews.BookReviews;
+import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.Book;
+import com.nearbyshops.android.communitylibrary.Model.BookReview;
+import com.nearbyshops.android.communitylibrary.Model.Member;
+import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookReviewEndpoint;
 import com.nearbyshops.android.communitylibrary.R;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class BookDetail extends AppCompatActivity implements Target{
+public class BookDetail extends AppCompatActivity implements Target, RatingBar.OnRatingBarChangeListener ,NotifyReviewUpdate{
 
     public static String BOOK_DETAIL_INTENT_KEY;
+
+    @Inject
+    BookReviewService bookReviewService;
+
 
     Book book;
 
@@ -69,12 +89,30 @@ public class BookDetail extends AppCompatActivity implements Target{
     @BindView(R.id.read_all_reviews_button)
     TextView read_all_reviews_button;
 
+    @BindView(R.id.member_profile_image)
+    ImageView member_profile_image;
+
+    @BindView(R.id.member_name)
+    TextView member_name;
+
+    @BindView(R.id.member_rating)
+    RatingBar member_rating_indicator;
+
+
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
 
     Unbinder unbinder;
+
+
+    public BookDetail() {
+
+        DaggerComponentBuilder.getInstance()
+                .getNetComponent()
+                .Inject(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +121,31 @@ public class BookDetail extends AppCompatActivity implements Target{
 
         unbinder = ButterKnife.bind(this);
 
+        ratingBar_rate.setOnRatingBarChangeListener(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
+
+
+
         book = getIntent().getParcelableExtra(BOOK_DETAIL_INTENT_KEY);
         bindViews(book);
+
+        if(book!=null)
+        {
+            getSupportActionBar().setTitle(book.getBookName());
+            getSupportActionBar().setSubtitle(book.getAuthorName());
+        }
+
+
+
+        if(book!=null)
+        {
+            checkUserReview();
+        }
+
 
 
         /*
@@ -143,7 +200,7 @@ public class BookDetail extends AppCompatActivity implements Target{
             if (book.getRt_rating_count() == 0) {
 
                 ratingText.setText("Rating : N/A");
-                ratingsCount.setText(("Ratings Not Available"));
+                ratingsCount.setText(("Not Yet Rated !"));
                 ratingsBar.setVisibility(View.GONE);
 
             }
@@ -163,53 +220,144 @@ public class BookDetail extends AppCompatActivity implements Target{
 
 
 
-            if(UtilityGeneral.getUserID(this)==-1)
-            {
-                user_review_ratings_block.setVisibility(View.GONE);
-            }else
-            {
-                if(book.getRt_rating_count()==0)
-                {
-                    edit_review_text.setText("Be the first to review and rate this book. ");
-                }
-
-                user_review_ratings_block.setVisibility(View.VISIBLE);
-            }
-
-
         }
 
 
     }
 
 
+    @BindView(R.id.edit_review_block)
+    RelativeLayout edit_review_block;
 
-    @OnClick(R.id.ratingBar_rate)
-    void ratingBar_RateClick()
-    {
+    @BindView(R.id.review_title)
+    TextView review_title;
 
-    }
+    @BindView(R.id.review_description)
+    TextView review_description;
+
+    @BindView(R.id.review_date)
+    TextView review_date;
+
+    BookReview reviewForUpdate;
 
 
     // method to check whether the user has written the review or not if the user is currently logged in.
-    void checkUserReview()
-    {
+    void checkUserReview() {
 
-        if(UtilityGeneral.getUserID(this)!=-1)
+        if (UtilityGeneral.getUser(this) == null) {
+
+            user_review_ratings_block.setVisibility(View.GONE);
+
+        }
+        else
         {
 
+            // Unhide review dialog
+
+
+            if(book.getRt_rating_count()==0)
+            {
+
+                user_review_ratings_block.setVisibility(View.VISIBLE);
+                edit_review_block.setVisibility(View.GONE);
+
+                edit_review_text.setText("Be the first to review and rate this book. ");
+            }
+            else if(book.getRt_rating_count()>0)
+            {
+
+
+                Call<BookReviewEndpoint> call = bookReviewService.getReviews(book.getBookID(),
+                        UtilityGeneral.getUser(this).getMemberID(),true,"REVIEW_DATE",null,null,null);
+
+//                Log.d("review_check",String.valueOf(UtilityGeneral.getUserID(this)) + " : " + String.valueOf(book.getBookID()));
+
+                call.enqueue(new Callback<BookReviewEndpoint>() {
+                    @Override
+                    public void onResponse(Call<BookReviewEndpoint> call, Response<BookReviewEndpoint> response) {
+
+
+                        if(response.body()!=null)
+                        {
+                            if(response.body().getItemCount()>0)
+                            {
+
+//                                edit_review_text.setText("Edit your review and Rating !");
+
+                                edit_review_block.setVisibility(View.VISIBLE);
+                                user_review_ratings_block.setVisibility(View.GONE);
+
+                                reviewForUpdate = response.body().getResults().get(0);
+
+                                review_title.setText(response.body().getResults().get(0).getReviewTitle());
+                                review_description.setText(response.body().getResults().get(0).getReviewText());
+
+                                review_date.setText(response.body().getResults().get(0).getReviewDate().toString());
+
+                                member_rating_indicator.setRating(response.body().getResults().get(0).getRating());
+
+
+
+//                                user_review.setText(response.body().getResults().get(0).getReviewText());
+//                                ratingBar_rate.setRating(response.body().getResults().get(0).getRating());
+
+                                Member member = response.body().getResults().get(0).getRt_member_profile();
+                                member_name.setText(member.getMemberName());
+
+                                String imagePath = UtilityGeneral.getImageEndpointURL(BookDetail.this)
+                                        + member.getProfileImageURL();
+
+                                Picasso.with(BookDetail.this).load(imagePath)
+                                        .placeholder(R.drawable.book_placeholder_image)
+                                        .into(member_profile_image);
+
+
+
+                            }else if(response.body().getItemCount() == 0)
+                            {
+                                edit_review_text.setText("Rate this book !");
+                                edit_review_block.setVisibility(View.GONE);
+                                user_review_ratings_block.setVisibility(View.VISIBLE);
+
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BookReviewEndpoint> call, Throwable t) {
+
+
+                        showToastMessage("Network Request Failed. Check your internet connection !");
+
+                    }
+                });
+
+
+
+            }
+
             // check book ratings count
-                // If ratings count is 0 then set message : Be the first to review
+            // If ratings count is 0 then set message : Be the first to review
 
 
             // If ratings count is >0 then
-                // check if user has written the review or not
-                // if Yes
-                    // Write messsage : Edit your review and rating
-                // If NO
-                    // Write message : Rate and Review this book
+            // check if user has written the review or not
+            // if Yes
+            // Write messsage : Edit your review and rating
+            // If NO
+            // Write message : Rate and Review this book
 
         }
+
+    }
+
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
 
@@ -281,4 +429,78 @@ public class BookDetail extends AppCompatActivity implements Target{
     public void onPrepareLoad(Drawable placeHolderDrawable) {
 
     }
+
+
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+
+    }
+
+
+
+    @OnClick({R.id.edit_icon,R.id.edit_review_label})
+    void edit_review_Click()
+    {
+
+        if(reviewForUpdate!=null)
+        {
+            FragmentManager fm = getSupportFragmentManager();
+            RateReviewDialog dialog = new RateReviewDialog();
+            dialog.show(fm,"rate");
+            dialog.setMode(reviewForUpdate,true,reviewForUpdate.getBookID());
+        }
+
+    }
+
+
+    @OnClick(R.id.edit_review_text)
+    void write_review_click()
+    {
+
+        FragmentManager fm = getSupportFragmentManager();
+        RateReviewDialog dialog = new RateReviewDialog();
+        dialog.show(fm,"rate");
+
+        if(book!=null)
+        {
+            dialog.setMode(null,false,book.getBookID());
+        }
+    }
+
+
+    @Override
+    public void notifyReviewUpdated() {
+
+        checkUserReview();
+    }
+
+    @Override
+    public void notifyReviewDeleted() {
+
+        book.setRt_rating_count(book.getRt_rating_count()-1);
+        checkUserReview();
+    }
+
+    @Override
+    public void notifyReviewSubmitted() {
+
+        book.setRt_rating_count(book.getRt_rating_count()+1);
+        checkUserReview();
+    }
+
+
+
+    @OnClick(R.id.read_all_reviews_button)
+    void readAllReviewsButton()
+    {
+        Intent intent = new Intent(this,BookReviews.class);
+        intent.putExtra(BookReviews.BOOK_INTENT_KEY,book);
+        startActivity(intent);
+    }
+
+
+
+
+
 }

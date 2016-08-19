@@ -96,10 +96,9 @@
             android:numStars="5"
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/book_description"
-            android:layout_toRightOf="@id/rating_text"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/ratingBar" />
@@ -125,6 +124,7 @@
             android:layout_height="1dp"/>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_below="@id/border_one"
             android:id="@+id/user_rating_review"
             android:orientation="vertical"
@@ -132,37 +132,129 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Edit Your Rating and Review for this book"
+                android:text="Rate this book"
                 android:layout_below="@id/border_one"
                 android:id="@+id/edit_review_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
             <RatingBar
+                android:layout_gravity="center"
                 android:numStars="5"
                 android:id="@+id/ratingBar_rate"
                 android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/edit_review_text"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
+        </LinearLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/edit_review_block"
+            android:layout_below="@id/user_rating_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:scaleType="centerCrop"
+                android:id="@+id/member_profile_image"
+                android:background="#22000000"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
 
             <TextView
-                android:id="@+id/user_review"
-                android:layout_marginBottom="10dp"
-                android:text="User review for this book."
-                android:layout_width="match_parent"
+                android:id="@+id/member_name"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/member_profile_image"
+                android:text="Member Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:background="@color/Gray88Alpha"
+                android:textColor="@color/white"
+                android:text="YOU"
+                android:layout_toRightOf="@id/member_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RatingBar
+                android:rating="4"
+                android:id="@+id/member_rating"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/member_name"
+                android:layout_toRightOf="@id/member_profile_image"
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="2015-sep-15"
+                android:layout_below="@id/member_rating"
+                android:layout_toRightOf="@id/member_profile_image"
+                android:id="@+id/review_date"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/review_title"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/member_profile_image"
+                android:layout_below="@id/member_profile_image"
+                android:text="Review Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/review_description"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/member_profile_image"
+                android:layout_below="@id/review_title"
+                android:text="Review Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:textColor="@color/phonographyBlue"
+                android:gravity="center"
+                android:id="@+id/edit_review_label"
+                android:layout_alignParentRight="true"
+                android:text="EDIT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <ImageView
+                android:layout_alignTop="@id/edit_review_label"
+                android:layout_alignBottom="@id/edit_review_label"
+                android:layout_toLeftOf="@id/edit_review_label"
+                app:srcCompat="@drawable/ic_edit_black_18px"
+                android:id="@+id/edit_icon"
+                android:layout_width="30dp"
+                android:layout_height="25dp" />
+
+        </RelativeLayout>
+
+
 
         <LinearLayout
-            android:layout_below="@id/user_rating_review"
+            android:layout_below="@id/edit_review_block"
             android:orientation="horizontal"
             android:id="@+id/border_two"
             android:background="#88000000"

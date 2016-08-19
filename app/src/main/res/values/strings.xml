@@ -18,4 +18,6 @@
     <string name="title_activity_book_detail">Book Details</string>
     <string name="sort_books_by">sort_books_key</string>
     <string name="whether_descending">sort_books_whether_descending</string>
+    <string name="rate_and_review">Book Review</string>
+    <string name="title_activity_book_reviews">Book Reviews</string>
 </resources>

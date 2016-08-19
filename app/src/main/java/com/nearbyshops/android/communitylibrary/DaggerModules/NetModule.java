@@ -7,8 +7,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nearbyshops.android.communitylibrary.Model.BookReview;
 import com.nearbyshops.android.communitylibrary.MyApplication;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookCategoryService;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.ItemCategoryService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.MemberService;
@@ -68,7 +70,9 @@ public class NetModule {
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         //gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        return gsonBuilder.create();
+        return gsonBuilder
+                .setDateFormat("yyyy-MM-dd")
+                .create();
     }
 
     @Provides
@@ -140,6 +144,15 @@ public class NetModule {
         MemberService service = retrofit.create(MemberService.class);
         return service;
     }
+
+    @Provides
+    @Singleton
+    BookReviewService provideReviewService(Retrofit retrofit)
+    {
+        BookReviewService service = retrofit.create(BookReviewService.class);
+        return service;
+    }
+
 
 
 

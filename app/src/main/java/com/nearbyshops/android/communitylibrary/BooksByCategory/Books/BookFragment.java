@@ -108,11 +108,11 @@ public class BookFragment extends Fragment
 
     }
 
-
+/*
     int getMaxChildCount(int spanCount, int heightPixels)
     {
        return (spanCount * (heightPixels/250));
-    }
+    }*/
 
 
     @Nullable

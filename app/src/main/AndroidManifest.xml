@@ -93,6 +93,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs" />
         </activity>
+        <activity
+            android:name=".BookReviews.BookReviews"
+            android:label="@string/title_activity_book_reviews"
+            android:parentActivityName=".BookDetails.BookDetail"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nearbyshops.android.communitylibrary.BookDetails.BookDetail" />
+        </activity>
     </application>
 
 </manifest>

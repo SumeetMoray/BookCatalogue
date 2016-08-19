@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/colorAccent"
-    android:gravity="bottom"
+    android:background="@color/colorPrimary"
     android:padding="10dp"
-    android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        app:srcCompat="@drawable/ic_import_contacts_white_36px" />
+        android:id="@+id/app_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/header_app_icon" />
 
+    
     <TextView
-        android:layout_marginTop="5dp"
-        android:textSize="20sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Community Library" />
+        android:layout_alignParentBottom="true"
+        android:id="@+id/member_name"
+        android:textSize="17sp"
+        android:layout_marginTop="10dp"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_above="@id/member_name"
+        android:id="@+id/profile_image"
+        android:layout_width="55dp"
+        android:layout_height="55dp" />
+    
+    
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Community Library"
+        android:id="@+id/app_title" />
+
+</RelativeLayout>

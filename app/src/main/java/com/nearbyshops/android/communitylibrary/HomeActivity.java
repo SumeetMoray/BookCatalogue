@@ -9,15 +9,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
 import com.nearbyshops.android.communitylibrary.Login.LoginDialog;
 import com.nearbyshops.android.communitylibrary.Login.NotifyAboutLogin;
+import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,9 +106,12 @@ public class HomeActivity extends AppCompatActivity
         loginDialog.show(fm,"login");
     }
 
+
+
     void checkLogin()
     {
-        if(UtilityGeneral.getUserID(this)==-1)
+
+        /*if(UtilityGeneral.getUserID(this)==-1)
         {
             // No user Logged in !
             navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Login");
@@ -110,7 +119,23 @@ public class HomeActivity extends AppCompatActivity
         {
             // user already logged in !
             navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
+        }*/
+
+        if(UtilityGeneral.getUser(this)==null)
+        {
+            // No user Logged in !
+            navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Login");
+
+
+        }else
+        {
+            // user already logged in !
+            navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
+
         }
+
+
+        setNavigationHeader();
 
     }
 
@@ -119,6 +144,39 @@ public class HomeActivity extends AppCompatActivity
     {
         navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
 //        showToastMessage("User ID : " + String.valueOf(UtilityGeneral.getUserID(this)));
+
+//        UtilityGeneral.saveUser(null,this);
+
+            setNavigationHeader();
+    }
+
+
+    void setNavigationHeader()
+    {
+        View headerLayout = navigationView.getHeaderView(0);
+
+        ImageView profileImage = (ImageView) headerLayout.findViewById(R.id.profile_image);
+        TextView userName = (TextView) headerLayout.findViewById(R.id.member_name);
+
+
+        Member member = UtilityGeneral.getUser(this);
+
+
+        if(member!=null)
+        {
+            String imagePath = UtilityGeneral.getImageEndpointURL(this)
+                    + member.getProfileImageURL();
+
+            Picasso.with(this).load(imagePath)
+                    .placeholder(R.drawable.book_placeholder_image)
+                    .into(profileImage);
+
+            userName.setText(member.getMemberName());
+        }else
+        {
+            profileImage.setImageDrawable(null);
+            userName.setText("");
+        }
     }
 
 
@@ -134,20 +192,30 @@ public class HomeActivity extends AppCompatActivity
 //            showToastMessage("Login");
 
 
-            if(UtilityGeneral.getUserID(this)==-1)
+            if(UtilityGeneral.getUser(this)==null)
             {
                 showLoginDialog();
 
             }else
             {
+                UtilityGeneral.saveUser(null,this);
                 UtilityGeneral.saveUserID(-1);
+
+
+                if(UtilityGeneral.getUser(this)==null)
+                {
+                    Log.d("login","User NULL");
+
+                }else
+                {
+                    Log.d("login","User NOT NULL");
+                }
+
+
                 showToastMessage("Logged Out !");
                 item.setTitle("Login");
+                setNavigationHeader();
             }
-
-
-
-
 
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {

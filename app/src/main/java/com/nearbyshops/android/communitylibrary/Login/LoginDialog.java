@@ -129,7 +129,9 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
 
                 if(response.body()!=null)
                 {
-                    UtilityGeneral.saveUserID(response.body().getMemberID());
+
+//                    UtilityGeneral.saveUserID(response.body().getMemberID());
+                    UtilityGeneral.saveUser(response.body(),getActivity());
                 }
 
                 if(response.code()== 401)
@@ -137,7 +139,7 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
                     showToastMessage("Login Unauthorized. Please check username or password !");
                 }else
                 {
-                    if(UtilityGeneral.getUserID(getActivity())!=-1)
+                    if(UtilityGeneral.getUser(getActivity())!=null)
                     {
 
                         showToastMessage("Login Successful !");
