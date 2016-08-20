@@ -14,13 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nearbyshops.android.communitylibrary.BooksByCategory.Books.BookFragment;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
-import com.nearbyshops.android.communitylibrary.Model.Book;
-import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.Model.Image;
+import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.R;
-import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.MemberService;
 import com.nearbyshops.android.communitylibrary.Utility.ImageCalls;
 import com.nearbyshops.android.communitylibrary.Utility.ImageCropUtility;
@@ -47,8 +44,6 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
 
     boolean isImageAdded = false;
 
-    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
-
     @BindView(R.id.member_name)
     EditText name;
 
@@ -67,9 +62,7 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
     @BindView(R.id.sign_up_button)
     Button sign_up;
 
-
-
-    BookCategory itemCategory;
+    Member member;
 
 
     public SignUp() {
@@ -92,9 +85,6 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        itemCategory = getIntent().getParcelableExtra(BookFragment.ADD_ITEM_INTENT_KEY);
-
-
         if (savedInstanceState == null) {
             // delete previous file in the cache - This will prevent accidently uploading the previous image
             File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
@@ -106,97 +96,64 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
     }
 
 
-    void addNewItem(String imagePath) {
+    void addNewProfile(String imagePath) {
 
 
-        Book itemForEdit = new Book();
+        Member memberForEdit = new Member();
 
-        itemForEdit.setBookCoverImageURL(imagePath);
+        memberForEdit.setProfileImageURL(imagePath);
 
 
-        if (itemCategory != null) {
+        memberForEdit.setCity(city.getText().toString());
+        memberForEdit.setMemberName(name.getText().toString());
+        memberForEdit.setUserName(username.getText().toString());
 
-            itemForEdit.setBookCategoryID(itemCategory.getBookCategoryID());
+        if(password.getText().toString().equals(confirm_password.getText().toString()))
+        {
+            memberForEdit.setPassword(password.getText().toString());
+        }else
+        {
+
+            showMessageSnackBar("Confirm Password do not match !");
+            return;
         }
 
-        itemForEdit.setBookDescription(itemDescription.getText().toString());
-        itemForEdit.setBookName(itemName.getText().toString());
+
+        if(username.getText().toString().equals("") || password.getText().toString().equals(""))
+        {
+            showMessageSnackBar("Username / Password Cannot be empty !");
+            return;
+        }
 
 
         // Make a network call
 
-        /*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(UtilityGeneral.getServiceURL(this))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Call<Member> call = memberService.insertMember(memberForEdit);
 
-
-        ItemService itemService = retrofit.create(ItemService.class);
-
-        */
-
-        Call<Book> itemCall = bookService.insertBook(itemForEdit);
-
-
-        itemCall.enqueue(new Callback<Book>() {
+        call.enqueue(new Callback<Member>() {
             @Override
-            public void onResponse(Call<Book> call, Response<Book> response) {
-
+            public void onResponse(Call<Member> call, Response<Member> response) {
 
                 if (response.code() == 201) {
-                    //showMessageSnackBar("Item added Successfully !");
-                    showToastMessage("Item added Successfully !");
-                }
 
-                //Item responseItem = response.body();
-                //displayResult(responseItem);
+                    showToastMessage("Signed Up Successfully !");
+                }
 
             }
 
             @Override
-            public void onFailure(Call<Book> call, Throwable t) {
-
-                //showMessageSnackBar("Network request failed !");
+            public void onFailure(Call<Member> call, Throwable t) {
 
                 showToastMessage("Network request failed ! ");
-
             }
         });
 
     }
 
 
-    /*
-    void displayResult(Item item)
-    {
-        result.setText("Result : " + "\n"
-                    + item.getItemImageURL() + "\n"
-                    + item.getItemDescription() + "\n"
-                    + item.getItemName() + "\n"
-                    + item.getItemCategoryID() + "\n"
-                    + item.getItemID());
-    }
-
-    */
 
 
-
-
-    /*
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
-
-    */
-
-
-    @OnClick(R.id.addItemButton)
+    @OnClick(R.id.sign_up_button)
     void addItem() {
 
         if (isImageAdded) {
@@ -204,7 +161,7 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
             ImageCalls.getInstance().uploadPickedImage(this, REQUEST_CODE_READ_EXTERNAL_STORAGE, this);
 
         } else {
-            addNewItem(null);
+            addNewProfile(null);
         }
 
     }
@@ -232,10 +189,11 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
     @BindView(R.id.uploadImage)
     ImageView resultView;
 
+
+
     void showMessageSnackBar(String message) {
 
         Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-
     }
 
 
@@ -293,41 +251,6 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
         //showFileChooser();
     }
 
-    //private int PICK_IMAGE_REQUEST = 21;
-
-    /*
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
-
-
-
-    public void startCropActivity(Uri sourceUri) {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        //options.setCompressionQuality(100);
-
-        options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
-
-
-        // this function takes the file from the source URI and saves in into the destination URI location.
-        UCrop.of(sourceUri, mDestinationUri)
-                .withOptions(options)
-                .withMaxResultSize(400,300)
-                .start(this);
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
-    }
-
-    */
 
 
     @Override
@@ -384,113 +307,6 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
 
 
 
-    /*
-    void uploadPickedImage() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
-
-        }
-
-
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        final Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, retrofit2.Response<Image> response) {
-
-                image = response.body();
-
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-                Log.d("applog", "inside Error: " + t.getMessage());
-
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-            }
-        });
-    }
-
-
-    */
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -517,11 +333,11 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
 
         if (image != null) {
 
-            addNewItem(image.getPath());
+            addNewProfile(image.getPath());
 
         } else {
 
-            addNewItem(null);
+            addNewProfile(null);
 
             showToastMessage("Image upload failed !");
         }
@@ -534,7 +350,7 @@ public class SignUp extends AppCompatActivity implements Callback<Image> {
 
         showToastMessage("Image upload failed !");
 
-        addNewItem(null);
+        addNewProfile(null);
     }
 
 

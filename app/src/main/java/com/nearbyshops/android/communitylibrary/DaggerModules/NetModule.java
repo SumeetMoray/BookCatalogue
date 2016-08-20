@@ -12,6 +12,7 @@ import com.nearbyshops.android.communitylibrary.MyApplication;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookCategoryService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.FavouriteBookService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.ItemCategoryService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.MemberService;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
@@ -152,6 +153,16 @@ public class NetModule {
         BookReviewService service = retrofit.create(BookReviewService.class);
         return service;
     }
+
+
+    @Provides
+    @Singleton
+    FavouriteBookService provideFavouriteService(Retrofit retrofit)
+    {
+        FavouriteBookService service = retrofit.create(FavouriteBookService.class);
+        return service;
+    }
+
 
 
 

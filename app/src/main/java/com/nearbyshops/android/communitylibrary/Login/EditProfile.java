@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
@@ -14,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
-import com.nearbyshops.android.communitylibrary.Model.Book;
+
 import com.nearbyshops.android.communitylibrary.Model.Image;
+import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.R;
-import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
+
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.MemberService;
 import com.nearbyshops.android.communitylibrary.Utility.ImageCalls;
 import com.nearbyshops.android.communitylibrary.Utility.ImageCropUtility;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
@@ -41,29 +45,21 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
 
     @Inject
-    BookService bookService;
+    MemberService memberService;
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
     boolean isImageRemoved = false;
 
 
-    @BindView(R.id.itemID) EditText itemID;
-    @BindView(R.id.itemName) EditText itemName;
-    @BindView(R.id.itemDescription) EditText itemDescription;
-    @BindView(R.id.itemDescriptionLong) EditText itemDescriptionLong;
-    @BindView(R.id.quantityUnit) EditText quantityUnit;
+    @BindView(R.id.member_name) EditText name;
+    @BindView(R.id.profile_city) EditText city;
+    @BindView(R.id.username) EditText username;
 
-    @BindView(R.id.saveButton) Button buttonUpdateItem;
+    Member memberForEdit;
 
 
-//    public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
-    public static final String ITEM_INTENT_KEY = "itemIntentKey";
-
-    Book itemForEdit;
-    //ItemCategory itemCategory;
-
-
+    public static final String EDIT_MEMBER_INTENT_KEY = "EDIT_MEMBER_INTENT_KEY";
 
 
     public EditProfile() {
@@ -79,16 +75,16 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
         ButterKnife.bind(this);
 
-        itemForEdit = getIntent().getParcelableExtra(ITEM_INTENT_KEY);
-//        itemCategory = getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
+//        memberForEdit = getIntent().getParcelableExtra(EDIT_MEMBER_INTENT_KEY);
+
+        memberForEdit = UtilityGeneral.getUser(this);
 
 
-
-        if(itemForEdit!=null) {
+        if(memberForEdit!=null) {
 
             bindDataToEditText();
 
-            loadImage(itemForEdit.getBookCoverImageURL());
+            loadImage(memberForEdit.getProfileImageURL());
         }
 
 
@@ -110,7 +106,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
 
 
-    @OnClick(R.id.saveButton)
+    @OnClick(R.id.sign_up_button)
     public void UpdateButtonClick()
     {
 
@@ -121,7 +117,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
             // delete previous Image from the Server
             ImageCalls.getInstance()
                     .deleteImage(
-                            itemForEdit.getBookCoverImageURL(),
+                            memberForEdit.getProfileImageURL(),
                             new DeleteImageCallback()
                     );
 
@@ -129,7 +125,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
             if(isImageRemoved)
             {
 
-                itemForEdit.setBookCoverImageURL("");
+                memberForEdit.setProfileImageURL("");
 
                 retrofitPUTRequest();
 
@@ -164,25 +160,35 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
     void bindDataToEditText()
     {
-        if(itemForEdit!=null) {
+        if(memberForEdit!=null) {
 
-            itemID.setText(String.valueOf(itemForEdit.getBookID()));
-            itemName.setText(itemForEdit.getBookName());
-            itemDescription.setText(itemForEdit.getBookDescription());
+            city.setText(memberForEdit.getCity());
+            name.setText(memberForEdit.getMemberName());
+            username.setText(memberForEdit.getUserName());
         }
     }
 
 
-    void getDataFromEditText(Book book)
+    boolean getDataFromEditText(Member member)
     {
-        if(book!=null)
+        if(member!=null)
         {
+            member.setCity(city.getText().toString());
+            member.setMemberName(name.getText().toString());
+            member.setUserName(username.getText().toString());
 
-            book.setBookName(itemName.getText().toString());
-            book.setBookDescription(itemDescription.getText().toString());
 
+            if(username.getText().toString().equals(""))
+            {
+                showMessageSnackBar("Username / Password Cannot be empty !");
+                return false;
+            }
+
+
+            return true;
         }
 
+        return false;
     }
 
 
@@ -192,17 +198,18 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
 
 
-        getDataFromEditText(itemForEdit);
+        if(!getDataFromEditText(memberForEdit)){
 
-
-        Call<ResponseBody> itemCall = bookService.updateBook(
-                                        itemForEdit,
-                                        itemForEdit.getBookID());
+            return;
+        }
 
 
 
-        itemCall.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> call = memberService.updateMember(
+                                    memberForEdit,
+                                    memberForEdit.getMemberID());
 
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
@@ -210,14 +217,13 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
                 {
                     Toast.makeText(EditProfile.this,"Update Successful !",Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-
                 showToastMessage("Network request failed !");
-
             }
         });
     }
@@ -375,11 +381,11 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
         }
 
 
-        itemForEdit.setBookCoverImageURL(null);
+        memberForEdit.setProfileImageURL(null);
 
-        if(itemForEdit!=null)
+        if(memberForEdit!=null)
         {
-            itemForEdit.setBookCoverImageURL(image.getPath());
+            memberForEdit.setProfileImageURL(image.getPath());
         }
 
         retrofitPUTRequest();
@@ -395,7 +401,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
         showToastMessage("Image Upload failed !");
 
-        itemForEdit.setBookCoverImageURL("");
+        memberForEdit.setProfileImageURL("");
 
         retrofitPUTRequest();
 
@@ -421,4 +427,16 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
         }
     }
+
+
+
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
+    void showMessageSnackBar(String message) {
+
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
 }

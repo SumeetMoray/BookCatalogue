@@ -7,7 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -25,10 +28,13 @@ import com.nearbyshops.android.communitylibrary.BookReviews.BookReviews;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookReview;
+import com.nearbyshops.android.communitylibrary.Model.FavouriteBook;
 import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookReviewEndpoint;
+import com.nearbyshops.android.communitylibrary.ModelEndpoint.FavouriteBookEndpoint;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.FavouriteBookService;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -39,17 +45,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookDetail extends AppCompatActivity implements Target, RatingBar.OnRatingBarChangeListener ,NotifyReviewUpdate{
+public class BookDetail extends AppCompatActivity implements Target, RatingBar.OnRatingBarChangeListener ,NotifyReviewUpdate {
 
     public static String BOOK_DETAIL_INTENT_KEY;
 
     @Inject
     BookReviewService bookReviewService;
 
+    @Inject
+    FavouriteBookService favouriteBookService;
 
     Book book;
 
@@ -99,7 +108,6 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     RatingBar member_rating_indicator;
 
 
-
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -127,22 +135,16 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         setSupportActionBar(toolbar);
 
 
-
-
-
         book = getIntent().getParcelableExtra(BOOK_DETAIL_INTENT_KEY);
         bindViews(book);
 
-        if(book!=null)
-        {
+        if (book != null) {
             getSupportActionBar().setTitle(book.getBookName());
             getSupportActionBar().setSubtitle(book.getAuthorName());
         }
 
 
-
-        if(book!=null)
-        {
+        if (book != null) {
             checkUserReview();
         }
 
@@ -159,21 +161,20 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         });*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        checkFavourite();
     }
 
 
-    void bindViews(Book book)
-    {
+    void bindViews(Book book) {
 
-        if(book !=null) {
+        if (book != null) {
 
 
-            if(book.getBookName().equals("null"))
-            {
+            if (book.getBookName().equals("null")) {
                 bookTitle.setText("Book Title");
-            }
-            else
-            {
+            } else {
                 bookTitle.setText(book.getBookName());
             }
 
@@ -186,14 +187,14 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
 //            if (!book.getBookCoverImageURL().equals("")) {
 
-                Picasso.with(this).load(imagePath)
-                        .placeholder(R.drawable.book_placeholder_image)
-                        .into(bookCover);
+            Picasso.with(this).load(imagePath)
+                    .placeholder(R.drawable.book_placeholder_image)
+                    .into(bookCover);
 
-                Picasso.with(this)
-                        .load(imagePath)
-                        .placeholder(R.drawable.book_placeholder_image)
-                        .into(this);
+            Picasso.with(this)
+                    .load(imagePath)
+                    .placeholder(R.drawable.book_placeholder_image)
+                    .into(this);
 
 //            }
 
@@ -203,21 +204,17 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 ratingsCount.setText(("Not Yet Rated !"));
                 ratingsBar.setVisibility(View.GONE);
 
-            }
-            else
-            {
-                ratingText.setText("Rating : " + String.valueOf(book.getRt_rating_avg()));
+            } else {
+                ratingText.setText("Rating : " + String.format("%.1f", book.getRt_rating_avg()));
                 ratingsCount.setText((int) book.getRt_rating_count() + " Ratings");
                 ratingsBar.setRating(book.getRt_rating_avg());
             }
 
 
-            if(!book.getBookDescription().equals("null") && !book.getBookDescription().equals(""))
-            {
+            if (!book.getBookDescription().equals("null") && !book.getBookDescription().equals("")) {
                 bookDescription.setText(book.getBookDescription());
             }
 //                bookDescription.setText("Book description Not Available.");
-
 
 
         }
@@ -248,27 +245,22 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
             user_review_ratings_block.setVisibility(View.GONE);
 
-        }
-        else
-        {
+        } else {
 
             // Unhide review dialog
 
 
-            if(book.getRt_rating_count()==0)
-            {
+            if (book.getRt_rating_count() == 0) {
 
                 user_review_ratings_block.setVisibility(View.VISIBLE);
                 edit_review_block.setVisibility(View.GONE);
 
                 edit_review_text.setText("Be the first to review and rate this book. ");
-            }
-            else if(book.getRt_rating_count()>0)
-            {
+            } else if (book.getRt_rating_count() > 0) {
 
 
                 Call<BookReviewEndpoint> call = bookReviewService.getReviews(book.getBookID(),
-                        UtilityGeneral.getUser(this).getMemberID(),true,"REVIEW_DATE",null,null,null);
+                        UtilityGeneral.getUser(this).getMemberID(), true, "REVIEW_DATE", null, null, null);
 
 //                Log.d("review_check",String.valueOf(UtilityGeneral.getUserID(this)) + " : " + String.valueOf(book.getBookID()));
 
@@ -277,10 +269,8 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                     public void onResponse(Call<BookReviewEndpoint> call, Response<BookReviewEndpoint> response) {
 
 
-                        if(response.body()!=null)
-                        {
-                            if(response.body().getItemCount()>0)
-                            {
+                        if (response.body() != null) {
+                            if (response.body().getItemCount() > 0) {
 
 //                                edit_review_text.setText("Edit your review and Rating !");
 
@@ -297,7 +287,6 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                                 member_rating_indicator.setRating(response.body().getResults().get(0).getRating());
 
 
-
 //                                user_review.setText(response.body().getResults().get(0).getReviewText());
 //                                ratingBar_rate.setRating(response.body().getResults().get(0).getRating());
 
@@ -312,9 +301,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                                         .into(member_profile_image);
 
 
-
-                            }else if(response.body().getItemCount() == 0)
-                            {
+                            } else if (response.body().getItemCount() == 0) {
                                 edit_review_text.setText("Rate this book !");
                                 edit_review_block.setVisibility(View.GONE);
                                 user_review_ratings_block.setVisibility(View.VISIBLE);
@@ -335,7 +322,6 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 });
 
 
-
             }
 
             // check book ratings count
@@ -354,10 +340,8 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     }
 
 
-
-    void showToastMessage(String message)
-    {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    void showToastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -365,8 +349,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     protected void onDestroy() {
         super.onDestroy();
 
-        if(unbinder!=null)
-        {
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }
@@ -392,7 +375,6 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         //}
 
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             this.getWindow().setStatusBarColor(vibrantDark);
@@ -403,7 +385,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         authorName.setBackgroundColor(vibrantLight);
 
 
-        if(fab!=null && vibrantDark!=0) {
+        if (fab != null && vibrantDark != 0) {
 
             fab.setBackgroundTintList(ColorStateList.valueOf(vibrant));
 
@@ -412,7 +394,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         //originalTitle.setBackgroundColor(vibrantDark);
 
 
-        if(collapsingToolbarLayout!=null) {
+        if (collapsingToolbarLayout != null) {
 
             collapsingToolbarLayout.setContentScrimColor(vibrantLight);
 
@@ -438,33 +420,28 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     }
 
 
+    @OnClick({R.id.edit_icon, R.id.edit_review_label})
+    void edit_review_Click() {
 
-    @OnClick({R.id.edit_icon,R.id.edit_review_label})
-    void edit_review_Click()
-    {
-
-        if(reviewForUpdate!=null)
-        {
+        if (reviewForUpdate != null) {
             FragmentManager fm = getSupportFragmentManager();
             RateReviewDialog dialog = new RateReviewDialog();
-            dialog.show(fm,"rate");
-            dialog.setMode(reviewForUpdate,true,reviewForUpdate.getBookID());
+            dialog.show(fm, "rate");
+            dialog.setMode(reviewForUpdate, true, reviewForUpdate.getBookID());
         }
 
     }
 
 
     @OnClick(R.id.edit_review_text)
-    void write_review_click()
-    {
+    void write_review_click() {
 
         FragmentManager fm = getSupportFragmentManager();
         RateReviewDialog dialog = new RateReviewDialog();
-        dialog.show(fm,"rate");
+        dialog.show(fm, "rate");
 
-        if(book!=null)
-        {
-            dialog.setMode(null,false,book.getBookID());
+        if (book != null) {
+            dialog.setMode(null, false, book.getBookID());
         }
     }
 
@@ -478,29 +455,225 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     @Override
     public void notifyReviewDeleted() {
 
-        book.setRt_rating_count(book.getRt_rating_count()-1);
+        book.setRt_rating_count(book.getRt_rating_count() - 1);
         checkUserReview();
     }
 
     @Override
     public void notifyReviewSubmitted() {
 
-        book.setRt_rating_count(book.getRt_rating_count()+1);
+        book.setRt_rating_count(book.getRt_rating_count() + 1);
         checkUserReview();
     }
 
 
-
     @OnClick(R.id.read_all_reviews_button)
-    void readAllReviewsButton()
-    {
-        Intent intent = new Intent(this,BookReviews.class);
-        intent.putExtra(BookReviews.BOOK_INTENT_KEY,book);
+    void readAllReviewsButton() {
+        Intent intent = new Intent(this, BookReviews.class);
+        intent.putExtra(BookReviews.BOOK_INTENT_KEY, book);
         startActivity(intent);
     }
 
 
 
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
+
+    void showMessageSnackBar(String message) {
+
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+
+
+    @OnClick(R.id.fab)
+    void fabClick()
+    {
+
+        if(UtilityGeneral.getUser(this)==null)
+        {
+            // User Not logged In.
+            showMessageSnackBar("You need to login in order to mark favourite !");
+
+        }else
+        {
+            toggleFavourite();
+        }
+    }
+
+
+
+    void toggleFavourite(){
+
+        if(book!=null && UtilityGeneral.getUser(this)!=null)
+        {
+
+            Call<FavouriteBookEndpoint> call = favouriteBookService.getFavouriteBooks(book.getBookID(),UtilityGeneral.getUser(this).getMemberID()
+                    ,null,null,null,null);
+
+
+            call.enqueue(new Callback<FavouriteBookEndpoint>() {
+                @Override
+                public void onResponse(Call<FavouriteBookEndpoint> call, Response<FavouriteBookEndpoint> response) {
+
+
+                    if(response.body()!=null)
+                    {
+                        if(response.body().getItemCount()>=1)
+                        {
+                            deleteFavourite();
+
+                        }
+                        else if(response.body().getItemCount()==0)
+                        {
+                            insertFavourite();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<FavouriteBookEndpoint> call, Throwable t) {
+
+                    showToastMessage("Network Request failed. Check Network Connection !");
+                }
+            });
+        }
+    }
+
+
+    void insertFavourite()
+    {
+
+
+        if(book!=null && UtilityGeneral.getUser(this)!=null)
+        {
+
+            FavouriteBook favouriteBook = new FavouriteBook();
+            favouriteBook.setBookID(book.getBookID());
+            favouriteBook.setMemberID(UtilityGeneral.getUser(this).getMemberID());
+
+            Call<FavouriteBook> call = favouriteBookService.insertFavouriteBook(favouriteBook);
+
+            call.enqueue(new Callback<FavouriteBook>() {
+                @Override
+                public void onResponse(Call<FavouriteBook> call, Response<FavouriteBook> response) {
+
+                    if(response.code() == 201)
+                    {
+                        // created successfully
+
+                        setFavouriteIcon(true);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<FavouriteBook> call, Throwable t) {
+
+                    showToastMessage("Network Request failed !");
+
+                }
+            });
+        }
+
+
+    }
+
+    void deleteFavourite()
+    {
+
+        if(book!=null && UtilityGeneral.getUser(this)!=null)
+        {
+            Call<ResponseBody> call = favouriteBookService.deleteFavouriteBook(book.getBookID(),
+                    UtilityGeneral.getUser(this).getMemberID());
+
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    if(response.code()==200)
+                    {
+                        setFavouriteIcon(false);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    showToastMessage("Network Request Failed !");
+                }
+            });
+        }
+
+    }
+
+
+
+
+    void setFavouriteIcon(boolean isFavourite)
+    {
+
+        if(isFavourite)
+        {
+            Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_favorite_white_24px, getTheme());
+            fab.setImageDrawable(drawable);
+        }
+        else
+        {
+            Drawable drawable2 = VectorDrawableCompat.create(getResources(), R.drawable.ic_favorite_border_white_24px, getTheme());
+            fab.setImageDrawable(drawable2);
+        }
+
+
+    }
+
+
+    void checkFavourite()
+    {
+
+        // make a network call to check the favourite
+
+        if(book!=null && UtilityGeneral.getUser(this)!=null)
+        {
+
+            Call<FavouriteBookEndpoint> call = favouriteBookService.getFavouriteBooks(book.getBookID(),UtilityGeneral.getUser(this).getMemberID()
+                    ,null,null,null,null);
+
+
+            call.enqueue(new Callback<FavouriteBookEndpoint>() {
+                @Override
+                public void onResponse(Call<FavouriteBookEndpoint> call, Response<FavouriteBookEndpoint> response) {
+
+
+                    if(response.body()!=null)
+                    {
+                        if(response.body().getItemCount()>=1)
+                        {
+                            setFavouriteIcon(true);
+
+                        }
+                        else if(response.body().getItemCount()==0)
+                        {
+                            setFavouriteIcon(false);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<FavouriteBookEndpoint> call, Throwable t) {
+
+                    showToastMessage("Network Request failed. Check Network Connection !");
+                }
+            });
+
+
+        }
+
+    }
 
 
 }

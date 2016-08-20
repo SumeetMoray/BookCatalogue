@@ -123,7 +123,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
         }else
         {
-            holder.bookRating.setText("Rating : " + String.valueOf(dataset.get(position).getRt_rating_avg()) + " ("
+            //String.valueOf(dataset.get(position).getRt_rating_avg()
+
+            holder.bookRating.setText("Rating : " + String.format("%.1f",dataset.get(position).getRt_rating_avg()) + " ("
                     + String.valueOf(rating_count) + " ratings)");
         }
 

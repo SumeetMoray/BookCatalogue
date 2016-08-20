@@ -1,6 +1,7 @@
 package com.nearbyshops.android.communitylibrary.Login;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -180,7 +181,8 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
 
     void signUp_click()
     {
-
+        Intent intent = new Intent(getContext(),SignUp.class);
+        startActivity(intent);
     }
 
 }

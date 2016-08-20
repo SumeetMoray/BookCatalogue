@@ -19,8 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
+import com.nearbyshops.android.communitylibrary.FavouriteBooks.FavouriteBooks;
+import com.nearbyshops.android.communitylibrary.Login.EditProfile;
 import com.nearbyshops.android.communitylibrary.Login.LoginDialog;
 import com.nearbyshops.android.communitylibrary.Login.NotifyAboutLogin;
+import com.nearbyshops.android.communitylibrary.Model.FavouriteBook;
 import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
@@ -62,6 +65,8 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().getItem(1).setVisible(false);
 
         checkLogin();
     }
@@ -131,6 +136,7 @@ public class HomeActivity extends AppCompatActivity
         {
             // user already logged in !
             navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
+            navigationView.getMenu().getItem(1).setVisible(true);
 
         }
 
@@ -146,6 +152,8 @@ public class HomeActivity extends AppCompatActivity
 //        showToastMessage("User ID : " + String.valueOf(UtilityGeneral.getUserID(this)));
 
 //        UtilityGeneral.saveUser(null,this);
+
+        navigationView.getMenu().getItem(1).setVisible(true);
 
             setNavigationHeader();
     }
@@ -201,31 +209,31 @@ public class HomeActivity extends AppCompatActivity
                 UtilityGeneral.saveUser(null,this);
                 UtilityGeneral.saveUserID(-1);
 
-
-                if(UtilityGeneral.getUser(this)==null)
-                {
-                    Log.d("login","User NULL");
-
-                }else
-                {
-                    Log.d("login","User NOT NULL");
-                }
-
-
                 showToastMessage("Logged Out !");
+                navigationView.getMenu().getItem(1).setVisible(false);
                 item.setTitle("Login");
                 setNavigationHeader();
             }
 
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if(id== R.id.nav_favourite_book)
+        {
 
-        } else if (id == R.id.nav_slideshow) {
+            if(UtilityGeneral.getUser(this)!=null)
+            {
+                Intent intent = new Intent(this, FavouriteBooks.class);
+                startActivity(intent);
+            }
+            else
+            {
+                showToastMessage("You need to Log In in order to use this feature !");
+            }
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        }
+        else if(id == R.id.nav_edit_profile)
+        {
+            Intent intent = new Intent(this, EditProfile.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

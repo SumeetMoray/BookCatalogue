@@ -102,6 +102,44 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nearbyshops.android.communitylibrary.BookDetails.BookDetail" />
         </activity>
+
+        <activity
+            android:name=".FavouriteBooks.FavouriteBooks"
+            android:label="Favourite Books"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+
+
+
+        <!--Sign Up and Login -->
+
+        <activity
+            android:name=".Login.SignUp"
+            android:label="Sign Up"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+
+
+
+        <activity
+            android:name=".Login.EditProfile"
+            android:label="Edit Profile"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

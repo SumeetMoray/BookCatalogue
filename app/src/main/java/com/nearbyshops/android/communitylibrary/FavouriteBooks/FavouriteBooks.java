@@ -1,8 +1,6 @@
-package com.nearbyshops.android.communitylibrary.BookReviews;
+package com.nearbyshops.android.communitylibrary.FavouriteBooks;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,16 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.nearbyshops.android.communitylibrary.BooksByCategory.Books.BookAdapter;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookReview;
+import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookEndpoint;
 import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookReviewEndpoint;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.Utility.DividerItemDecoration;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 
@@ -36,40 +34,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class FavouriteBooks extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    ArrayList<BookReview> dataset = new ArrayList<>();
+    ArrayList<Book> dataset = new ArrayList<>();
 
     @BindView(R.id.recyclerView)
     RecyclerView reviewsList;
 
-    BookReviewAdapter adapter;
+    FavouriteBookAdapter adapter;
 
     GridLayoutManager layoutManager;
 
     @Inject
-    BookReviewService bookReviewService;
-
-    @State
-    Book book;
-
-
-
-    public static final String BOOK_INTENT_KEY = "book_intent_key";
-
+    BookService bookService;
 
     // scroll variables
     private int limit = 30;
     @State int offset = 0;
     @State int item_count = 0;
 
-
-
-
-
     Unbinder unbinder;
 
-    public BookReviews() {
+    public FavouriteBooks() {
 
         // Inject the dependencies using Dependency Injection
         DaggerComponentBuilder.getInstance()
@@ -81,21 +67,13 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_reviews);
+        setContentView(R.layout.activity_favourite_book);
 
         unbinder = ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        book = getIntent().getParcelableExtra(BOOK_INTENT_KEY);
-
-        if(book!=null)
-        {
-            getSupportActionBar().setTitle(book.getBookName());
-        }
 
 
         setupRecyclerView();
@@ -137,7 +115,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
     void setupRecyclerView()
     {
 
-        adapter = new BookReviewAdapter(dataset,this);
+        adapter = new FavouriteBookAdapter(dataset,this);
         reviewsList.setAdapter(adapter);
         layoutManager = new GridLayoutManager(this,1);
         reviewsList.setLayoutManager(layoutManager);
@@ -163,12 +141,11 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
         });
 
 
-        reviewsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
-//        reviewsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
+//        reviewsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
         final DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        layoutManager.setSpanCount(metrics.widthPixels/350);
+        layoutManager.setSpanCount(metrics.widthPixels/200);
     }
 
 
@@ -242,14 +219,23 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
     private void makeNetworkCall() {
 
-        Call<BookReviewEndpoint> call = bookReviewService.getReviews(book.getBookID(),null,
-                true,null,limit,offset,false);
+
+        if(UtilityGeneral.getUser(this)==null)
+        {
+
+            swipeContainer.setRefreshing(false);
+            showToastMessage("You are not logged in !");
+            return;
+
+        }
+
+        Call<BookEndpoint> call = bookService.getBooks(null, UtilityGeneral.getUser(this).getMemberID(),null,
+                limit,offset,null);
 
 
-        call.enqueue(new Callback<BookReviewEndpoint>() {
-
+        call.enqueue(new Callback<BookEndpoint>() {
             @Override
-            public void onResponse(Call<BookReviewEndpoint> call, Response<BookReviewEndpoint> response) {
+            public void onResponse(Call<BookEndpoint> call, Response<BookEndpoint> response) {
 
                 if(response.body().getResults()!=null)
                 {
@@ -260,10 +246,11 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
 
                 swipeContainer.setRefreshing(false);
+
             }
 
             @Override
-            public void onFailure(Call<BookReviewEndpoint> call, Throwable t) {
+            public void onFailure(Call<BookEndpoint> call, Throwable t) {
 
                 showToastMessage("Network Request failed !");
 
@@ -271,10 +258,6 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
             }
         });
-
-
-
-
     }
 
 
@@ -283,10 +266,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
         super.onSaveInstanceState(outState);
 
         Icepick.saveInstanceState(this,outState);
-
         outState.putParcelableArrayList("dataset",dataset);
-
-
     }
 
 
@@ -299,7 +279,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
         if(savedInstanceState!=null)
         {
-            ArrayList<BookReview> tempCat = savedInstanceState.getParcelableArrayList("dataset");
+            ArrayList<Book> tempCat = savedInstanceState.getParcelableArrayList("dataset");
             dataset.clear();
             dataset.addAll(tempCat);
             adapter.notifyDataSetChanged();

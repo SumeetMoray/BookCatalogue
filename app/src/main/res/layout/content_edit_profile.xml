@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -76,18 +76,27 @@
             android:layout_height="wrap_content"
             android:text="Remove Picture"/>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <EditText
+                android:id="@+id/member_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Name"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
-                android:enabled="false"
-                android:id="@+id/itemID"
+                android:id="@+id/profile_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Item ID"/>
+                android:hint="Enter City"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -97,68 +106,29 @@
             android:layout_height="wrap_content">
 
             <EditText
-
-                android:id="@+id/itemName"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Item Name"/>
+                android:hint="Enter Username"/>
 
         </android.support.design.widget.TextInputLayout>
-
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/quantityUnit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Item Unit. Example: Kg, Grams"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/itemDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Item Description Short"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/itemDescriptionLong"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Item Description Long"/>
-
-        </android.support.design.widget.TextInputLayout>
-
 
 
         <Button
-            android:id="@+id/saveButton"
-            android:textSize="25dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:textAllCaps="false"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:id="@+id/sign_up_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blueGrey800"
-            android:textColor="@color/white"
-            android:text="Save"/>
+            android:text="Update Profile"
+            android:background="@color/buttonColorDark"
+            android:textColor="@color/white"/>
 
 
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

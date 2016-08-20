@@ -14,6 +14,7 @@ import com.nearbyshops.android.communitylibrary.BooksByCategory.Books.EditBook;
 import com.nearbyshops.android.communitylibrary.DaggerModules.AppModule;
 import com.nearbyshops.android.communitylibrary.DaggerModules.NetModule;
 import com.nearbyshops.android.communitylibrary.BookDetails.RateReviewDialog;
+import com.nearbyshops.android.communitylibrary.FavouriteBooks.FavouriteBooks;
 import com.nearbyshops.android.communitylibrary.Login.EditProfile;
 import com.nearbyshops.android.communitylibrary.Login.LoginDialog;
 import com.nearbyshops.android.communitylibrary.Dialogs.SortFIlterBookDialog;
@@ -65,6 +66,8 @@ public interface NetComponent {
     void Inject(SignUp signUp);
 
     void Inject(EditProfile editProfile);
+
+    void Inject(FavouriteBooks favouriteBooks);
 
 
 //    void Inject(DetachedItemFragment detachedItemFragment);

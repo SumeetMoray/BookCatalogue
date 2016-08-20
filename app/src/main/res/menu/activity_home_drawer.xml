@@ -6,26 +6,23 @@
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Login" />
+
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_edit_profile"
+            android:title="Edit Profile" />
+
+        <item
+            android:id="@+id/nav_favourite_book"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Favourite Books" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="My Reviews and Ratings" />
     </group>
 
-    <item android:title="Settings and About">
+    <item android:title="About">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Settings" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="About" />
+                android:title="About Community Library" />
         </menu>
     </item>
 

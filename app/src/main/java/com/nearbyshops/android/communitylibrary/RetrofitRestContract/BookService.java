@@ -30,6 +30,18 @@ public interface BookService {
             @Query("metadata_only") Boolean metaonly
     );
 
+    //@Query("FavouriteBookMemberID") Integer favouriteBookMemberID,
+
+
+    @GET("/api/v1/Book")
+    Call<BookEndpoint> getBooks(
+            @Query("BookCategoryID") Integer bookCategoryID,
+            @Query("FavouriteBookMemberID") Integer favouriteBookMemberID,
+            @Query("SortBy") String sortBy,
+            @Query("Limit") Integer limit, @Query("Offset") Integer offset,
+            @Query("metadata_only") Boolean metaonly
+    );
+
 
     @GET("/api/v1/Book/{id}")
     Call<Book> getBook(@Path("id") int bookID);

@@ -53,6 +53,9 @@ public class Member implements Parcelable{
     private String about;
     private Timestamp dateOfBirth;
 
+    public Member() {
+    }
+
 
     // Getter and Setter Methods
 
