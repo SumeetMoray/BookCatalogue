@@ -98,7 +98,7 @@ public class BookCategoriesParentAdapter extends RecyclerView.Adapter<BookCatego
     public void onBindViewHolder(BookCategoriesParentAdapter.ViewHolder holder, final int position) {
 
         holder.bookCategoryName.setText(dataset.get(position).getBookCategoryName());
-        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " BooksActivity");
+        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " Books");
 
         if(selectedPosition!=null)
         {
@@ -120,7 +120,9 @@ public class BookCategoriesParentAdapter extends RecyclerView.Adapter<BookCatego
         String imagePath = UtilityGeneral.getImageEndpointURL(context)
                 + dataset.get(position).getImageURL();
 
-        Picasso.with(context).load(imagePath).into(holder.bookCategoryImage);
+        Picasso.with(context).load(imagePath)
+                .placeholder(R.drawable.book_placeholder_image)
+                .into(holder.bookCategoryImage);
 
         Log.d("applog",imagePath);
 

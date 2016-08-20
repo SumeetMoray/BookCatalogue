@@ -112,7 +112,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
             holder.bookTitle.setText(dataset.get(position).getBookName());
         }else
         {
-            holder.bookTitle.setText("Title Book");
+            holder.bookTitle.setText("Title Book ");
 
         }
 

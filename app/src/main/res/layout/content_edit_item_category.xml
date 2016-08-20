@@ -104,99 +104,6 @@
         </android.support.design.widget.TextInputLayout>
 
 
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/descriptionShort"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Short Description"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/itemCategoryDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Long Description"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
-
-
-
-        <CheckBox
-            android:id="@+id/isLeafNode"
-            android:layout_marginTop="10dp"
-            android:text= ":  Is Leaf Node Item Category ?"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/whatleaf"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:background="@color/deepOrange800"
-            android:text="What is Leaf Node Item Category ? "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/leaf_node_explaination"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Leaf Node Explaination"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <CheckBox
-            android:id="@+id/isAbstractNode"
-            android:layout_marginTop="10dp"
-            android:text= ":  Is Abstract Node Item Category?"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/what_is_abstract_node"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:background="@color/deepOrange800"
-            android:text="What is Abstract Node Item Category ? "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        
-        <ScrollView
-            android:id="@+id/scrollview_abstract_node_explanation"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-        <TextView
-            android:text="abstract node explaination."
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        </ScrollView>
-
-
         <Button
             android:textSize="25dp"
             android:layout_gravity="right"
@@ -208,8 +115,6 @@
             android:background="@color/blueGrey800"
             android:textColor="@color/white"
             android:text="Save"/>
-
-
 
     </LinearLayout>
 

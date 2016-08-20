@@ -303,7 +303,7 @@ public class RateReviewDialog extends DialogFragment{
     void submitReview()
     {
         BookReview bookReview = new BookReview();
-        bookReview.setReviewDate(new java.sql.Date(System.currentTimeMillis()));
+//        bookReview.setReviewDate(new java.sql.Date(System.currentTimeMillis()));
         bookReview.setRating((int) ratingBar.getRating());
         bookReview.setReviewTitle(review_title.getText().toString());
         bookReview.setReviewText(review_text.getText().toString());

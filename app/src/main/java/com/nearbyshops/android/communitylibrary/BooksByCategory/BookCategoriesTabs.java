@@ -477,15 +477,21 @@ public class BookCategoriesTabs extends AppCompatActivity
 
         currentPage = position;
 
+
+
         if(position==0)
         {
             fab_add.setLabelText("Add Book Category");
             fab_change_parent.setLabelText("Change Parent for Selected Categories");
 
+            fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.phonographyBlue));
+
         }else if(position == 1)
         {
             fab_add.setLabelText("Add Book");
             fab_change_parent.setLabelText("Change Category for Selected BooksActivity");
+            fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.orangeDark));
+
         }
 
     }

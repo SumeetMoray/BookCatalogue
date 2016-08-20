@@ -3,11 +3,14 @@ package com.nearbyshops.android.communitylibrary.BooksByCategory.Books;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
+import com.nearbyshops.android.communitylibrary.Dialogs.DateDialog;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.Model.Image;
@@ -28,6 +32,9 @@ import com.yalantis.ucrop.UCrop;
 
 
 import java.io.File;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -39,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddBook extends AppCompatActivity implements Callback<Image> {
+public class AddBook extends AppCompatActivity implements Callback<Image> , DateDialog.NotifyDate{
 
 
     @Inject
@@ -49,21 +56,26 @@ public class AddBook extends AppCompatActivity implements Callback<Image> {
 
     public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
 
-    @BindView(R.id.itemName)
-    EditText itemName;
-    @BindView(R.id.itemDescription)
+    @BindView(R.id.bookName)
+    EditText bookName;
 
-    EditText itemDescription;
-    @BindView(R.id.itemDescriptionLong)
+    @BindView(R.id.authorName)
+    EditText authorName;
 
-    EditText itemDescriptionLong;
-    @BindView(R.id.quantityUnit)
-    EditText quantityUnit;
+    @BindView(R.id.bookDescription)
+    EditText bookDescription;
+//
+//    @BindView(R.id.date_of_publish)
+//    EditText dateOfPublish;
 
-    @BindView(R.id.addItemButton)
-    Button addItemButton;
+    @BindView(R.id.publisher_name)
+    EditText publisherName;
 
+    @BindView(R.id.pages_total)
+    EditText pagesTotal;
 
+    @BindView(R.id.addBookButton)
+    Button addBookButton;
 
 
     BookCategory itemCategory;
@@ -103,6 +115,35 @@ public class AddBook extends AppCompatActivity implements Callback<Image> {
     }
 
 
+
+
+    Timestamp date;
+
+    @BindView(R.id.set_date)
+    TextView dateText;
+
+    @Override
+    public void onDateNotified(Calendar calendar) {
+
+        date = new Timestamp(calendar.getTimeInMillis());
+
+        dateText.setText(dateText.getText() + " : " + date.toString());
+
+
+        Log.d("date",date.toGMTString());
+    }
+
+
+
+    @OnClick(R.id.set_date)
+    void setDateClick()
+    {
+        DialogFragment newFragment = new DateDialog();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+
     void addNewItem(String imagePath) {
 
 
@@ -116,8 +157,27 @@ public class AddBook extends AppCompatActivity implements Callback<Image> {
             itemForEdit.setBookCategoryID(itemCategory.getBookCategoryID());
         }
 
-        itemForEdit.setBookDescription(itemDescription.getText().toString());
-        itemForEdit.setBookName(itemName.getText().toString());
+        if(date!=null)
+        {
+            itemForEdit.setDateOfPublish(date);
+            Log.d("date",itemForEdit.getDateOfPublish().toString());
+        }
+
+        itemForEdit.setBookName(bookName.getText().toString());
+        itemForEdit.setAuthorName(authorName.getText().toString());
+        itemForEdit.setBookDescription(bookDescription.getText().toString());
+//        itemForEdit.setDateOfPublish(dateOfPublish.getText().toString());
+
+//        itemForEdit.setDateOfPublish();
+
+
+
+        itemForEdit.setNameOfPublisher(publisherName.getText().toString());
+
+        if(!pagesTotal.getText().toString().equals(""))
+        {
+            itemForEdit.setPagesTotal(Integer.parseInt(pagesTotal.getText().toString()));
+        }
 
 
         // Make a network call
@@ -193,7 +253,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> {
     */
 
 
-    @OnClick(R.id.addItemButton)
+    @OnClick(R.id.addBookButton)
     void addItem() {
 
         if (isImageAdded) {
@@ -242,6 +302,9 @@ public class AddBook extends AppCompatActivity implements Callback<Image> {
 
         //getServiceURL() + IMAGES_END_POINT_URL +
     }
+
+
+
 
 
 

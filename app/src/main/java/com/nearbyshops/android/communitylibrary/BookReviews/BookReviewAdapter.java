@@ -83,7 +83,7 @@ public class BookReviewAdapter extends RecyclerView.Adapter<BookReviewAdapter.Vi
         holder.rating.setRating(dataset.get(position).getRating());
 
 
-        holder.review_date.setText(dataset.get(position).getReviewDate().toString());
+        holder.review_date.setText(dataset.get(position).getReviewDate().toLocaleString());
 
 
         holder.review_title.setText(dataset.get(position).getReviewTitle());

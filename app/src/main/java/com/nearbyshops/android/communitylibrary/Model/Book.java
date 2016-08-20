@@ -2,6 +2,7 @@ package com.nearbyshops.android.communitylibrary.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.sql.Timestamp;
 
@@ -9,7 +10,6 @@ import java.sql.Timestamp;
  * Created by sumeet on 8/8/16.
  */
 public class Book implements Parcelable{
-
 
     // Table Name
     public static final String TABLE_NAME = "BOOK";
@@ -25,6 +25,24 @@ public class Book implements Parcelable{
     public static final String TIMESTAMP_CREATED = "TIMESTAMP_CREATED";
     public static final String TIMESTAMP_UPDATED = "TIMESTAMP_UPDATED";
 
+    // ! ---- To Be Introduced
+
+    public static final String DATE_OF_PUBLISH = "DATE_OF_PUBLISH";
+    public static final String PUBLISHER_NAME = "PUBLISHER_NAME";
+    public static final String PAGES_TOTAL = "PAGES_TOTAL";
+    public static final String ISBN = "ISBN";
+    public static final String ISO_LANGUAGE_CODE = "ISO_LANGUAGE_CODE";
+
+    // publisher, pages, isbn, language, category, Title
+
+    // Sort Options : Sort By
+    // 1. Date of Publish (Newer First) : 2. Date of Publish (Older First)
+    // 3. Book Rating 4. Title
+
+    // Filter Options : Filter By
+    // 1. Language 2. Publisher 3. Date of Publish [Start - End]
+
+
 
     // CreateTableStatement
 
@@ -33,13 +51,17 @@ public class Book implements Parcelable{
 
             + " " + Book.BOOK_ID + " SERIAL PRIMARY KEY,"
             + " " + Book.BOOK_CATEGORY_ID + " INT,"
-            + " " + Book.BOOK_NAME + " VARCHAR(100),"
+            + " " + Book.BOOK_NAME + " VARCHAR(500),"
             + " " + Book.BOOK_COVER_IMAGE_URL + " VARCHAR(100),"
             + " " + Book.BACKDROP_IMAGE_URL + " VARCHAR(100),"
-            + " " + Book.AUTHOR_NAME + " VARCHAR(100),"
+            + " " + Book.AUTHOR_NAME + " VARCHAR(500),"
             + " " + Book.BOOK_DESCRIPTION + " VARCHAR(10000),"
             + " " + Book.TIMESTAMP_CREATED + "  timestamp with time zone NOT NULL DEFAULT now(),"
             + " " + Book.TIMESTAMP_UPDATED + " timestamp with time zone,"
+
+            + " " + Book.DATE_OF_PUBLISH + " timestamp with time zone,"
+            + " " + Book.PUBLISHER_NAME + " VARCHAR(500),"
+            + " " + Book.PAGES_TOTAL + " INT,"
 
             + " FOREIGN KEY(" + Book.BOOK_CATEGORY_ID +") REFERENCES "
             + BookCategory.TABLE_NAME + "(" + BookCategory.BOOK_CATEGORY_ID + ")"
@@ -59,9 +81,19 @@ public class Book implements Parcelable{
     private Timestamp timestampCreated;
     private Timestamp timeStampUpdated;
 
+    private Timestamp dateOfPublish;
+    private String nameOfPublisher;
+    private int pagesTotal;
 
     private float rt_rating_avg;
     private float rt_rating_count;
+
+    public Book() {
+    }
+
+
+    // Getter and Setters
+
 
     protected Book(Parcel in) {
         bookID = in.readInt();
@@ -71,8 +103,13 @@ public class Book implements Parcelable{
         backdropImageURL = in.readString();
         authorName = in.readString();
         bookDescription = in.readString();
+        nameOfPublisher = in.readString();
+        pagesTotal = in.readInt();
         rt_rating_avg = in.readFloat();
         rt_rating_count = in.readFloat();
+
+        dateOfPublish = new Timestamp(in.readLong());
+
     }
 
     @Override
@@ -84,8 +121,15 @@ public class Book implements Parcelable{
         dest.writeString(backdropImageURL);
         dest.writeString(authorName);
         dest.writeString(bookDescription);
+        dest.writeString(nameOfPublisher);
+        dest.writeInt(pagesTotal);
         dest.writeFloat(rt_rating_avg);
         dest.writeFloat(rt_rating_count);
+
+        if(dateOfPublish!=null)
+        {
+            dest.writeLong(dateOfPublish.getTime());
+        }
     }
 
     @Override
@@ -121,29 +165,19 @@ public class Book implements Parcelable{
         this.rt_rating_count = rt_rating_count;
     }
 
-    public Book() {
-    }
-
-
-
-    // Getter and Setters
-
-
-
-
-    public Integer getBookID() {
+    public int getBookID() {
         return bookID;
     }
 
-    public void setBookID(Integer bookID) {
+    public void setBookID(int bookID) {
         this.bookID = bookID;
     }
 
-    public Integer getBookCategoryID() {
+    public int getBookCategoryID() {
         return bookCategoryID;
     }
 
-    public void setBookCategoryID(Integer bookCategoryID) {
+    public void setBookCategoryID(int bookCategoryID) {
         this.bookCategoryID = bookCategoryID;
     }
 
@@ -201,5 +235,30 @@ public class Book implements Parcelable{
 
     public void setTimeStampUpdated(Timestamp timeStampUpdated) {
         this.timeStampUpdated = timeStampUpdated;
+    }
+
+
+    public Timestamp getDateOfPublish() {
+        return dateOfPublish;
+    }
+
+    public void setDateOfPublish(Timestamp dateOfPublish) {
+        this.dateOfPublish = dateOfPublish;
+    }
+
+    public String getNameOfPublisher() {
+        return nameOfPublisher;
+    }
+
+    public void setNameOfPublisher(String nameOfPublisher) {
+        this.nameOfPublisher = nameOfPublisher;
+    }
+
+    public int getPagesTotal() {
+        return pagesTotal;
+    }
+
+    public void setPagesTotal(int pagesTotal) {
+        this.pagesTotal = pagesTotal;
     }
 }

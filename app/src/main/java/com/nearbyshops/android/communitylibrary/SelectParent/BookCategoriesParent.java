@@ -168,7 +168,7 @@ public class BookCategoriesParent extends AppCompatActivity
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        layoutManager.setSpanCount(metrics.widthPixels/350);
+        layoutManager.setSpanCount(metrics.widthPixels/200);
 
         itemCategoriesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

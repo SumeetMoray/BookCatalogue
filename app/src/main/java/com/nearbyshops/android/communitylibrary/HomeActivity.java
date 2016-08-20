@@ -227,7 +227,7 @@ public class HomeActivity extends AppCompatActivity
             }
             else
             {
-                showToastMessage("You need to Log In in order to use this feature !");
+                showToastMessage(getString(R.string.favourite_books_not_logged_in));
             }
 
         }

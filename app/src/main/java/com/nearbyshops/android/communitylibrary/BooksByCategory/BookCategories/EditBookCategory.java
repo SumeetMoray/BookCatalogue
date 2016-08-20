@@ -61,11 +61,8 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
     @BindView(R.id.itemCategoryName)
     TextInputEditText itemCategoryName;
 
-    @BindView(R.id.itemCategoryDescription) EditText itemCategoryDescription;
-
     @BindView(R.id.updateItemCategory) Button updateItemCategory;
 
-    @BindView(R.id.isLeafNode) CheckBox isLeafNode;
 
 
 
@@ -86,23 +83,6 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
     BookCategory itemCategoryForEdit;
 
 
-
-    // recently added
-
-    @BindView(R.id.descriptionShort)
-    EditText descriptionShort;
-
-    @BindView(R.id.isAbstractNode)
-    CheckBox isAbstractNode;
-
-    boolean isLeafExplainationOpen= false;
-    boolean isAbstractExplainationOpen = false;
-
-    TextView what_is_leaf_node;
-    TextView leaf_node_explaination;
-    TextView what_is_abstract_node;
-    ScrollView abstract_node_explaination;
-
     Unbinder unbinder;
 
 
@@ -122,11 +102,6 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
 
         itemCategoryForEdit = getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
 
-
-        what_is_leaf_node = (TextView) findViewById(R.id.whatleaf);
-        leaf_node_explaination = (TextView) findViewById(R.id.leaf_node_explaination);
-        what_is_abstract_node = (TextView) findViewById(R.id.what_is_abstract_node);
-        abstract_node_explaination = (ScrollView) findViewById(R.id.scrollview_abstract_node_explanation);
 
 
         if(savedInstanceState==null) {
@@ -155,39 +130,7 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
 
 
 
-    @OnClick(R.id.whatleaf)
-    void whatLeafNodeClick()
-    {
-        if(!isLeafExplainationOpen)
-        {
-            leaf_node_explaination.setVisibility(View.VISIBLE);
 
-            isLeafExplainationOpen = true;
-        }
-        else
-        {
-            leaf_node_explaination.setVisibility(View.GONE);
-
-            isLeafExplainationOpen = false;
-        }
-    }
-
-    @OnClick(R.id.what_is_abstract_node)
-    void whatAbstractNodeClick() {
-
-        if (!isAbstractExplainationOpen) {
-
-            abstract_node_explaination.setVisibility(View.VISIBLE);
-
-            isAbstractExplainationOpen = true;
-        }
-        else
-        {
-            abstract_node_explaination.setVisibility(View.GONE);
-            isAbstractExplainationOpen = false;
-
-        }
-    }
 
 
 

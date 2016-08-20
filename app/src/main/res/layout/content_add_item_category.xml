@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize">
+    android:layout_height="wrap_content">
 
 <LinearLayout
 
@@ -17,7 +17,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".addItems.ItemCategories.AddItemCategory"
     tools:showIn="@layout/activity_add_item_category">
 
@@ -91,96 +90,6 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/descriptionShort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Short Description"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/itemCategoryDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Long Description"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-
-    <CheckBox
-        android:id="@+id/isLeafNode"
-        android:layout_marginTop="10dp"
-        android:text="Is Leaf Node"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/whatleaf"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:padding="10dp"
-        android:textColor="@color/white"
-        android:background="@color/deepOrange800"
-        android:text="What is Leaf Node Item Category ? "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/leaf_node_explaination"
-        android:visibility="gone"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!--android:text="@string/leaf_node_item_category_usage"-->
-
-    <CheckBox
-        android:id="@+id/isAbstractNode"
-        android:layout_marginTop="10dp"
-        android:text= ":  Is Abstract Node Item Category?"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/what_is_abstract_node"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:padding="10dp"
-        android:textColor="@color/white"
-        android:background="@color/deepOrange800"
-        android:text="What is Abstract Node Item Category ? "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <ScrollView
-        android:id="@+id/scrollview_abstract_node_explanation"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <!--android:text="@string/abstract_category_usage"-->
-
-        <TextView
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
-
-
 
 
     <Button
@@ -188,7 +97,7 @@
         android:id="@+id/addItemCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Item Category"
+        android:text="Add Category"
         android:textColor="@color/white"
         android:background="@color/phonographyBlue"/>
 

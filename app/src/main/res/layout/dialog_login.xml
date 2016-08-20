@@ -104,7 +104,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:textColor="@color/white"
-            android:background="@color/blueGrey800"
+            android:background="@color/gplus_color_1"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:gravity="center"

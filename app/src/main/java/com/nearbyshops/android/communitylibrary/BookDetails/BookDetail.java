@@ -39,6 +39,8 @@ import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -70,6 +72,13 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
     @BindView(R.id.author_name)
     TextView authorName;
+
+    @BindView(R.id.date_of_publish)
+    TextView publishDate;
+
+
+    @BindView(R.id.publisher_name)
+    TextView publisherName;
 
     @BindView(R.id.book_description)
     TextView bookDescription;
@@ -178,6 +187,23 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 bookTitle.setText(book.getBookName());
             }
 
+            authorName.setText(book.getAuthorName());
+            publisherName.setText(book.getNameOfPublisher());
+
+            if(book.getDateOfPublish()!=null)
+            {
+                Log.d("date","Date of Publish binding " + book.getDateOfPublish().toString());
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM ''yyyy");
+
+                //"EEE, MMM d, ''yy"
+                //"yyyy-MM-dd"
+
+                publishDate.setText(dateFormat.format(book.getDateOfPublish()));
+            }
+
+
+
 
             // set Book Cover Image
 
@@ -211,7 +237,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
             }
 
 
-            if (!book.getBookDescription().equals("null") && !book.getBookDescription().equals("")) {
+            if (book.getBookDescription()!=null && !book.getBookDescription().equals("null") && !book.getBookDescription().equals("")) {
                 bookDescription.setText(book.getBookDescription());
             }
 //                bookDescription.setText("Book description Not Available.");
@@ -282,7 +308,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                                 review_title.setText(response.body().getResults().get(0).getReviewTitle());
                                 review_description.setText(response.body().getResults().get(0).getReviewText());
 
-                                review_date.setText(response.body().getResults().get(0).getReviewDate().toString());
+                                review_date.setText(response.body().getResults().get(0).getReviewDate().toLocaleString());
 
                                 member_rating_indicator.setRating(response.body().getResults().get(0).getRating());
 
@@ -416,7 +442,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     @Override
     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
-
+        write_review_click();
     }
 
 
@@ -433,7 +459,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
     }
 
 
-    @OnClick(R.id.edit_review_text)
+    @OnClick({R.id.edit_review_text,R.id.ratingBar_rate})
     void write_review_click() {
 
         FragmentManager fm = getSupportFragmentManager();

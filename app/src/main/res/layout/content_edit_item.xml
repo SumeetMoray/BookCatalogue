@@ -97,37 +97,10 @@
             android:layout_height="wrap_content">
 
             <EditText
-
-                android:id="@+id/itemName"
+                android:id="@+id/bookName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Item Name"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/quantityUnit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Item Unit. Example: Kg, Grams"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/itemDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Item Description Short"/>
+                android:hint="Enter Book Name"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -137,12 +110,63 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/itemDescriptionLong"
+                android:id="@+id/authorName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Item Description Long"/>
+                android:hint="Enter Author Name"/>
 
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/bookDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Book Description"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/set_date"
+            android:textSize="14sp"
+            android:textColor="@color/phonographyBlue"
+            android:padding="10dp"
+            android:text="Set Date of Publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/publisher_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Publisher Name"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/pages_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Total Pages"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
 
 
 

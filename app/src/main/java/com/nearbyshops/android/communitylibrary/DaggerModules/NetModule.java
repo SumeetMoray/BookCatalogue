@@ -72,8 +72,10 @@ public class NetModule {
         GsonBuilder gsonBuilder = new GsonBuilder();
         //gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return gsonBuilder
-                .setDateFormat("yyyy-MM-dd")
                 .create();
+
+        //.setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+        //.setDateFormat("yyyy-MM-dd")
     }
 
     @Provides

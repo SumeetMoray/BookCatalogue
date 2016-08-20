@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by sumeet on 8/8/16.
@@ -54,7 +55,7 @@ public class BookReview implements Parcelable{
     private int rating;
     private String reviewText;
     private String reviewTitle;
-    private Date reviewDate;
+    private Timestamp reviewDate;
 
     private Member rt_member_profile;
 
@@ -111,11 +112,11 @@ public class BookReview implements Parcelable{
         this.rt_member_profile = rt_member_profile;
     }
 
-    public Date getReviewDate() {
+    public Timestamp getReviewDate() {
         return reviewDate;
     }
 
-    public void setReviewDate(Date reviewDate) {
+    public void setReviewDate(Timestamp reviewDate) {
         this.reviewDate = reviewDate;
     }
 

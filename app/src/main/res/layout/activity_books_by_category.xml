@@ -82,7 +82,7 @@
         app:menu_colorNormal="@color/buttonColorDark"
         app:menu_colorPressed="@color/phonographyBlue"
         app:menu_colorRipple="@color/white"
-        fab:menu_fab_label="Options">
+        fab:menu_fab_label="Close">
 
         <!--android:src="@drawable/fab_add"-->
 

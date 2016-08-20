@@ -21,4 +21,5 @@
     <string name="rate_and_review">Book Review</string>
     <string name="title_activity_book_reviews">Book Reviews</string>
     <string name="favourite_book_message">You need to login to mark this book as favourite !</string>
+    <string name="favourite_books_not_logged_in">You need to Log In to use this feature !</string>
 </resources>

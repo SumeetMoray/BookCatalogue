@@ -248,7 +248,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
         }
         else if(current_sort_by == SortFIlterBookDialog.SORT_BY_RELEASE_DATE)
         {
-            sort_string = "";
+            sort_string = "DATE_OF_PUBLISH";
         }
         else if(current_sort_by == SortFIlterBookDialog.SORT_BY_TITLE)
         {

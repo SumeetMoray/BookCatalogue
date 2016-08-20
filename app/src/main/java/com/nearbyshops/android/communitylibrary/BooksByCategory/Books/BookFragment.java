@@ -366,7 +366,7 @@ public class BookFragment extends Fragment
         }
         else if(sort_by == SortFIlterBookDialog.SORT_BY_RELEASE_DATE)
         {
-            sort_string = "";
+            sort_string = "DATE_OF_PUBLISH";
         }
         else if(sort_by == SortFIlterBookDialog.SORT_BY_TITLE)
         {
@@ -755,7 +755,7 @@ public class BookFragment extends Fragment
     {
         if(notifyPagerAdapter!=null)
         {
-            notifyPagerAdapter.NotifyTitleChanged("BooksActivity (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count) + ")",1);
+            notifyPagerAdapter.NotifyTitleChanged("Books (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count) + ")",1);
         }
     }
 

@@ -3,17 +3,18 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/ic_account_box_black_24px"
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
             android:title="Login" />
 
         <item
+            android:icon="@drawable/ic_face_black_24px"
             android:id="@+id/nav_edit_profile"
             android:title="Edit Profile" />
 
         <item
             android:id="@+id/nav_favourite_book"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_favorite_border_white_24px"
             android:title="Favourite Books" />
     </group>
 
@@ -21,7 +22,7 @@
         <menu>
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_local_library_black_24px"
                 android:title="About Community Library" />
         </menu>
     </item>

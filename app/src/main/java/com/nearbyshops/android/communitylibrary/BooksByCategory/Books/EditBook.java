@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
+import com.nearbyshops.android.communitylibrary.Dialogs.DateDialog;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.Image;
 import com.nearbyshops.android.communitylibrary.R;
@@ -25,6 +28,8 @@ import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -37,7 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class EditBook extends AppCompatActivity implements Callback<Image> {
+public class EditBook extends AppCompatActivity implements Callback<Image> , DateDialog.NotifyDate{
 
 
     @Inject
@@ -48,12 +53,14 @@ public class EditBook extends AppCompatActivity implements Callback<Image> {
     boolean isImageRemoved = false;
 
 
-    @BindView(R.id.itemID) EditText itemID;
-    @BindView(R.id.itemName) EditText itemName;
-    @BindView(R.id.itemDescription) EditText itemDescription;
-    @BindView(R.id.itemDescriptionLong) EditText itemDescriptionLong;
-    @BindView(R.id.quantityUnit) EditText quantityUnit;
+    @BindView(R.id.bookName) EditText bookName;
+    @BindView(R.id.authorName) EditText authorName;
+    @BindView(R.id.bookDescription) EditText bookDescription;
+    @BindView(R.id.publisher_name) EditText publisherName;
+    @BindView(R.id.pages_total) EditText pagesTotal;
+    @BindView(R.id.set_date) TextView dateText;
 
+    @BindView(R.id.itemID) EditText itemID;
     @BindView(R.id.saveButton) Button buttonUpdateItem;
 
 
@@ -167,9 +174,51 @@ public class EditBook extends AppCompatActivity implements Callback<Image> {
         if(itemForEdit!=null) {
 
             itemID.setText(String.valueOf(itemForEdit.getBookID()));
-            itemName.setText(itemForEdit.getBookName());
-            itemDescription.setText(itemForEdit.getBookDescription());
+            bookName.setText(itemForEdit.getBookName());
+            authorName.setText(itemForEdit.getAuthorName());
+
+            bookDescription.setText(itemForEdit.getBookDescription());
+            publisherName.setText(itemForEdit.getNameOfPublisher());
+
+            pagesTotal.setText(String.valueOf(itemForEdit.getPagesTotal()));
+
+
+            if(itemForEdit.getDateOfPublish()!=null)
+            {
+                dateText.setText(dateText.getText() + " : " + itemForEdit.getDateOfPublish());
+            }
+
+
         }
+    }
+
+
+
+
+
+    Timestamp date;
+
+
+
+    @Override
+    public void onDateNotified(Calendar calendar) {
+
+        date = new Timestamp(calendar.getTimeInMillis());
+
+        dateText.setText("Set Date : " + date.toString());
+
+
+        Log.d("date",date.toGMTString());
+    }
+
+
+
+    @OnClick(R.id.set_date)
+    void setDateClick()
+    {
+        DialogFragment newFragment = new DateDialog();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
     }
 
 
@@ -178,8 +227,28 @@ public class EditBook extends AppCompatActivity implements Callback<Image> {
         if(book!=null)
         {
 
-            book.setBookName(itemName.getText().toString());
-            book.setBookDescription(itemDescription.getText().toString());
+
+            if(date!=null)
+            {
+                itemForEdit.setDateOfPublish(date);
+                Log.d("date",itemForEdit.getDateOfPublish().toString());
+            }
+
+            itemForEdit.setBookName(bookName.getText().toString());
+            itemForEdit.setAuthorName(authorName.getText().toString());
+            itemForEdit.setBookDescription(bookDescription.getText().toString());
+//        itemForEdit.setDateOfPublish(dateOfPublish.getText().toString());
+
+//        itemForEdit.setDateOfPublish();
+
+
+
+            itemForEdit.setNameOfPublisher(publisherName.getText().toString());
+
+            if(!pagesTotal.getText().toString().equals(""))
+            {
+                itemForEdit.setPagesTotal(Integer.parseInt(pagesTotal.getText().toString()));
+            }
 
         }
 
