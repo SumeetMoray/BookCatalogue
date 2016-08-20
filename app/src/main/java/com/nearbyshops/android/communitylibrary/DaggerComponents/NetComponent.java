@@ -2,6 +2,7 @@ package com.nearbyshops.android.communitylibrary.DaggerComponents;
 
 
 
+import com.nearbyshops.android.communitylibrary.AllBooks.BooksActivity;
 import com.nearbyshops.android.communitylibrary.BookDetails.BookDetail;
 import com.nearbyshops.android.communitylibrary.BookReviews.BookReviews;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.BookCategoriesAdapter;
@@ -68,6 +69,8 @@ public interface NetComponent {
     void Inject(EditProfile editProfile);
 
     void Inject(FavouriteBooks favouriteBooks);
+
+    void Inject(BooksActivity activityBooks);
 
 
 //    void Inject(DetachedItemFragment detachedItemFragment);

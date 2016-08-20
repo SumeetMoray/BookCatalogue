@@ -376,7 +376,7 @@ public class BookFragment extends Fragment
 
         if(whether_descending)
         {
-            sort_string = sort_string + " " + "desc";
+            sort_string = sort_string + " " + "desc NULLS LAST";
         }
 
 
@@ -755,7 +755,7 @@ public class BookFragment extends Fragment
     {
         if(notifyPagerAdapter!=null)
         {
-            notifyPagerAdapter.NotifyTitleChanged("Books (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count) + ")",1);
+            notifyPagerAdapter.NotifyTitleChanged("BooksActivity (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count) + ")",1);
         }
     }
 
@@ -823,12 +823,10 @@ public class BookFragment extends Fragment
     public void applySort(int sortBy, boolean whetherDescendingLocal) {
 
 //        showToastMessage("Applied Fragment !");
-
-        this.sort_by = sortBy;
+        sort_by = sortBy;
         whether_descending = whetherDescendingLocal;
 
         UtilityGeneral.saveSortBooks(sortBy,whetherDescendingLocal);
-
         onRefreshSwipeIndicator();
     }
 }

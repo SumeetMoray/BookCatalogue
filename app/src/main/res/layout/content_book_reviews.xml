@@ -10,7 +10,7 @@
     android:paddingRight="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!--tools:context="com.nearbyshops.android.communitylibrary.FavouriteBooks.FavouriteBooks"
+    <!--tools:context="com.nearbyshops.android.communitylibrary.BooksActivity.BooksActivity"
     tools:showIn="@layout/activity_book_reviews"-->
 
     <!--

@@ -75,8 +75,8 @@ public class BookCategoriesTabs extends AppCompatActivity
     public SortFIlterBookDialog.NotifySort notifySort;
 
 
-    @State int current_sort_by = SortFIlterBookDialog.SORT_BY_RATING;
-    @State boolean current_whether_descending = false;
+    @State int current_sort_by;
+    @State boolean current_whether_descending;
 
 
     @Override
@@ -85,11 +85,12 @@ public class BookCategoriesTabs extends AppCompatActivity
         setContentView(R.layout.activity_books_by_category);
         unbinder = ButterKnife.bind(this);
 
+        setDefaultSort();
+
         // assign background to the FAB's
         fab_add.setImageResource(R.drawable.fab_add);
         Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_low_priority_black_24px, getTheme());
         fab_change_parent.setImageDrawable(drawable);
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -153,6 +154,15 @@ public class BookCategoriesTabs extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
+    void setDefaultSort()
+    {
+        current_sort_by = UtilityGeneral.getBookSortOptions(this).getSort_by();
+        current_whether_descending = UtilityGeneral.getBookSortOptions(this).isWhether_descending();
+
+    }
 
 
 
@@ -472,13 +482,10 @@ public class BookCategoriesTabs extends AppCompatActivity
             fab_add.setLabelText("Add Book Category");
             fab_change_parent.setLabelText("Change Parent for Selected Categories");
 
-
-
-
         }else if(position == 1)
         {
             fab_add.setLabelText("Add Book");
-            fab_change_parent.setLabelText("Change Category for Selected Books");
+            fab_change_parent.setLabelText("Change Category for Selected BooksActivity");
         }
 
     }

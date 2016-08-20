@@ -98,7 +98,7 @@ public class BookCategoriesParentAdapter extends RecyclerView.Adapter<BookCatego
     public void onBindViewHolder(BookCategoriesParentAdapter.ViewHolder holder, final int position) {
 
         holder.bookCategoryName.setText(dataset.get(position).getBookCategoryName());
-        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " Books");
+        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " BooksActivity");
 
         if(selectedPosition!=null)
         {

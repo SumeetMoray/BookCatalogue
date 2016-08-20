@@ -106,7 +106,7 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
         holder.bookCategoryName.setText(dataset.get(position).getBookCategoryName());
 
-        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " " + "Books");
+        holder.itemCount.setText(String.valueOf(dataset.get(position).getRt_book_count()) + " " + "BooksActivity");
 
         if(selectedItems.containsKey(dataset.get(position).getBookCategoryID()))
         {

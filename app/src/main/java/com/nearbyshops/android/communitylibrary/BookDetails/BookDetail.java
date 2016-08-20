@@ -494,7 +494,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
         if(UtilityGeneral.getUser(this)==null)
         {
             // User Not logged In.
-            showMessageSnackBar("You need to login in order to mark favourite !");
+            showMessageSnackBar(getString(R.string.favourite_book_message));
 
         }else
         {

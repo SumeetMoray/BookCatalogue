@@ -20,4 +20,5 @@
     <string name="whether_descending">sort_books_whether_descending</string>
     <string name="rate_and_review">Book Review</string>
     <string name="title_activity_book_reviews">Book Reviews</string>
+    <string name="favourite_book_message">You need to login to mark this book as favourite !</string>
 </resources>
