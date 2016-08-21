@@ -258,8 +258,8 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
                     item_count = response.body().getItemCount();
                 }
 
+                stopRefreshing();
 
-                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -267,7 +267,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
                 showToastMessage("Network Request failed !");
 
-                swipeContainer.setRefreshing(false);
+                stopRefreshing();
 
             }
         });
@@ -277,6 +277,14 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
 
     }
 
+
+    void stopRefreshing()
+    {
+        if(swipeContainer!=null)
+        {
+            swipeContainer.setRefreshing(false);
+        }
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

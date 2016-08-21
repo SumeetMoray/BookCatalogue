@@ -1,9 +1,12 @@
 package com.nearbyshops.android.communitylibrary.Utility;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nearbyshops.android.communitylibrary.R;
@@ -49,6 +52,31 @@ public class ImageCropUtility{
         }
         */
 
+        // code for checking the Read External Storage Permission and granting it.
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            /// / TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+            ActivityCompat.requestPermissions(context,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    2);
+
+            return;
+
+        }
+
+
+
+
         clearCache(context);
 
         Intent intent = new Intent();
@@ -73,6 +101,7 @@ public class ImageCropUtility{
 
         options.setToolbarColor(activityContext.getResources().getColor(R.color.cyan900));
         options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
+        options.setFreeStyleCropEnabled(true);
 
 
         // this function takes the file from the source URI and saves in into the destination URI location.

@@ -190,7 +190,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
             authorName.setText(book.getAuthorName());
             publisherName.setText(book.getNameOfPublisher());
 
-            if(book.getDateOfPublish()!=null)
+            /*if(book.getDateOfPublish()!=null)
             {
                 Log.d("date","Date of Publish binding " + book.getDateOfPublish().toString());
 
@@ -200,7 +200,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 //"yyyy-MM-dd"
 
                 publishDate.setText(dateFormat.format(book.getDateOfPublish()));
-            }
+            }*/
 
 
 
@@ -299,6 +299,14 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                             if (response.body().getItemCount() > 0) {
 
 //                                edit_review_text.setText("Edit your review and Rating !");
+
+
+                                if(edit_review_block==null)
+                                {
+                                    // If the views are not bound then return. This can happen in delayed response. When this call is executed
+                                    // after the activity have gone out of scope.
+                                    return;
+                                }
 
                                 edit_review_block.setVisibility(View.VISIBLE);
                                 user_review_ratings_block.setVisibility(View.GONE);
@@ -641,6 +649,11 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
     void setFavouriteIcon(boolean isFavourite)
     {
+
+        if(fab==null)
+        {
+            return;
+        }
 
         if(isFavourite)
         {

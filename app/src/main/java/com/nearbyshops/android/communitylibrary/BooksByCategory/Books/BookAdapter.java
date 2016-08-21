@@ -192,6 +192,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
         public void listItemClick()
         {
 
+            if(dataset.size()==0)
+            {
+                return;
+            }
+
             Intent intent = new Intent(context, BookDetail.class);
             intent.putExtra(BookDetail.BOOK_DETAIL_INTENT_KEY,dataset.get(getLayoutPosition()));
             context.startActivity(intent);
@@ -349,9 +354,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 //                    intent.putExtra(EditBookCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
 //                    context.startActivity(intent);
 
-                    Intent intentEdit = new Intent(context,EditBook.class);
-                    intentEdit.putExtra(EditBook.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
-                    context.startActivity(intentEdit);
+                    if(dataset.size()!=0)
+                    {
+                        Intent intentEdit = new Intent(context,EditBook.class);
+                        intentEdit.putExtra(EditBook.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
+                        context.startActivity(intentEdit);
+                    }
 
                     break;
 

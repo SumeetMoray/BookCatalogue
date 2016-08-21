@@ -182,11 +182,11 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
             pagesTotal.setText(String.valueOf(itemForEdit.getPagesTotal()));
 
-
+/*
             if(itemForEdit.getDateOfPublish()!=null)
             {
                 dateText.setText(dateText.getText() + " : " + itemForEdit.getDateOfPublish());
-            }
+            }*/
 
 
         }
@@ -227,12 +227,12 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
         if(book!=null)
         {
 
-
+/*
             if(date!=null)
             {
                 itemForEdit.setDateOfPublish(date);
                 Log.d("date",itemForEdit.getDateOfPublish().toString());
-            }
+            }*/
 
             itemForEdit.setBookName(bookName.getText().toString());
             itemForEdit.setAuthorName(authorName.getText().toString());

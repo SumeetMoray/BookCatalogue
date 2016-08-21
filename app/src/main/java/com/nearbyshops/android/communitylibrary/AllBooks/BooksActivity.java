@@ -278,8 +278,8 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
                     item_count = response.body().getItemCount();
                 }
 
+                stopRefresh();
 
-                swipeContainer.setRefreshing(false);
 
             }
 
@@ -288,10 +288,19 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
                 showToastMessage("Network Request failed !");
 
-                swipeContainer.setRefreshing(false);
+                stopRefresh();
 
             }
         });
+    }
+
+
+    void stopRefresh()
+    {
+        if(swipeContainer!=null)
+        {
+            swipeContainer.setRefreshing(false);
+        }
     }
 
 

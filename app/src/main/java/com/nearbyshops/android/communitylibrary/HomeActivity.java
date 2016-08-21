@@ -24,15 +24,20 @@ import com.nearbyshops.android.communitylibrary.FavouriteBooks.FavouriteBooks;
 import com.nearbyshops.android.communitylibrary.Login.EditProfile;
 import com.nearbyshops.android.communitylibrary.Login.LoginDialog;
 import com.nearbyshops.android.communitylibrary.Login.NotifyAboutLogin;
+import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.Model.FavouriteBook;
 import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NotifyAboutLogin {
@@ -71,6 +76,30 @@ public class HomeActivity extends AppCompatActivity
 
         checkLogin();
     }
+
+
+    @State boolean instructionsVisible = false;
+    @BindView(R.id.show_hide_instructions) TextView showHideInstructions;
+    @BindView(R.id.usage_instructions) TextView usageInstructions;
+
+    @OnClick(R.id.show_hide_instructions)
+    void clickShowHideInstructions()
+    {
+        if(instructionsVisible)
+        {
+            usageInstructions.setVisibility(View.GONE);
+
+            instructionsVisible = false;
+
+        }else
+        {
+            usageInstructions.setVisibility(View.VISIBLE);
+
+            instructionsVisible = true;
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -272,4 +301,29 @@ public class HomeActivity extends AppCompatActivity
         unbinder.unbind();
 
     }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Icepick.saveInstanceState(this, outState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+        if (savedInstanceState != null) {
+
+            Icepick.restoreInstanceState(this, savedInstanceState);
+
+            ArrayList<BookCategory> tempList = savedInstanceState.getParcelableArrayList("dataset");
+        }
+    }
+
+
+
 }

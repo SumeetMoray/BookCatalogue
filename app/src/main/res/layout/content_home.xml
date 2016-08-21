@@ -11,6 +11,7 @@
     tools:showIn="@layout/app_bar_home">
 
     <RelativeLayout
+        android:animateLayoutChanges="true"
         android:id="@+id/content_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,12 +24,24 @@
             android:layout_marginRight="5dp"
             android:padding="5dp"
             android:background="@color/buttonColor"
-            android:id="@+id/usage_instructions"
+            android:id="@+id/show_hide_instructions"
             android:textColor="@color/white"
             android:text="Show / Hide usage Instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
+        <TextView
+            android:visibility="gone"
+            android:textColor="#ffffff"
+            android:background="@color/orangeDark"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:text="Long Click to select Category or Book. \nClick to Enter Subcategory or see Book Details."
+            android:layout_below="@id/show_hide_instructions"
+            android:id="@+id/usage_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
         <LinearLayout
@@ -66,6 +79,7 @@
 
                 <ImageView
                     android:padding="10dp"
+                    app:srcCompat="@drawable/ic_book_black_24px"
                     android:id="@+id/image_allbooks"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -99,6 +113,7 @@
 
                 <ImageView
                     android:padding="10dp"
+                    app:srcCompat="@drawable/ic_featured_play_list_black_24px"
                     android:id="@+id/image_books_by_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

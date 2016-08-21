@@ -127,7 +127,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
         date = new Timestamp(calendar.getTimeInMillis());
 
-        dateText.setText(dateText.getText() + " : " + date.toString());
+        dateText.setText("Date of Publish :\n" + date.toString());
 
 
         Log.d("date",date.toGMTString());
@@ -157,11 +157,11 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
             itemForEdit.setBookCategoryID(itemCategory.getBookCategoryID());
         }
 
-        if(date!=null)
+       /* if(date!=null)
         {
             itemForEdit.setDateOfPublish(date);
             Log.d("date",itemForEdit.getDateOfPublish().toString());
-        }
+        }*/
 
         itemForEdit.setBookName(bookName.getText().toString());
         itemForEdit.setAuthorName(authorName.getText().toString());

@@ -131,6 +131,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/set_date"
             android:textSize="14sp"
             android:textColor="@color/phonographyBlue"

@@ -81,7 +81,7 @@ public class Book implements Parcelable{
     private Timestamp timestampCreated;
     private Timestamp timeStampUpdated;
 
-    private Timestamp dateOfPublish;
+//    private Timestamp dateOfPublish;
     private String nameOfPublisher;
     private int pagesTotal;
 
@@ -108,7 +108,7 @@ public class Book implements Parcelable{
         rt_rating_avg = in.readFloat();
         rt_rating_count = in.readFloat();
 
-        dateOfPublish = new Timestamp(in.readLong());
+//        dateOfPublish = new Timestamp(in.readLong());
 
     }
 
@@ -126,10 +126,10 @@ public class Book implements Parcelable{
         dest.writeFloat(rt_rating_avg);
         dest.writeFloat(rt_rating_count);
 
-        if(dateOfPublish!=null)
-        {
-            dest.writeLong(dateOfPublish.getTime());
-        }
+//        if(dateOfPublish!=null)
+//        {
+//            dest.writeLong(dateOfPublish.getTime());
+//        }
     }
 
     @Override
@@ -237,14 +237,6 @@ public class Book implements Parcelable{
         this.timeStampUpdated = timeStampUpdated;
     }
 
-
-    public Timestamp getDateOfPublish() {
-        return dateOfPublish;
-    }
-
-    public void setDateOfPublish(Timestamp dateOfPublish) {
-        this.dateOfPublish = dateOfPublish;
-    }
 
     public String getNameOfPublisher() {
         return nameOfPublisher;
