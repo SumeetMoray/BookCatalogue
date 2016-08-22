@@ -272,6 +272,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
 //            Call<ResponseBody> call = itemCategoryService.deleteItemCategory(dataset.get(getLayoutPosition()).getItemCategoryID());
 
+            if(dataset.size()==0)
+            {
+                return;
+            }
+
             Call<ResponseBody> call = itemCategoryService.deleteBook(dataset.get(getLayoutPosition()).getBookID());
 
 

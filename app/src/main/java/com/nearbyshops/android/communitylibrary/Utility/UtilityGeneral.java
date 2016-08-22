@@ -157,8 +157,11 @@ public class UtilityGeneral {
         context = MyApplication.getAppContext();
 
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://192.168.1.34:8080");
+        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://cbdb.nearbyshops.org:8080");
 
+        // http://cbdb.nearbyshops.org:8080
+        // http://192.168.1.34:8080
+        // http://cbdb.nearbyshops.org:8080/
         //"http://138.68.62.93:8080"
         //service_url = "http://localareademo-env.ap-southeast-1.elasticbeanstalk.com";
 

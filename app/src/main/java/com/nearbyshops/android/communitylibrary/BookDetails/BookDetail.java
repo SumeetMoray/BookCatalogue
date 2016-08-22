@@ -415,13 +415,13 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
         }
 
-        bookTitle.setBackgroundColor(vibrantLight);
-        authorName.setBackgroundColor(vibrantLight);
+        bookTitle.setBackgroundColor(vibrant);
+        authorName.setBackgroundColor(vibrant);
 
 
         if (fab != null && vibrantDark != 0) {
 
-            fab.setBackgroundTintList(ColorStateList.valueOf(vibrant));
+            fab.setBackgroundTintList(ColorStateList.valueOf(vibrantDark));
 
         }//fab.setBackgroundColor(vibrantDark);
 
@@ -430,7 +430,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
         if (collapsingToolbarLayout != null) {
 
-            collapsingToolbarLayout.setContentScrimColor(vibrantLight);
+            collapsingToolbarLayout.setContentScrimColor(vibrant);
 
         }
 
