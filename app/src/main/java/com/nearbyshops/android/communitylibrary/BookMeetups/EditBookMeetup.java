@@ -1,4 +1,4 @@
-package com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories;
+package com.nearbyshops.android.communitylibrary.BookMeetups;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,12 +8,9 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +29,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditBookCategory extends AppCompatActivity implements Callback<Image> {
+public class EditBookMeetup extends AppCompatActivity implements Callback<Image> {
 
 
     @Inject
@@ -87,7 +83,7 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
 
 
 
-    public EditBookCategory() {
+    public EditBookMeetup() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -269,7 +265,7 @@ public class EditBookCategory extends AppCompatActivity implements Callback<Imag
 
                 if (response.code() == 200)
                 {
-                    Toast.makeText(EditBookCategory.this,"Update Successful !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBookMeetup.this,"Update Successful !",Toast.LENGTH_SHORT).show();
                 }
 
             }

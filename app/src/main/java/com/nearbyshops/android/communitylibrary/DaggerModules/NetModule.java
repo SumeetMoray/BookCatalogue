@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.nearbyshops.android.communitylibrary.Model.BookReview;
 import com.nearbyshops.android.communitylibrary.MyApplication;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookCategoryService;
+import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookMeetupService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookReviewService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.FavouriteBookService;
@@ -22,6 +23,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -55,7 +57,6 @@ public class NetModule {
         return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
-    /*
     @Provides
     @Singleton
     Cache provideOkHttpCache(Application application) {
@@ -64,7 +65,6 @@ public class NetModule {
         return cache;
     }
 
-    */
 
     @Provides
     @Singleton
@@ -80,10 +80,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient(Cache cache) {
 
         OkHttpClient client = new OkHttpClient()
                 .newBuilder()
+                .cache(cache)
                 .build();
 
         // Cache cache
@@ -162,6 +163,17 @@ public class NetModule {
     FavouriteBookService provideFavouriteService(Retrofit retrofit)
     {
         FavouriteBookService service = retrofit.create(FavouriteBookService.class);
+        return service;
+    }
+
+
+
+
+    @Provides
+    @Singleton
+    BookMeetupService bookMeetupService(Retrofit retrofit)
+    {
+        BookMeetupService service = retrofit.create(BookMeetupService.class);
         return service;
     }
 

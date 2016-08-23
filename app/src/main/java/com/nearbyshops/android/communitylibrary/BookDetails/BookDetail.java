@@ -350,7 +350,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                     public void onFailure(Call<BookReviewEndpoint> call, Throwable t) {
 
 
-                        showToastMessage("Network Request Failed. Check your internet connection !");
+//                        showToastMessage("Network Request Failed. Check your internet connection !");
 
                     }
                 });
@@ -570,7 +570,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 @Override
                 public void onFailure(Call<FavouriteBookEndpoint> call, Throwable t) {
 
-                    showToastMessage("Network Request failed. Check Network Connection !");
+//                    showToastMessage("Network Request failed. Check Network Connection !");
                 }
             });
         }
@@ -605,7 +605,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 @Override
                 public void onFailure(Call<FavouriteBook> call, Throwable t) {
 
-                    showToastMessage("Network Request failed !");
+//                    showToastMessage("Network Request failed !");
 
                 }
             });
@@ -637,7 +637,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    showToastMessage("Network Request Failed !");
+//                    showToastMessage("Network Request Failed !");
                 }
             });
         }
@@ -705,7 +705,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 @Override
                 public void onFailure(Call<FavouriteBookEndpoint> call, Throwable t) {
 
-                    showToastMessage("Network Request failed. Check Network Connection !");
+//                    showToastMessage("Network Request failed. Check Network Connection !");
                 }
             });
 

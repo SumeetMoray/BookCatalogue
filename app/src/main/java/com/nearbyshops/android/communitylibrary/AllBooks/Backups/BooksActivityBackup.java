@@ -1,8 +1,7 @@
-package com.nearbyshops.android.communitylibrary.AllBooks;
+package com.nearbyshops.android.communitylibrary.AllBooks.Backups;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -17,10 +16,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nearbyshops.android.communitylibrary.AllBooks.AllBookAdapter;
+import com.nearbyshops.android.communitylibrary.AllBooks.BookCursorAdapter;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Data.LibraryDBContract;
 import com.nearbyshops.android.communitylibrary.Dialogs.SortFIlterBookDialog;
@@ -44,18 +43,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SortFIlterBookDialog.NotifySort,
+public class BooksActivityBackup extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SortFIlterBookDialog.NotifySort,
         LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final int CURSOR_LOADER_ID = 2;
     ArrayList<Book> dataset = new ArrayList<>();
 
     @BindView(R.id.recyclerView)
     RecyclerView reviewsList;
-
-    @BindView(R.id.offline_message)
-    TextView offlineMessage;
-
 
     AllBookAdapter adapter;
 
@@ -65,17 +59,13 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
     BookService bookService;
 
     // scroll variables
-    private int limit = 10;
+    private int limit = 30;
     @State int offset = 0;
     @State int item_count = 0;
 
-    // step size cp should be equal to limit value at the time of initialization.
-    private int step_size_cp = 10;
-    @State int limit_cp = step_size_cp;
+    private int limit_cp = 30;
     @State int offset_cp = 0;
     @State int item_count_cp = 0;
-    private BookCursorAdapter cursorAdapter;
-    Cursor dataset_cp;
 
     Unbinder unbinder;
 
@@ -85,9 +75,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
     @State boolean current_whether_descending;
 
 
-
-
-    public BooksActivity() {
+    public BooksActivityBackup() {
 
         // Inject the dependencies using Dependency Injection
         DaggerComponentBuilder.getInstance()
@@ -108,13 +96,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
 
 
-
-//        Cursor cursor = getContentResolver().query(LibraryDBContract.BookContract.CONTENT_URI,
-//                LibraryDBContract.BookContract.PROJECTION_ALL,null,null,null);
-
-//        item_count_cp = cursor.getCount();
-
-        setupRecyclerView(null);
+        setupRecyclerView();
         setupSwipeContainer();
 
 
@@ -150,7 +132,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
 
 
-        getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(2, null, this);
 
 
     }
@@ -164,28 +146,11 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
 
 
-    void setOfflineMessage(boolean isOffline)
-    {
-        if(isOffline)
-        {
-            offlineMessage.setVisibility(View.VISIBLE);
-
-        }else
-        {
-            offlineMessage.setVisibility(View.GONE);
-        }
-    }
-
-
-    void setupRecyclerView(Cursor data)
+    void setupRecyclerView()
     {
 
-//        adapter = new AllBookAdapter(dataset,this);
-//        reviewsList.setAdapter(adapter);
-
-        cursorAdapter = new BookCursorAdapter(data, this);
-        reviewsList.setAdapter(cursorAdapter);
-
+        adapter = new AllBookAdapter(dataset,this);
+        reviewsList.setAdapter(adapter);
         layoutManager = new GridLayoutManager(this,1);
         reviewsList.setLayoutManager(layoutManager);
 
@@ -194,35 +159,15 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition() == dataset_cp.getCount()-1)
+                if(layoutManager.findLastVisibleItemPosition() == dataset.size()-1)
                 {
                     // trigger fetch next page
 
                     if((offset+limit)<=item_count)
                     {
                         offset = offset + limit;
-
                         makeNetworkCall();
                     }
-
-
-
-//                    Cursor cursor = getContentResolver().query(LibraryDBContract.BookContract.CONTENT_URI,
-//                            LibraryDBContract.BookContract.PROJECTION_ALL,null,null,null);
-//
-//                    item_count_cp = cursor.getCount();
-
-
-                    Log.d("cursor", "Item Count : " + String.valueOf(item_count_cp));
-
-
-                    if((limit_cp)<=item_count_cp)
-                    {
-                        Log.d("cursor", "Limit : " + String.valueOf(limit_cp));
-                        limit_cp = limit_cp + step_size_cp;
-                        getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, BooksActivity.this);
-                    }
-
 
                 }
 
@@ -288,8 +233,6 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
         offset = 0 ; // reset the offset
         makeNetworkCall();
 
-        limit_cp = step_size_cp;
-        getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, BooksActivity.this);
         Log.d("applog","refreshed");
     }
 
@@ -353,18 +296,15 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
                     item_count = response.body().getItemCount();
                 }
 
-
-                setOfflineMessage(false);
-
                 stopRefresh();
+
+
             }
 
             @Override
             public void onFailure(Call<BookEndpoint> call, Throwable t) {
 
-//                showToastMessage("Network Request failed !");
-
-                setOfflineMessage(true);
+                showToastMessage("Network Request failed !");
 
                 stopRefresh();
 
@@ -397,9 +337,9 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
             getContentResolver().insert(LibraryDBContract.BookContract.CONTENT_URI,values);
 
+
+
         }
-
-
 
     }
 
@@ -434,12 +374,10 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
         if(savedInstanceState!=null)
         {
-/*
             ArrayList<Book> tempCat = savedInstanceState.getParcelableArrayList("dataset");
             dataset.clear();
             dataset.addAll(tempCat);
             adapter.notifyDataSetChanged();
-*/
         }
     }
 
@@ -505,7 +443,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
         onRefreshSwipeIndicator();
 
         // restart content loader
-        getSupportLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        getSupportLoaderManager().restartLoader(2, null, this);
     }
 
 
@@ -516,64 +454,28 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        String sort_string = "";
-
-        if(current_sort_by == SortFIlterBookDialog.SORT_BY_RATING)
-        {
-            sort_string = "RT_RATING_AVG";
-        }
-        else if(current_sort_by == SortFIlterBookDialog.SORT_BY_RELEASE_DATE)
-        {
-            sort_string = "DATE_OF_PUBLISH";
-        }
-        else if(current_sort_by == SortFIlterBookDialog.SORT_BY_TITLE)
-        {
-            sort_string = "BOOK_NAME";
-        }
-
-
-        if(current_whether_descending)
-        {
-            sort_string = sort_string + " " + "desc";
-        }
-
-
-
-        Cursor cursor = getContentResolver().query(LibraryDBContract.BookContract.CONTENT_URI,
-                LibraryDBContract.BookContract.PROJECTION_ALL,null,null,null);
-
-        item_count_cp = cursor.getCount();
-
-//        setupRecyclerView(cursor);
-
-        String limit_offset = " limit " + String.valueOf(limit_cp) + " offset " + String.valueOf(offset_cp);
-
-
-        return new CursorLoader(this, LibraryDBContract.BookContract.CONTENT_URI,
-                LibraryDBContract.BookContract.PROJECTION_ALL,null,null, sort_string + limit_offset);
-
+        return new CursorLoader(this, LibraryDBContract.BookContract.CONTENT_URI, LibraryDBContract.BookContract.PROJECTION_ALL,null,null, Book.BOOK_ID + " limit 3 offset 1");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+
         data.setNotificationUri(getContentResolver(),LibraryDBContract.BookContract.CONTENT_URI);
 
-//        reviewsList.setAdapter(adapter);
-
-
-        dataset_cp = data;
-
-        if(cursorAdapter!=null)
-        {
-            cursorAdapter.swapCursor(data);
-        }
+        BookCursorAdapter adapter =  new BookCursorAdapter(data,this);
+        reviewsList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         Log.d("cursor",String.valueOf(data.getCount()));
+
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+
 
     }
 

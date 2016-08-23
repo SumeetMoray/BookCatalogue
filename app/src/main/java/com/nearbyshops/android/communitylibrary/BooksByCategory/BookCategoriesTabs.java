@@ -227,7 +227,7 @@ public class BookCategoriesTabs extends AppCompatActivity
 
 
     @Override
-    public void itemCategoryChanged(BookCategory currentCategory) {
+    public void itemCategoryChanged(BookCategory currentCategory, boolean backPressed) {
 
         Log.d("applog","Item Category Changed : " + currentCategory.getBookCategoryName() + " : " + String.valueOf(currentCategory.getBookCategoryID()));
 
@@ -236,7 +236,7 @@ public class BookCategoriesTabs extends AppCompatActivity
 
         if(tabsNotificationReceiver!=null)
         {
-            tabsNotificationReceiver.categoryChanged(currentCategory,false);
+            tabsNotificationReceiver.categoryChanged(currentCategory,backPressed);
         }
 
     }
@@ -433,7 +433,7 @@ public class BookCategoriesTabs extends AppCompatActivity
     @Override
     public void notifySwipeToright() {
 
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(1,false);
     }
 
     @Override

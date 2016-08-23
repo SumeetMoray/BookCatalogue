@@ -172,7 +172,7 @@ public class BookCategoriesFragment extends Fragment
                         // make a network call
                         offset = 0;
                         dataset.clear();
-                        makeRequestRetrofit(false);
+                        makeRequestRetrofit(false,false);
 
 
                     } catch (IllegalArgumentException ex)
@@ -258,7 +258,7 @@ public class BookCategoriesFragment extends Fragment
                     if((offset+limit)<=item_count)
                     {
                         offset = offset + limit;
-                        makeRequestRetrofit(false);
+                        makeRequestRetrofit(false,false);
                     }
 
 
@@ -409,7 +409,7 @@ public class BookCategoriesFragment extends Fragment
 
 
 
-    public void makeRequestRetrofit(final boolean notifyItemCategoryChanged)
+    public void makeRequestRetrofit(final boolean notifyItemCategoryChanged, final boolean backPressed)
     {
 
 
@@ -439,7 +439,9 @@ public class BookCategoriesFragment extends Fragment
                     {
                         if(currentCategory!=null)
                         {
-                            notificationReceiverFragment.itemCategoryChanged(currentCategory);
+                            notificationReceiverFragment.itemCategoryChanged(currentCategory,backPressed);
+
+//                            notificationReceiverFragment.notifySwipeToright();
                         }
                     }
 
@@ -492,7 +494,7 @@ public class BookCategoriesFragment extends Fragment
     {
         dataset.clear();
         offset = 0 ; // reset the offset
-        makeRequestRetrofit(false);
+        makeRequestRetrofit(false,false);
     }
 
 
@@ -558,7 +560,7 @@ public class BookCategoriesFragment extends Fragment
 
                     dataset.clear();
                     offset = 0 ; // reset the offset
-                    makeRequestRetrofit(false);
+                    makeRequestRetrofit(false,false);
 
                 }else
                 {
@@ -635,7 +637,7 @@ public class BookCategoriesFragment extends Fragment
 
                 dataset.clear();
                 offset = 0 ; // reset the offset
-                makeRequestRetrofit(false);
+                makeRequestRetrofit(false,true);
             }
 
             @Override
@@ -713,7 +715,7 @@ public class BookCategoriesFragment extends Fragment
         // reset the offset and make a network call
         offset = 0;
         dataset.clear();
-        makeRequestRetrofit(false);
+        makeRequestRetrofit(false,false);
     }
 
 
@@ -766,14 +768,15 @@ public class BookCategoriesFragment extends Fragment
 
         dataset.clear();
         offset = 0 ; // reset the offset
-        makeRequestRetrofit(true);
+        listAdapter.notifyDataSetChanged();
+        makeRequestRetrofit(true,false);
 
 //        exitFullscreen();
 
 //        notificationReceiverFragment.showAppBar();
 
 
-        notificationReceiverFragment.notifySwipeToright();
+
 
 
     }
@@ -820,7 +823,8 @@ public class BookCategoriesFragment extends Fragment
 
                 dataset.clear();
                 offset =0; // reset the offset
-                makeRequestRetrofit(true);
+                listAdapter.notifyDataSetChanged();
+                makeRequestRetrofit(true,true);
             }
 
         }

@@ -8,7 +8,7 @@ import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 public interface FragmentsNotificationReceiver {
 
 
-        void itemCategoryChanged(BookCategory currentCategory);
+        void itemCategoryChanged(BookCategory currentCategory,boolean backPressed);
 
         void showAppBar();
 

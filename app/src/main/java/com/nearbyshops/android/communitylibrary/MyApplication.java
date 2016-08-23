@@ -3,6 +3,7 @@ package com.nearbyshops.android.communitylibrary;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
 import com.nearbyshops.android.communitylibrary.ApplicationState.ApplicationState;
 
 /**
@@ -15,6 +16,9 @@ public class MyApplication extends Application{
     public void onCreate() {
 
         super.onCreate();
+
+
+        Stetho.initializeWithDefaults(this);
 
         MyApplication.context = getApplicationContext();
 

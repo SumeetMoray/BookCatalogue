@@ -96,7 +96,7 @@ public class ImageCropUtility{
         Uri destinationUri = Uri.fromFile(new File(activityContext.getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
 
         UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+//        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
 //        options.setCompressionQuality(100);
 
         options.setToolbarColor(activityContext.getResources().getColor(R.color.cyan900));
@@ -107,7 +107,6 @@ public class ImageCropUtility{
         // this function takes the file from the source URI and saves in into the destination URI location.
         UCrop.of(sourceUri, destinationUri)
                 .withOptions(options)
-                .withMaxResultSize(400,300)
                 .start(activityContext);
 
         //.withMaxResultSize(500, 400)

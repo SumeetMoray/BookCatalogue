@@ -355,8 +355,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
                 case R.id.action_edit:
 
-//                    Intent intent = new Intent(context,EditBookCategory.class);
-//                    intent.putExtra(EditBookCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+//                    Intent intent = new Intent(context,EditBookMeetup.class);
+//                    intent.putExtra(EditBookMeetup.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
 //                    context.startActivity(intent);
 
                     if(dataset.size()!=0)

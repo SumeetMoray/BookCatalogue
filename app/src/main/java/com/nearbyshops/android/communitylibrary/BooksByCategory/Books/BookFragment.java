@@ -704,11 +704,6 @@ public class BookFragment extends Fragment
         addIntent.putExtra(ADD_ITEM_INTENT_KEY,notifiedCurrentCategory);
 
         startActivity(addIntent);
-
-//        addIntent.putExtra(AddBookCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
-//
-//        startActivity(addIntent);
-
     }
 
 
@@ -717,6 +712,8 @@ public class BookFragment extends Fragment
 
         dataset.clear();
         offset = 0 ; // reset the offset
+        listAdapter.notifyDataSetChanged();
+
         makeRequestRetrofit();
 
         Log.d("applog","refreshed");
@@ -794,12 +791,17 @@ public class BookFragment extends Fragment
 
     }
 
+
     @Override
     public void categoryChanged(BookCategory currentCategory, boolean isBackPressed) {
 
         notifiedCurrentCategory = currentCategory;
         onRefresh();
 
+        if(!isBackPressed)
+        {
+            notificationReceiverFragment.notifySwipeToright();
+        }
     }
 
     @Override

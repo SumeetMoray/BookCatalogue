@@ -126,6 +126,58 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_below="@id/row_one"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/row_three"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/option_book_meetups"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@color/gplus_color_1"
+                android:layout_width="0dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:gravity="right"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/text_meetup"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:text="Book Meetups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_people_black_24px"
+                    android:id="@+id/image_book_meetup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/text_meetup"/>
+
+                <!--app:srcCompat="@drawable/ic_menu_gallery"-->
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+
 
         <LinearLayout
             android:orientation="horizontal"

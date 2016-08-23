@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.AllBooks.BooksActivity;
+import com.nearbyshops.android.communitylibrary.BookMeetups.BookMeetupsActivity;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
 import com.nearbyshops.android.communitylibrary.FavouriteBooks.FavouriteBooks;
 import com.nearbyshops.android.communitylibrary.Login.EditProfile;
@@ -275,7 +276,7 @@ public class HomeActivity extends AppCompatActivity
     @OnClick(R.id.option_all_books)
     void allBooksClick()
     {
-//        showToastMessage("All BooksActivity Click");
+//        showToastMessage("All BooksActivityBackup Click");
         Intent intent = new Intent(this,BooksActivity.class);
         startActivity(intent);
     }
@@ -287,6 +288,16 @@ public class HomeActivity extends AppCompatActivity
         Intent intent = new Intent(this, BookCategoriesTabs.class);
         startActivity(intent);
     }
+
+
+
+    @OnClick(R.id.option_book_meetups)
+    void bookMeetupClick()
+    {
+        Intent intent = new Intent(this, BookMeetupsActivity.class);
+        startActivity(intent);
+    }
+
 
 
     void showToastMessage(String message)

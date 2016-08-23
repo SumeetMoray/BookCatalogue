@@ -2,8 +2,12 @@ package com.nearbyshops.android.communitylibrary.DaggerComponents;
 
 
 
+import com.nearbyshops.android.communitylibrary.AllBooks.Backups.BooksActivityBackup;
 import com.nearbyshops.android.communitylibrary.AllBooks.BooksActivity;
 import com.nearbyshops.android.communitylibrary.BookDetails.BookDetail;
+import com.nearbyshops.android.communitylibrary.BookMeetups.AddBookMeetup;
+import com.nearbyshops.android.communitylibrary.BookMeetups.BookMeetupsActivity;
+import com.nearbyshops.android.communitylibrary.BookMeetups.EditBookMeetup;
 import com.nearbyshops.android.communitylibrary.BookReviews.BookReviews;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.BookCategoriesAdapter;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.BookCategoriesFragment;
@@ -71,6 +75,14 @@ public interface NetComponent {
     void Inject(FavouriteBooks favouriteBooks);
 
     void Inject(BooksActivity activityBooks);
+
+    void Inject(BooksActivityBackup booksActivity);
+
+    void Inject(BookMeetupsActivity bookMeetups);
+
+    void Inject(EditBookMeetup editBookMeetup);
+
+    void Inject(AddBookMeetup addBookMeetup);
 
 
 //    void Inject(DetachedItemFragment detachedItemFragment);

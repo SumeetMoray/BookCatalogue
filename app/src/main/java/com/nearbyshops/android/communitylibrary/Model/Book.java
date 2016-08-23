@@ -52,9 +52,11 @@ public class Book implements Parcelable{
             + " " + Book.BOOK_ID + " SERIAL PRIMARY KEY,"
             + " " + Book.BOOK_CATEGORY_ID + " INT,"
             + " " + Book.BOOK_NAME + " VARCHAR(500),"
+
             + " " + Book.BOOK_COVER_IMAGE_URL + " VARCHAR(100),"
             + " " + Book.BACKDROP_IMAGE_URL + " VARCHAR(100),"
             + " " + Book.AUTHOR_NAME + " VARCHAR(500),"
+
             + " " + Book.BOOK_DESCRIPTION + " VARCHAR(10000),"
             + " " + Book.TIMESTAMP_CREATED + "  timestamp with time zone NOT NULL DEFAULT now(),"
             + " " + Book.TIMESTAMP_UPDATED + " timestamp with time zone,"
@@ -87,6 +89,9 @@ public class Book implements Parcelable{
 
     private float rt_rating_avg;
     private float rt_rating_count;
+
+    public static final String RT_RATING_AVG = "RT_RATING_AVG";
+    public static final String RT_RATING_COUNT = "RT_RATING_COUNT";
 
     public Book() {
     }
