@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
+import com.nearbyshops.android.communitylibrary.Dialogs.DateDialog;
+import com.nearbyshops.android.communitylibrary.Dialogs.DateDialogMeetup;
+import com.nearbyshops.android.communitylibrary.Dialogs.TimePickerFragment;
 import com.nearbyshops.android.communitylibrary.Model.BookMeetup;
 import com.nearbyshops.android.communitylibrary.Model.Image;
 import com.nearbyshops.android.communitylibrary.R;
@@ -26,6 +31,8 @@ import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -36,11 +43,9 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class AddBookMeetup extends AppCompatActivity implements Callback<Image>{
+public class AddBookMeetup extends AppCompatActivity implements Callback<Image>, DateDialogMeetup.NotifyDate,TimePickerFragment.NotifyTime{
 
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.uploadImage) ImageView resultView;
@@ -92,9 +97,9 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setDateTimeLabel();
 
     }
-
 
 
 
@@ -117,9 +122,18 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>{
             meetup.setLongitude(Double.parseDouble(longitude.getText().toString()));
         }
 
+        if(date!=null)
+        {
+            meetup.setDateAndTime(date);
+        }
+
         meetup.setVenue(venue.getText().toString());
         meetup.setMeetupPurpose(meetupPurpose.getText().toString());
         meetup.setMeetupName(meetupName.getText().toString());
+
+        meetup.setDateAndTime(new Timestamp(calendar.getTimeInMillis()));
+
+
     }
 
 
@@ -344,5 +358,92 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>{
         makeNetworkCall();
     }
 
+
+
+
+    Timestamp date;
+
+    @BindView(R.id.set_date)
+    TextView dateText;
+
+
+    int year, month, day = -1;
+    int hourOfDay, minutes = -1;
+
+    Calendar calendar = Calendar.getInstance();
+
+    @BindView(R.id.date_time_label)
+    TextView labelDateTime;
+
+
+    @OnClick(R.id.set_date)
+    void setDateClick()
+    {
+        DialogFragment newFragment = new DateDialogMeetup();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+
+
+    @Override
+    public void onDateNotified(int year, int month, int day) {
+
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DATE,day);
+
+//        dateText.setText("Date of Meetup :\n" + calendar.getTime().toString());
+
+        setDateTimeLabel();
+    }
+
+
+
+    @OnClick(R.id.set_time)
+    void showTimePicker()
+    {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+
+
+    @Override
+    public void onTimeNotified(int hourOfDay, int minute) {
+
+        this.hourOfDay = hourOfDay;
+        this.minutes = minute;
+        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calendar.set(Calendar.MINUTE,minute);
+
+        setDateTimeLabel();
+    }
+
+
+
+
+
+
+    void setDateTimeLabel()
+    {
+        labelDateTime.setText(calendar.getTime().toString());
+    }
+
+
+
+
+    @OnClick(R.id.pick_location_button)
+    void pickLocationClick(){
+
+        Intent intent = new Intent(this,PickLocationActivity.class);
+
+        startActivity(intent);
+    }
 
 }

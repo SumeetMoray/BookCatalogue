@@ -6,6 +6,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -103,7 +113,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nearbyshops.android.communitylibrary.BookDetails.BookDetail" />
         </activity>
-
         <activity
             android:name=".FavouriteBooks.FavouriteBooks"
             android:label="Favourite Books"
@@ -113,8 +122,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-
-
         <activity
             android:name=".AllBooks.BooksActivity"
             android:label="Books All"
@@ -125,9 +132,7 @@
                 android:value=".HomeActivity" />
         </activity>
 
-
-
-        <!--Sign Up and Login -->
+        <!-- Sign Up and Login -->
 
         <activity
             android:name=".Login.SignUp"
@@ -138,9 +143,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-
-
-
         <activity
             android:name=".Login.EditProfile"
             android:label="Edit Profile"
@@ -151,9 +153,7 @@
                 android:value=".HomeActivity" />
         </activity>
 
-
         <!-- Content Provider Declaration -->
-
 
         <provider
             android:name=".Data.BooksContentProvider"
@@ -162,13 +162,12 @@
             android:grantUriPermissions="true"
             android:label="BooksContentProvider"
             android:readPermission="org.nearbyshops.communitylibrary.READ"
-            android:writePermission="org.nearbyshops.communitylibrary.WRITE"/>
-
+            android:writePermission="org.nearbyshops.communitylibrary.WRITE" />
 
         <!-- Book Meetups Feature -->
 
         <activity
-            android:name=".BookMeetups.BookMeetupsActivity"
+            android:name=".BookMeetups.BookMeetupsFragment"
             android:label="@string/title_activity_book_reviews"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -176,18 +175,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-
-
         <activity
             android:name=".BookMeetups.AddBookMeetup"
-            android:label="Add Book Category"
+            android:label="Add Book Meetup"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-
         <activity
             android:name=".BookMeetups.EditBookMeetup"
             android:label="Edit Item Category"
@@ -198,8 +194,40 @@
                 android:value=".HomeActivity" />
         </activity>
 
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".BookMeetups.PickLocationActivity"
+            android:label="@string/title_activity_pick_location">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
+        </activity>
 
+        <!-- Intent Service for fetching address for Lat lon , using Geocoding Service -->
+        <service
+            android:name=".UtilityGeocoding.FetchAddressIntentService"
+            android:exported="false" />
+
+        <activity
+            android:name=".BookMeetups.BookMeetupsActivity"
+            android:label="@string/title_activity_book_meetups"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

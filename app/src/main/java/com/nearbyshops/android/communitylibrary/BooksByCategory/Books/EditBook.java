@@ -200,7 +200,9 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
 
 
-    @Override
+
+
+
     public void onDateNotified(Calendar calendar) {
 
         date = new Timestamp(calendar.getTimeInMillis());
@@ -467,6 +469,11 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
         itemForEdit.setBookCoverImageURL("");
 
         retrofitPUTRequest();
+
+    }
+
+    @Override
+    public void onDateNotified(int year, int month, int day) {
 
     }
 

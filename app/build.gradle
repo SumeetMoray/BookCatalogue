@@ -5,6 +5,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.nearbyshops.android.communitylibrary"
         minSdkVersion 15
         targetSdkVersion 24
@@ -22,7 +23,7 @@ android {
 
 
     repositories {
-        maven {url "https://clojars.org/repo/"}
+        maven { url "https://clojars.org/repo/" }
     }
 
 }
@@ -33,62 +34,70 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+
+    compile 'com.android.support:multidex:1.0.1'
+
     //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
-    
 
     // Butterknife
 
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     
 
     // Retrofit Dependencies
 
+    
+    // Picasso : Image Loading library
+    
+    // Ucrop : Image Crop Utility Library
+    
+
+    // Android Support Library Dependencies
+    
+    // ice pack dependencies
+
+    
+    // palette support library
+
+    
+    // floating action button with menu
+
+    
+    // dagger 2 dependencies
+
+    
+
+
+//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
+    
+    // Stetho library
+
+    
+
+    // google play services Maps and Location
+
+    
+    compile 'com.jakewharton:butterknife:8.2.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
-
-    // Picasso : Image Loading library
     compile 'com.squareup.picasso:picasso:2.5.2'
-    
-    // Ucrop : Image Crop Utility Library
     compile 'com.yalantis:ucrop:2.1.2'
-    
-
-    // Android Support Library Dependencies
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.support:cardview-v7:24.1.1'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
-
-    // ice pack dependencies
-
     compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
-
-    // palette support library
-
     compile 'com.android.support:palette-v7:24.1.1'
-
-    // floating action button with menu
-
     compile 'com.github.clans:fab:1.6.4'
-
-    // dagger 2 dependencies
-
     compile 'com.google.dagger:dagger:2.6'
-    apt 'com.google.dagger:dagger-compiler:2.6'
-    provided 'javax.annotation:jsr250-api:1.0'
-
-
-
-//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
-    testCompile 'junit:junit:4.12'
-
-    // Stetho library
-
     compile 'com.facebook.stetho:stetho:1.3.1'
-
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    apt 'com.google.dagger:dagger-compiler:2.6'
+    provided 'frankiesardo:icepick-processor:3.2.0'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

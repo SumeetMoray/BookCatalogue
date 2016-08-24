@@ -22,4 +22,13 @@
     <string name="title_activity_book_reviews">Book Reviews</string>
     <string name="favourite_book_message">You need to login to mark this book as favourite !</string>
     <string name="favourite_books_not_logged_in">You need to Log In to use this feature !</string>
+    <string name="title_activity_pick_location">Map</string>
+
+
+    <string name="service_not_available">Geocoding service not available</string>
+    <string name="invalid_lat_long_used">invalid_lat_long_used</string>
+    <string name="no_address_found">no_address_found</string>
+    <string name="address_found">address_found</string>
+    <string name="title_activity_book_meetups">Meetups</string>
+    <string name="switch_map_list">Switch Map/List</string>
 </resources>

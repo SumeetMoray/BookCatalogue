@@ -122,7 +122,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     @BindView(R.id.set_date)
     TextView dateText;
 
-    @Override
+
     public void onDateNotified(Calendar calendar) {
 
         date = new Timestamp(calendar.getTimeInMillis());
@@ -168,7 +168,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
         itemForEdit.setBookDescription(bookDescription.getText().toString());
 //        itemForEdit.setDateOfPublish(dateOfPublish.getText().toString());
 
-//        itemForEdit.setDateOfPublish();
 
 
 
@@ -179,19 +178,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
             itemForEdit.setPagesTotal(Integer.parseInt(pagesTotal.getText().toString()));
         }
 
-
-        // Make a network call
-
-        /*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(UtilityGeneral.getServiceURL(this))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-
-        ItemService itemService = retrofit.create(ItemService.class);
-
-        */
 
         Call<Book> itemCall = bookService.insertBook(itemForEdit);
 
@@ -223,34 +209,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
     }
 
-
-    /*
-    void displayResult(Item item)
-    {
-        result.setText("Result : " + "\n"
-                    + item.getItemImageURL() + "\n"
-                    + item.getItemDescription() + "\n"
-                    + item.getItemName() + "\n"
-                    + item.getItemCategoryID() + "\n"
-                    + item.getItemID());
-    }
-
-    */
-
-
-
-
-    /*
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
-
-    */
 
 
     @OnClick(R.id.addBookButton)
@@ -331,8 +289,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     }
 
 
-    //private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
-    //private Uri mDestinationUri;
 
     @BindView(R.id.textChangePicture)
     TextView changePicture;
@@ -353,41 +309,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
         //showFileChooser();
     }
 
-    //private int PICK_IMAGE_REQUEST = 21;
 
-    /*
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
-
-
-
-    public void startCropActivity(Uri sourceUri) {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        //options.setCompressionQuality(100);
-
-        options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
-
-
-        // this function takes the file from the source URI and saves in into the destination URI location.
-        UCrop.of(sourceUri, mDestinationUri)
-                .withOptions(options)
-                .withMaxResultSize(400,300)
-                .start(this);
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
-    }
-
-    */
 
 
     @Override
@@ -444,111 +366,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
 
 
-    /*
-    void uploadPickedImage() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
-
-        }
-
-
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        final Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, retrofit2.Response<Image> response) {
-
-                image = response.body();
-
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-                Log.d("applog", "inside Error: " + t.getMessage());
-
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-            }
-        });
-    }
-
-
-    */
 
 
     @Override
@@ -603,4 +420,8 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     }
 
 
+    @Override
+    public void onDateNotified(int year, int month, int day) {
+
+    }
 }

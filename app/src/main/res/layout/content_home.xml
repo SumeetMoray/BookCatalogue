@@ -11,6 +11,7 @@
     tools:showIn="@layout/app_bar_home">
 
     <RelativeLayout
+        android:paddingBottom="5dp"
         android:animateLayoutChanges="true"
         android:id="@+id/content_home"
         android:layout_width="match_parent"
@@ -36,7 +37,10 @@
             android:textColor="#ffffff"
             android:background="@color/orangeDark"
             android:padding="5dp"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="0dp"
             android:text="Long Click to select Category or Book. \nClick to Enter Subcategory or see Book Details."
             android:layout_below="@id/show_hide_instructions"
             android:id="@+id/usage_instructions"
@@ -44,9 +48,82 @@
             android:layout_height="wrap_content" />
 
 
-        <LinearLayout
+        <TextView
+            android:gravity="right"
             android:layout_below="@id/usage_instructions"
             android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:background="@color/blueGrey800"
+            android:textColor="@color/white"
+            android:id="@+id/show_hide_location_settings"
+            android:text="Show / Hide Current Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_below="@id/show_hide_location_settings"
+            android:visibility="gone"
+            android:id="@+id/location_settings_block"
+            android:layout_marginTop="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:id="@+id/text_update"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#ffffff"
+                android:background="@color/deepOrange800"
+                android:text="Update Location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:gravity="center"
+                android:layout_below="@id/text_update"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignLeft="@id/text_update"
+                android:text="Latitude    : 00.0000\nLongitude : 00.0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_lat_lon" />
+
+
+
+            <!--android:text="Current Address (Approx) :\nHAL Colony, Balanagar, Hyderabad - 500042"-->
+
+            <TextView
+                android:id="@+id/text_address"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@id/text_lat_lon"
+                android:layout_marginTop="10dp"
+                android:text="Address : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_below="@id/location_settings_block"
+            android:layout_marginTop="0dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:id="@+id/row_one"
@@ -141,6 +218,7 @@
             <RelativeLayout
                 android:id="@+id/option_book_meetups"
                 android:layout_marginRight="5dp"
+
                 android:layout_weight="1"
                 android:background="@color/gplus_color_1"
                 android:layout_width="0dp"

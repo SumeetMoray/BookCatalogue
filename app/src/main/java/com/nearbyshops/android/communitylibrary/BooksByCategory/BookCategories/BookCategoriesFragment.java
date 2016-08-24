@@ -388,6 +388,8 @@ public class BookCategoriesFragment extends Fragment
 
     }
 
+
+
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
 

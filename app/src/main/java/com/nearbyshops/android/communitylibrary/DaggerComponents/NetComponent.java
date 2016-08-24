@@ -6,7 +6,7 @@ import com.nearbyshops.android.communitylibrary.AllBooks.Backups.BooksActivityBa
 import com.nearbyshops.android.communitylibrary.AllBooks.BooksActivity;
 import com.nearbyshops.android.communitylibrary.BookDetails.BookDetail;
 import com.nearbyshops.android.communitylibrary.BookMeetups.AddBookMeetup;
-import com.nearbyshops.android.communitylibrary.BookMeetups.BookMeetupsActivity;
+import com.nearbyshops.android.communitylibrary.BookMeetups.BookMeetupsFragment;
 import com.nearbyshops.android.communitylibrary.BookMeetups.EditBookMeetup;
 import com.nearbyshops.android.communitylibrary.BookReviews.BookReviews;
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategories.BookCategoriesAdapter;
@@ -78,7 +78,7 @@ public interface NetComponent {
 
     void Inject(BooksActivityBackup booksActivity);
 
-    void Inject(BookMeetupsActivity bookMeetups);
+    void Inject(BookMeetupsFragment bookMeetups);
 
     void Inject(EditBookMeetup editBookMeetup);
 

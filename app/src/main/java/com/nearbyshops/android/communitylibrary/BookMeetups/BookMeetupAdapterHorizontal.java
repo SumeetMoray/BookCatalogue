@@ -1,19 +1,17 @@
 package com.nearbyshops.android.communitylibrary.BookMeetups;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.Model.BookMeetup;
-import com.nearbyshops.android.communitylibrary.Model.BookReview;
-import com.nearbyshops.android.communitylibrary.Model.Member;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
@@ -24,35 +22,39 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by sumeet on 19/12/15.
  */
 
 
-public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.ViewHolder>{
+public class BookMeetupAdapterHorizontal extends RecyclerView.Adapter<BookMeetupAdapterHorizontal.ViewHolder>{
+
 
 
     List<BookMeetup> dataset;
     Context context;
+    AppCompatActivity activity;
 
-    public BookMeetupAdapter(List<BookMeetup> dataset, Context context) {
+    public BookMeetupAdapterHorizontal(List<BookMeetup> dataset, Context context, AppCompatActivity activity) {
 
+        this.activity = activity;
         this.dataset = dataset;
         this.context = context;
+
     }
 
     @Override
-    public BookMeetupAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BookMeetupAdapterHorizontal.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book_meetup,parent,false);
-
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book_meetup_horizontal,parent,false);
         return new ViewHolder(v);
     }
 
 
     @Override
-    public void onBindViewHolder(BookMeetupAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(BookMeetupAdapterHorizontal.ViewHolder holder, final int position) {
 
         BookMeetup meetup = dataset.get(position);
 
@@ -62,9 +64,11 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
 
         if(meetup.getDateAndTime()!=null)
         {
+
+
 //            holder.dateAndTime.setText(meetup.getDateAndTime().toString());
 
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM ''yyyy");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM ''yyyy");
 
                 //"EEE, MMM d, ''yy"
                 //"yyyy-MM-dd"
@@ -109,12 +113,26 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
         @BindView(R.id.date_and_time)
         TextView dateAndTime;
 
+        @BindView(R.id.list_item_meetup)
+        RelativeLayout lisItem;
+
 
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
+        }
+
+
+        @OnClick(R.id.list_item_meetup)
+        void listItemClick(View view){
+
+            if(activity instanceof NotifyFromMeetupAdapter)
+            {
+                NotifyFromMeetupAdapter notify = ((NotifyFromMeetupAdapter)activity);
+                notify.notifyListItemClick(getLayoutPosition());
+            }
         }
 
 
@@ -126,6 +144,14 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
     void showToastMessage(String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+    public interface NotifyFromMeetupAdapter
+    {
+        void notifyListItemClick(int position);
     }
 
 

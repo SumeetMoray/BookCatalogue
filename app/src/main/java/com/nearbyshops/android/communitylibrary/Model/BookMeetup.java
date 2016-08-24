@@ -24,6 +24,7 @@ public class BookMeetup implements Parcelable{
     public static final String MEETUP_NAME = "MEETUP_NAME";
     public static final String MEETUP_PURPOSE = "MEETUP_PURPOSE";
     public static final String POSTER_URL = "POSTER_URL";
+    public static final String DATE_AND_TIME = "DATE_AND_TIME";
 
 
     // publisher, pages, isbn, language, category, Title
@@ -47,7 +48,8 @@ public class BookMeetup implements Parcelable{
             + " " + BookMeetup.LONGITUDE + " FLOAT,"
             + " " + BookMeetup.MEETUP_NAME + " TEXT,"
             + " " + BookMeetup.MEETUP_PURPOSE + " TEXT,"
-            + " " + BookMeetup.POSTER_URL + " TEXT"
+            + " " + BookMeetup.POSTER_URL + " TEXT,"
+            + " " + BookMeetup.DATE_AND_TIME + "  timestamp with time zone"
             + ")";
 
     public BookMeetup() {
@@ -64,8 +66,10 @@ public class BookMeetup implements Parcelable{
     private String meetupName;
     private String meetupPurpose;
     private String posterURL;
+    private Timestamp dateAndTime;
 
     private double rt_distance;
+
 
     // Getter and Setters
 
@@ -110,19 +114,11 @@ public class BookMeetup implements Parcelable{
         }
     };
 
-    public String getPosterURL() {
-        return posterURL;
-    }
-
-    public void setPosterURL(String posterURL) {
-        this.posterURL = posterURL;
-    }
-
-    public Integer getBookMeetupID() {
+    public int getBookMeetupID() {
         return bookMeetupID;
     }
 
-    public void setBookMeetupID(Integer bookMeetupID) {
+    public void setBookMeetupID(int bookMeetupID) {
         this.bookMeetupID = bookMeetupID;
     }
 
@@ -134,19 +130,19 @@ public class BookMeetup implements Parcelable{
         this.venue = venue;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -166,11 +162,27 @@ public class BookMeetup implements Parcelable{
         this.meetupPurpose = meetupPurpose;
     }
 
-    public Double getRt_distance() {
+    public String getPosterURL() {
+        return posterURL;
+    }
+
+    public void setPosterURL(String posterURL) {
+        this.posterURL = posterURL;
+    }
+
+    public Timestamp getDateAndTime() {
+        return dateAndTime;
+    }
+
+    public void setDateAndTime(Timestamp dateAndTime) {
+        this.dateAndTime = dateAndTime;
+    }
+
+    public double getRt_distance() {
         return rt_distance;
     }
 
-    public void setRt_distance(Double rt_distance) {
+    public void setRt_distance(double rt_distance) {
         this.rt_distance = rt_distance;
     }
 }
