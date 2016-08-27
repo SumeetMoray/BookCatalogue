@@ -55,6 +55,7 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
     Image image = null;
     boolean isImageAdded = false;
     private int PICK_IMAGE_REQUEST = 21;
+    private int REQUEST_CODE_PICK_LAT_LON = 23;
 
 
 
@@ -133,8 +134,10 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
 
         meetup.setDateAndTime(new Timestamp(calendar.getTimeInMillis()));
 
-
     }
+
+
+
 
 
     void makeNetworkCall()
@@ -274,10 +277,14 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
         } else if (resultCode == UCrop.RESULT_ERROR) {
 
             final Throwable cropError = UCrop.getError(result);
-
         }
 
 
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICK_LAT_LON)
+        {
+            latitude.setText(String.valueOf(result.getDoubleExtra("latitude",0)));
+            longitude.setText(String.valueOf(result.getDoubleExtra("longitude",0)));
+        }
     }
 
 
@@ -289,11 +296,82 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
 
 
 
+    // function for validating inputs
+    boolean validate()
+    {
+
+        boolean isValid = true;
+
+        if(meetupName.getText().toString().equals(""))
+        {
+            meetupName.setError("Name cannot be empty");
+            isValid = false;
+        }
+
+        if(meetupPurpose.getText().toString().equals(""))
+        {
+            meetupPurpose.setError("Purpose cannot be empty");
+
+            isValid = false;
+        }
+
+        if(latitude.getText().toString().equals(""))
+        {
+            latitude.setError("Latitude not set !");
+
+            isValid = false;
+        }
+        else
+        {
+            double latitudeValue = Double.parseDouble(latitude.getText().toString());
+
+            if(latitudeValue < -90 || latitudeValue > 90)
+            {
+                latitude.setError("Latitude not valid !");
+
+                isValid = false;
+            }
+        }
+
+
+
+        if(longitude.getText().toString().equals(""))
+        {
+            longitude.setError("Longitude not set !");
+
+            isValid = false;
+        }
+        else
+        {
+            double longitudeValue = Double.parseDouble(longitude.getText().toString());
+
+            if(longitudeValue < -180 || longitudeValue > 180)
+            {
+                longitude.setError("Longitude not valid !");
+
+                isValid = false;
+            }
+        }
+
+
+
+
+        return  isValid;
+    }
+
+
+
     @OnClick(R.id.addButton)
     public void addItemCategory()
     {
 
-        if(isImageAdded)
+        if(!validate())
+        {
+            return;
+        }
+
+
+        if(isImageAdded && isDateSet)
         {
 
             ImageCalls.getInstance()
@@ -307,14 +385,29 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
         else
         {
 
-            meetup.setPosterURL(null);
-            makeNetworkCall();
+            String message = "";
+
+                    if(!isImageAdded)
+                    {
+                        message = "Please add Meetup Poster. ";
+                    }
+
+                    if(!isDateSet)
+                    {
+                        message = message + " Please Set Date and Time.";
+                    }
+
+                    showMessageSnackBar(message);
+
+//            meetup.setPosterURL(null);
+//            makeNetworkCall();
 
         }
-
-
-
     }
+
+
+
+
 
 
 
@@ -375,6 +468,8 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
     @BindView(R.id.date_time_label)
     TextView labelDateTime;
 
+    boolean isDateSet = false;
+
 
     @OnClick(R.id.set_date)
     void setDateClick()
@@ -399,6 +494,8 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
         calendar.set(Calendar.DATE,day);
 
 //        dateText.setText("Date of Meetup :\n" + calendar.getTime().toString());
+
+        isDateSet = true;
 
         setDateTimeLabel();
     }
@@ -427,23 +524,17 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
 
 
 
-
-
-
     void setDateTimeLabel()
     {
         labelDateTime.setText(calendar.getTime().toString());
     }
 
 
-
-
     @OnClick(R.id.pick_location_button)
     void pickLocationClick(){
 
         Intent intent = new Intent(this,PickLocationActivity.class);
-
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CODE_PICK_LAT_LON);
     }
 
 }

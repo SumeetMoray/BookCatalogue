@@ -1,7 +1,9 @@
 package com.nearbyshops.android.communitylibrary.BookMeetups;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nearbyshops.android.communitylibrary.R;
+import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,7 +56,19 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
     @OnClick(R.id.confirm_selected_location_button)
     void confirmButtonClick()
     {
-        Toast.makeText(this,"Confirm !", Toast.LENGTH_SHORT).show();
+
+        if(currentMarker==null)
+        {
+            Toast.makeText(this,"Location not selected !", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        Intent data = new Intent();
+        data.putExtra("latitude",currentMarker.getPosition().latitude);
+        data.putExtra("longitude",currentMarker.getPosition().longitude);
+        setResult(RESULT_OK,data);
+        finish();
     }
 
     /**
@@ -89,6 +104,14 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
         mMap.getUiSettings().setMapToolbarEnabled(true);
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(,14));
+
+        Location currentLocation = UtilityGeneral.getCurrentLocation(this);
+
+        if(currentLocation!=null)
+        {
+            LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+        }
 
 
 

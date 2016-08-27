@@ -65,12 +65,12 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
     BookService bookService;
 
     // scroll variables
-    private int limit = 10;
+    private int limit = 30;
     @State int offset = 0;
     @State int item_count = 0;
 
     // step size cp should be equal to limit value at the time of initialization.
-    private int step_size_cp = 10;
+    private int step_size_cp = 30;
     @State int limit_cp = step_size_cp;
     @State int offset_cp = 0;
     @State int item_count_cp = 0;

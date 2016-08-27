@@ -57,8 +57,9 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
         BookMeetup meetup = dataset.get(position);
 
         holder.meetupName.setText(meetup.getMeetupName());
-        holder.distance.setText(String.format("%.2f",meetup.getRt_distance()) + " Km");
+        holder.distance.setText(String.format("%.2f",meetup.getRt_distance()) + " Km | ");
         holder.venueText.setText(meetup.getVenue());
+        holder.meetupPurpose.setText(meetup.getMeetupPurpose());
 
         if(meetup.getDateAndTime()!=null)
         {
@@ -72,6 +73,9 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(meetup.getDateAndTime().getTime());
             holder.dateAndTime.setText(calendar.getTime().toLocaleString());
+        }else
+        {
+            holder.dateAndTime.setText("Date Not Available !");
         }
 
         String imagePath = UtilityGeneral.getImageEndpointURL(context)
@@ -99,6 +103,9 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
 
         @BindView(R.id.meetup_name)
         TextView meetupName;
+
+        @BindView(R.id.meetup_purpose)
+        TextView meetupPurpose;
 
         @BindView(R.id.distance)
         TextView distance;

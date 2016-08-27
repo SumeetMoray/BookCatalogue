@@ -31,4 +31,6 @@
     <string name="address_found">address_found</string>
     <string name="title_activity_book_meetups">Meetups</string>
     <string name="switch_map_list">Switch Map/List</string>
+    <string name="search_hint">Enter book name, author name</string>
+    <string name="sort">Sort</string>
 </resources>

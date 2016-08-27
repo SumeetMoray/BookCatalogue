@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/widget_margin"
+    android:paddingTop="@dimen/widget_margin"
+    android:background="#ffffff"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:background="#88000000"
+            android:id="@+id/heading"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:padding="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Top Rated Books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <GridView
+            android:layout_below="@id/heading"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/stack_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:numColumns="2"
+            android:loopViews="true" />
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="No Stocks to View."
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+</FrameLayout>

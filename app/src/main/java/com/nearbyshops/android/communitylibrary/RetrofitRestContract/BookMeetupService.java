@@ -29,6 +29,7 @@ public interface BookMeetupService {
             @Query("MemberLongitude") Double memberLongitude,
             @Query("MemberLatitude") Double memberLatitude,
             @Query("ProximityLimit") Double proximityMaximum,
+            @Query("SearchString") String stringString,
             @Query("SortBy") String sortBy,
             @Query("Limit") Integer limit, @Query("Offset") Integer offset,
             @Query("metadata_only") Boolean metaonly

@@ -1,19 +1,19 @@
 package com.nearbyshops.android.communitylibrary.BookMeetups;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,9 +34,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifyDataset;
 import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifyFabState;
+import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifySort;
 import com.nearbyshops.android.communitylibrary.Model.BookMeetup;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
+import com.wunderlist.slidinglayer.SlidingLayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +47,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 
 public class BookMeetupsActivity extends AppCompatActivity implements OnMapReadyCallback , NotifyDataset, NotifyFabState, BookMeetupAdapterHorizontal.NotifyFromMeetupAdapter{
 
 
     Unbinder unbinder;
 
-    List<BookMeetup> dataset;
+    ArrayList<BookMeetup> dataset;
 
     @BindView(R.id.fragment_container)
     FrameLayout fragmentContainer;
@@ -57,6 +63,7 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
     SupportMapFragment mapFragment;
     BookMeetupsFragment meetupsFragment;
 
+    @State
     boolean isMapView = false;
 
     @BindView(R.id.fab)
@@ -68,6 +75,8 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
     LinearLayoutManager linearLayoutManager;
     BookMeetupAdapterHorizontal adapter;
 
+    @BindView(R.id.slidingLayer)
+    SlidingLayer slidingLayer;
 
 
     @Override
@@ -85,21 +94,53 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
 
         meetupsFragment = new BookMeetupsFragment();
-        mapFragment = new SupportMapFragment();
-
 
         if(savedInstanceState==null)
         {
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container,meetupsFragment)
                     .commit();
 
+            reviewsList.setVisibility(View.GONE);
+
+//            isMapView = false;
         }
 
 
-        reviewsList.setVisibility(View.GONE);
 
+
+
+        setupSlidingLayer();
+    }
+
+
+
+    void setupSlidingLayer()
+    {
+
+        ////slidingLayer.setShadowDrawable(R.drawable.sidebar_shadow);
+        //slidingLayer.setShadowSizeRes(R.dimen.shadow_size);
+
+        if(slidingLayer!=null)
+        {
+            slidingLayer.setChangeStateOnTap(true);
+            slidingLayer.setSlidingEnabled(true);
+            slidingLayer.setPreviewOffsetDistance(15);
+            slidingLayer.setOffsetDistance(10);
+            slidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+            //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(250, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            //slidingContents.setLayoutParams(layoutParams);
+
+            //slidingContents.setMinimumWidth(metrics.widthPixels-50);
+
+        }
 
     }
 
@@ -108,6 +149,21 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_meetups, menu);
+
+        if(isMapView)
+        {
+            menu.findItem(R.id.action_switch_map).setIcon(R.drawable.ic_view_list_black_24px);
+        }
+
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+//        searchView.setQuery(getIntent().getStringExtra(SearchManager.QUERY),false);
+
+
+
         return true;
     }
 
@@ -134,14 +190,16 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
                 reviewsList.setVisibility(View.GONE);
                 isMapView = false;
+                slidingLayer.setVisibility(View.VISIBLE);
                 showFab();
 
             }
             else
             {
                 item.setIcon(R.drawable.ic_view_list_black_24px);
+                setupRecyclerView();
+                mapFragment = new SupportMapFragment();
 
-//                mapFragment = new SupportMapFragment();
 
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -152,11 +210,18 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
                 reviewsList.setVisibility(View.VISIBLE);
                 isMapView = true;
+
+                slidingLayer.setVisibility(View.GONE);
                 hideFab();
 
             }
 
             return true;
+        }
+        else if(id == R.id.action_sort)
+        {
+
+            slidingLayer.openLayer(true);
         }
 
         return super.onOptionsItemSelected(item);
@@ -174,6 +239,27 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         reviewsList.setLayoutManager(linearLayoutManager);
 
+
+        reviewsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dataset!=null && dataset.size()>0)
+                {
+                    int position = linearLayoutManager.findFirstVisibleItemPosition();
+
+                    if(position!=-1)
+                    {
+                        notifyListItemClick(position);
+                    }
+
+                }
+
+            }
+        });
+
     }
 
 
@@ -183,8 +269,8 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
     void fabClick(View view)
     {
 
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show();
 
         Intent intent = new Intent(this,AddBookMeetup.class);
         startActivity(intent);
@@ -228,15 +314,16 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
+//        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         Location location = UtilityGeneral.getCurrentLocation(this);
 
 
-        if(dataset!=null)
+        if(dataset!=null && dataset.size()>0)
         {
             BookMeetup meetup = dataset.get(0);
             LatLng latLng = new LatLng(meetup.getLatitude(),meetup.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
             Log.d("dataset","Dataset Size Map Ready : " + String.valueOf(dataset.size()));
 
         }else
@@ -244,7 +331,7 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
             if(location !=null)
             {
                 LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
             }
 
             Log.d("dataset","Dataset null : " + String.valueOf(dataset.size()));
@@ -252,6 +339,18 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
 
         markerList = new ArrayList<>();
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                reviewsList.scrollToPosition(markerList.indexOf(marker));
+
+                marker.showInfoWindow();
+
+                return true;
+            }
+        });
 
 
         for(BookMeetup meetup: dataset)
@@ -263,13 +362,15 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .snippet(meetup.getVenue())
-                    .draggable(true)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_group_black_24dp))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                     .title(meetup.getMeetupName()));
 
+            //                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_group_black_24dp))
 //            marker.showInfoWindow();
 
             markerList.add(marker);
+
+
         }
     }
 
@@ -277,7 +378,8 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
 
     @Override
-    public void setDataset(List<BookMeetup> dataset) {
+    public void setDataset(ArrayList<BookMeetup> dataset) {
+
         this.dataset = dataset;
 
         Log.d("dataset","Dataset Size : " + String.valueOf(dataset.size()));
@@ -297,7 +399,7 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
         fab.animate().translationY(0);
 
-        Log.d("dataset","Dataset Size : " + String.valueOf(dataset.size()));
+//        Log.d("dataset","Dataset Size : " + String.valueOf(dataset.size()));
     }
 
     @Override
@@ -305,7 +407,7 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
         fab.animate().translationY(120);
 
-        Log.d("dataset","Dataset Size : " + String.valueOf(dataset.size()));
+//        Log.d("dataset","Dataset Size : " + String.valueOf(dataset.size()));
     }
 
 
@@ -314,8 +416,276 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
 
         BookMeetup meetup = dataset.get(position);
         LatLng latLng = new LatLng(meetup.getLatitude(),meetup.getLongitude());
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
-        markerList.get(position).showInfoWindow();
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        if(markerList!=null){
+            markerList.get(position).showInfoWindow();
+        }
     }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Icepick.saveInstanceState(this,outState);
+
+        outState.putParcelableArrayList("dataset",dataset);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Icepick.restoreInstanceState(this,savedInstanceState);
+
+        if(savedInstanceState!=null)
+        {
+            ArrayList<BookMeetup> tempCat = savedInstanceState.getParcelableArrayList("dataset");
+            dataset = new ArrayList<>();
+            dataset.addAll(tempCat);
+//            adapter.notifyDataSetChanged();
+
+        }
+
+
+        if(isMapView)
+        {
+            reviewsList.setVisibility(View.VISIBLE);
+            hideFab();
+            setupRecyclerView();
+
+            mapFragment = new SupportMapFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,mapFragment)
+                    .commit();
+
+            mapFragment.getMapAsync(this);
+
+        }else
+        {
+            reviewsList.setVisibility(View.GONE);
+        }
+    }
+
+
+
+
+    // apply sort code
+
+
+    @BindView(R.id.sort_by_title)
+    TextView sortByTitle;
+
+    @BindView(R.id.sort_by_distance)
+    TextView sortByDistance;
+
+    @BindView(R.id.sort_by_meetup_time)
+    TextView sortByMeetupTime;
+
+    @BindView(R.id.sort_descending)
+    TextView sortDescending;
+
+    @BindView(R.id.sort_ascending)
+    TextView sortAscending;
+
+
+
+    public final static int SORT_BY_TITLE = 1;
+    public final static int SORT_BY_DISTANCE = 2;
+    public final static int SORT_BY_MEETUP_DATE_TIME = 3;
+
+    @State int sort_by = SORT_BY_DISTANCE;
+    @State boolean whetherDescending = false;
+
+
+
+    NotifySort notifySort;
+
+
+
+    @OnClick(R.id.sort_by_title)
+    void sortByTitle_click()
+    {
+
+        sort_by = SORT_BY_TITLE;
+
+        clearSortOptions();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortByTitle.setTextColor(getResources().getColor(R.color.white,null));
+            sortByTitle.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha,null));
+
+        }else
+        {
+            sortByTitle.setTextColor(getResources().getColor(R.color.white));
+            sortByTitle.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha));
+        }
+
+        applySort();
+
+    }
+
+    @OnClick(R.id.sort_by_distance)
+    void sortByRating_click()
+    {
+        sort_by = SORT_BY_DISTANCE;
+
+        clearSortOptions();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortByDistance.setTextColor(getResources().getColor(R.color.white,null));
+            sortByDistance.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha,null));
+
+        }else
+        {
+            sortByDistance.setTextColor(getResources().getColor(R.color.white));
+            sortByDistance.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha));
+        }
+
+        applySort();
+    }
+
+
+
+    @OnClick(R.id.sort_by_meetup_time)
+    void sortByReleaseDate_click()
+    {
+
+        sort_by = SORT_BY_MEETUP_DATE_TIME;
+
+        clearSortOptions();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortByMeetupTime.setTextColor(getResources().getColor(R.color.white,null));
+            sortByMeetupTime.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha,null));
+
+        }else
+        {
+            sortByMeetupTime.setTextColor(getResources().getColor(R.color.white));
+            sortByMeetupTime.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha));
+        }
+
+        applySort();
+    }
+
+
+    @OnClick(R.id.sort_ascending)
+    void sortByAscending_Click()
+    {
+
+        whetherDescending = false;
+
+        clearAscending();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortAscending.setTextColor(getResources().getColor(R.color.white,null));
+            sortAscending.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha,null));
+
+        }else
+        {
+            sortAscending.setTextColor(getResources().getColor(R.color.white));
+            sortAscending.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha));
+        }
+
+        applySort();
+    }
+
+
+
+    @OnClick(R.id.sort_descending)
+    void sortDescending_Click()
+    {
+
+        whetherDescending = true;
+
+        clearAscending();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortDescending.setTextColor(getResources().getColor(R.color.white,null));
+            sortDescending.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha,null));
+
+        }else
+        {
+            sortDescending.setTextColor(getResources().getColor(R.color.white));
+            sortDescending.setBackgroundColor(getResources().getColor(R.color.Gray88Alpha));
+        }
+
+        applySort();
+    }
+
+
+
+
+    void clearSortOptions()
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortByTitle.setTextColor(getResources().getColor(R.color.blueGrey800,null));
+            sortByDistance.setTextColor(getResources().getColor(R.color.blueGrey800,null));
+            sortByMeetupTime.setTextColor(getResources().getColor(R.color.blueGrey800,null));
+
+            sortByDistance.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option,null));
+            sortByTitle.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option,null));
+            sortByMeetupTime.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option,null));
+
+        }else
+        {
+            sortByTitle.setTextColor(getResources().getColor(R.color.blueGrey800));
+            sortByDistance.setTextColor(getResources().getColor(R.color.blueGrey800));
+            sortByMeetupTime.setTextColor(getResources().getColor(R.color.blueGrey800));
+
+            sortByDistance.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option));
+            sortByTitle.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option));
+            sortByMeetupTime.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option));
+        }
+    }
+
+
+    void clearAscending()
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            sortAscending.setTextColor(getResources().getColor(R.color.blueGrey800,null));
+            sortDescending.setTextColor(getResources().getColor(R.color.blueGrey800,null));
+
+            sortAscending.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option,null));
+            sortDescending.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option,null));
+
+        }else
+        {
+            sortAscending.setTextColor(getResources().getColor(R.color.blueGrey800));
+            sortDescending.setTextColor(getResources().getColor(R.color.blueGrey800));
+
+            sortAscending.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option));
+            sortDescending.setBackgroundColor(getResources().getColor(R.color.light_grey_sort_option));
+        }
+    }
+
+
+
+    void applySort()
+    {
+        if(notifySort!=null)
+        {
+            if(!isMapView)
+            {
+                notifySort.applySort(sort_by,whetherDescending);
+            }
+        }
+    }
+
+
+    // apply sort code ends
 
 }

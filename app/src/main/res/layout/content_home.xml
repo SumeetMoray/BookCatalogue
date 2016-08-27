@@ -132,10 +132,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
 
             <RelativeLayout
                 android:id="@+id/option_all_books"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:background="@color/blueGrey800"
                 android:layout_width="0dp"
@@ -167,38 +171,6 @@
 
             </RelativeLayout>
 
-
-            <RelativeLayout
-                android:id="@+id/option_books_by_category"
-                android:layout_weight="1"
-                android:background="@color/gplus_color_2"
-                android:layout_width="0dp"
-                android:layout_height="150dp">
-
-                <TextView
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_alignParentBottom="true"
-                    android:id="@+id/text_option_two"
-                    android:textColor="#ffffff"
-                    android:gravity="right"
-                    android:textSize="20sp"
-                    android:text="Books\nby Category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/ic_featured_play_list_black_24px"
-                    android:id="@+id/image_books_by_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@id/text_option_two"/>
-
-                <!--app:srcCompat="@drawable/ic_import_contacts_white_36px"-->
-
-            </RelativeLayout>
 
         </LinearLayout>
 
@@ -247,6 +219,39 @@
 
                 <!--app:srcCompat="@drawable/ic_menu_gallery"-->
 
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/option_books_by_category"
+                android:layout_weight="1"
+                android:background="@color/gplus_color_2"
+                android:layout_width="0dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/text_option_two"
+                    android:textColor="#ffffff"
+                    android:gravity="right"
+                    android:textSize="20sp"
+                    android:text="Books\nby Category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_featured_play_list_black_24px"
+                    android:id="@+id/image_books_by_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/text_option_two"/>
+
+                <!--app:srcCompat="@drawable/ic_import_contacts_white_36px"-->
 
             </RelativeLayout>
 

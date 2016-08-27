@@ -1,5 +1,7 @@
 package com.nearbyshops.android.communitylibrary.BookMeetups;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifyDataset;
 import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifyFabState;
+import com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces.NotifySort;
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookMeetup;
@@ -37,7 +40,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+import static com.nearbyshops.android.communitylibrary.BookMeetups.BookMeetupsActivity.SORT_BY_DISTANCE;
+
+public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, NotifySort {
 
     ArrayList<BookMeetup> dataset = new ArrayList<>();
 
@@ -91,19 +96,31 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
         setupRecyclerView();
         setupSwipeContainer();
 
-        if(savedInstanceState==null)
+
+        Intent searchIntent = getActivity().getIntent();
+
+        if(Intent.ACTION_SEARCH.equals(searchIntent.getAction()))
         {
+            String query = searchIntent.getStringExtra(SearchManager.QUERY);
+            setSearchString(query);
 
-            swipeContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeContainer.setRefreshing(true);
+        }else
+        {
+            if(savedInstanceState==null)
+            {
 
-                    dataset.clear();
-                    makeNetworkCall();
-                }
-            });
+                swipeContainer.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeContainer.setRefreshing(true);
+
+                        dataset.clear();
+                        makeNetworkCall();
+                    }
+                });
+            }
         }
+
 
 
         if(getActivity() instanceof NotifyFabState)
@@ -117,8 +134,16 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
         }
 
 
+        if(getActivity() instanceof BookMeetupsActivity)
+        {
+            ((BookMeetupsActivity)getActivity()).notifySort = this;
+        }
+
+
+
         return view;
     }
+
 
 
 
@@ -273,6 +298,20 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
         });
     }
 
+
+
+
+    String searchString = null;
+
+    public void setSearchString(String searchString)
+    {
+        this.searchString = searchString;
+//        onRefreshSwipeIndicator();
+        onRefresh();
+    }
+
+
+
     private void makeNetworkCall() {
 
         Double latitude = null;
@@ -287,7 +326,34 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
         }
 
 
-        Call<BookMeetupEndpoint> call = bookMeetupService.getMeetups(longitude,latitude,null,"distance",limit,offset,null);
+        String sort_string = "";
+
+        if(sort_by == BookMeetupsActivity.SORT_BY_DISTANCE)
+        {
+            sort_string = "distance";
+        }
+        else if(sort_by == BookMeetupsActivity.SORT_BY_MEETUP_DATE_TIME)
+        {
+            sort_string = "DATE_AND_TIME";
+        }
+        else if(sort_by == BookMeetupsActivity.SORT_BY_TITLE)
+        {
+            sort_string = "MEETUP_NAME";
+        }
+
+
+        //  number of people attending,
+
+        if(whetherDescending)
+        {
+            sort_string = sort_string + " " + "desc NULLS LAST";
+        }
+
+
+
+
+
+        Call<BookMeetupEndpoint> call = bookMeetupService.getMeetups(longitude,latitude,null,searchString,sort_string,limit,offset,null);
 
         call.enqueue(new Callback<BookMeetupEndpoint>() {
             @Override
@@ -297,11 +363,8 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
                 {
                     dataset.addAll(response.body().getResults());
                     adapter.notifyDataSetChanged();
+                    notifyDataChanged();
 
-                    if(getActivity() instanceof NotifyDataset)
-                    {
-                        ((NotifyDataset)getActivity()).setDataset(dataset);
-                    }
 
                     item_count = response.body().getItemCount();
                 }
@@ -355,9 +418,45 @@ public class BookMeetupsFragment extends Fragment implements SwipeRefreshLayout.
             dataset.clear();
             dataset.addAll(tempCat);
             adapter.notifyDataSetChanged();
+
+            notifyDataChanged();
+
         }
     }
 
+
+
+
+    void notifyDataChanged()
+    {
+        if(getActivity() instanceof NotifyDataset)
+        {
+            ((NotifyDataset)getActivity()).setDataset(dataset);
+        }
+    }
+
+
+
+    @State int sort_by = SORT_BY_DISTANCE;
+    @State boolean whetherDescending = false;
+
+
+
+    public void setDefaultSortOpions()
+    {
+
+    }
+
+    @Override
+    public void applySort(int sortBy, boolean whetherDescendingLocal) {
+
+        sort_by = sortBy;
+        whetherDescending = whetherDescendingLocal;
+
+        Log.d("applysort","Sort Applied");
+
+        onRefreshSwipeIndicator();
+    }
 
 
 }

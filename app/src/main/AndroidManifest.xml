@@ -224,10 +224,52 @@
             android:label="@string/title_activity_book_meetups"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".BookMeetups.BookMeetupsActivity"/>
+
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
         </activity>
+
+
+        <!-- Implementing Search Feature in the application -->
+<!--
+
+        <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+-->
+
+
+        <!--Widget Feature -->
+
+
+        <receiver android:name=".Widgets.ExampleAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/appwidgetproviderinfo" />
+        </receiver>
+
+
+        <service android:name=".Widgets.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.nearbyshops.android.communitylibrary.BookMeetups.Interfaces;
 
 import com.nearbyshops.android.communitylibrary.Model.BookMeetup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,5 +11,5 @@ import java.util.List;
 
 public interface NotifyDataset {
 
-    void setDataset(List<BookMeetup> dataset);
+    void setDataset(ArrayList<BookMeetup> dataset);
 }

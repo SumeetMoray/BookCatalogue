@@ -8,15 +8,23 @@
     <item
         android:icon="@drawable/ic_sort_black_24px"
         android:id="@+id/action_sort"
-        android:orderInCategory="99"
-        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/sort"
         app:showAsAction="ifRoom" />
 
     <item
         android:icon="@drawable/ic_map_black_24px"
         android:id="@+id/action_switch_map"
-        android:orderInCategory="100"
+        android:orderInCategory="99"
         android:title="@string/switch_map_list"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:icon="@drawable/ic_search_black_24dp"
+        android:id="@+id/action_search"
+        android:orderInCategory="98"
+        android:title="@string/switch_map_list"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
 
 </menu>
