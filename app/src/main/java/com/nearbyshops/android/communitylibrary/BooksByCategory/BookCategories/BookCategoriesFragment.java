@@ -424,6 +424,11 @@ public class BookCategoriesFragment extends Fragment
             @Override
             public void onResponse(Call<BookCategoryEndpoint> call, Response<BookCategoryEndpoint> response) {
 
+                if(fragmentStopped)
+                {
+                    return;
+                }
+
                 if(response.body()!=null)
                 {
                     BookCategoryEndpoint endPoint = response.body();
@@ -469,10 +474,14 @@ public class BookCategoriesFragment extends Fragment
             @Override
             public void onFailure(Call<BookCategoryEndpoint> call, Throwable t) {
 
-                showToastMessage("Network request failed. Please check your connection !");
+                if(fragmentStopped)
+                {
+                    return;
+                }
 
                 if(swipeContainer!=null)
                 {
+                    showToastMessage(getString(R.string.network_not_available));
                     swipeContainer.setRefreshing(false);
                 }
             }
@@ -558,7 +567,7 @@ public class BookCategoriesFragment extends Fragment
 
                 if(response.code() == 200)
                 {
-                    showToastMessage("Change Parent Successful !");
+                    showToastMessage(getString(R.string.book_categories_change_parent_successful));
 
                     dataset.clear();
                     offset = 0 ; // reset the offset
@@ -566,7 +575,7 @@ public class BookCategoriesFragment extends Fragment
 
                 }else
                 {
-                    showToastMessage("Change Parent Failed !");
+                    showToastMessage(getString(R.string.book_category_change_parent_failed));
                 }
 
                 listAdapter.setRequestedChangeParent(null);
@@ -575,7 +584,7 @@ public class BookCategoriesFragment extends Fragment
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Network request failed. Please check your connection !");
+                showToastMessage(getString(R.string.network_not_available));
 
                 listAdapter.setRequestedChangeParent(null);
             }
@@ -589,7 +598,7 @@ public class BookCategoriesFragment extends Fragment
 
         if(listAdapter.selectedItems.size()==0)
         {
-            showToastMessage("No item selected. Please make a selection !");
+            showToastMessage(getString(R.string.book_categories_no_item_selected));
 
             return;
         }
@@ -616,24 +625,24 @@ public class BookCategoriesFragment extends Fragment
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.code() == 200)
                 {
-                    showToastMessage("Update Successful !");
+                    showToastMessage(getString(R.string.udate_successful_api_response));
 
                     clearSelectedItems();
 
                 }else if (response.code() == 206)
                 {
-                    showToastMessage("Partially Updated. Check data changes !");
+                    showToastMessage(getString(R.string.api_response_partially_updated));
 
                     clearSelectedItems();
 
                 }else if(response.code() == 304)
                 {
 
-                    showToastMessage("No item updated !");
+                    showToastMessage(getString(R.string.api_response_no_item_updated));
 
                 }else
                 {
-                    showToastMessage("Unknown server error or response !");
+                    showToastMessage(getString(R.string.api_response_unknown_server_error));
                 }
 
 
@@ -646,7 +655,7 @@ public class BookCategoriesFragment extends Fragment
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
 
-                showToastMessage("Network Request failed. Check your internet / network connection !");
+                showToastMessage(getString(R.string.network_not_available));
 
             }
         });
@@ -902,5 +911,24 @@ public class BookCategoriesFragment extends Fragment
     public void changeParent() {
 
         changeParentBulk();
+    }
+
+
+
+    boolean fragmentStopped = false;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        fragmentStopped = false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        fragmentStopped = true;
     }
 }

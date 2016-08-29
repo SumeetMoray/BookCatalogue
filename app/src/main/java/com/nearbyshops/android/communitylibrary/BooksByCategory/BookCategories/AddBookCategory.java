@@ -161,7 +161,7 @@ public class AddBookCategory extends AppCompatActivity implements Callback<Image
                 if(response.code() == 201)
                 {
 
-                    showToastMessage("Added Successfully !");
+                    showToastMessage(getString(R.string.book_category_create_successful));
                 }
 
             }
@@ -169,7 +169,7 @@ public class AddBookCategory extends AppCompatActivity implements Callback<Image
             @Override
             public void onFailure(Call<BookCategory> call, Throwable t) {
 
-                showToastMessage("Network request failed !");
+                showToastMessage(getString(R.string.network_not_available));
             }
         });
 
@@ -245,7 +245,7 @@ public class AddBookCategory extends AppCompatActivity implements Callback<Image
     void removeImage()
     {
 
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+        File file = new File(getCacheDir().getPath() + "/" + getString(R.string.cache_file_name));
         file.delete();
 
         resultView.setImageDrawable(null);

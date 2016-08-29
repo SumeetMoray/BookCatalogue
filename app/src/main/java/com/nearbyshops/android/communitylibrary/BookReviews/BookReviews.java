@@ -222,7 +222,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
         offset = 0 ; // reset the offset
         makeNetworkCall();
 
-        Log.d("applog","refreshed");
+//        Log.d("applog","refreshed");
     }
 
 
@@ -265,7 +265,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
             @Override
             public void onFailure(Call<BookReviewEndpoint> call, Throwable t) {
 
-                showToastMessage("Network Request failed !");
+                showToastMessage(getString(R.string.network_not_available));
 
                 stopRefreshing();
 

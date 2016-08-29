@@ -66,7 +66,7 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
 
         if(rating_count == 0)
         {
-            holder.bookRating.setText("Not Yet Rated");
+            holder.bookRating.setText(R.string.book_rating_not_yet_rated);
 
         }else
         {
@@ -140,6 +140,7 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
             Book book = rowToObject(dataset,getLayoutPosition());
 
             Intent intent = new Intent(context, BookDetail.class);
+
             intent.putExtra(BookDetail.BOOK_DETAIL_INTENT_KEY,book);
             context.startActivity(intent);
         }
@@ -167,6 +168,7 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
         book.setBookDescription(cursor.getString(cursor.getColumnIndex(Book.BOOK_DESCRIPTION)));
 
         book.setNameOfPublisher(cursor.getString(cursor.getColumnIndex(Book.PUBLISHER_NAME)));
+        book.setDateOfPublishInMillis(cursor.getLong(cursor.getColumnIndex(Book.DATE_OF_PUBLISH_LONG)));
         book.setPagesTotal(cursor.getInt(cursor.getColumnIndex(Book.PAGES_TOTAL)));
 
         book.setRt_rating_count(cursor.getInt(cursor.getColumnIndex(Book.RT_RATING_COUNT)));

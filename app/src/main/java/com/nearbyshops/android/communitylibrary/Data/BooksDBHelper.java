@@ -55,6 +55,7 @@ public class BooksDBHelper extends SQLiteOpenHelper {
                 + " " + Book.TIMESTAMP_UPDATED + " timestamp,"
 
                 + " " + Book.DATE_OF_PUBLISH + " timestamp,"
+                + " " + Book.DATE_OF_PUBLISH_LONG + " long,"
                 + " " + Book.PUBLISHER_NAME + " text,"
                 + " " + Book.PAGES_TOTAL + " INTEGER,"
 

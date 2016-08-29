@@ -158,8 +158,13 @@ public class UtilityGeneral {
         context = MyApplication.getAppContext();
 
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://192.168.1.33:8080");
+        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://45.55.18.44:8080");
 
+
+        // "http://139.59.30.181:8080" : Digital Ocean Bangalore Server
+        // "http://localareademo-env.ap-southeast-1.elasticbeanstalk.com" : AWS Singapore Server
+        // http://128.199.68.241:8080 : Singapore Digital Ocean Server
+        //http://45.55.18.44:8080 : SF 1 Digital Ocean Server Address
         // http://cbdb.nearbyshops.org:8080
         // http://192.168.1.34:8080
         // http://cbdb.nearbyshops.org:8080/

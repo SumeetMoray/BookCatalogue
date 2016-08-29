@@ -65,14 +65,14 @@ public class FavouriteBookAdapter extends RecyclerView.Adapter<FavouriteBookAdap
             holder.bookTitle.setText(dataset.get(position).getBookName());
         }else
         {
-            holder.bookTitle.setText("Title Book");
+            holder.bookTitle.setText(context.getString(R.string.book_title_not_available));
 
         }
 
 
         if(rating_count == 0)
         {
-            holder.bookRating.setText("Not Yet Rated");
+            holder.bookRating.setText(context.getString(R.string.book_rating_not_available));
 
         }else
         {

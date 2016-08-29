@@ -15,6 +15,7 @@
 
 
         <ImageView
+            android:contentDescription="@string/content_description_close_dialog"
             android:layout_alignParentRight="true"
             android:id="@+id/dialog_dismiss_icon"
             app:srcCompat="@drawable/ic_clear_black_24px"

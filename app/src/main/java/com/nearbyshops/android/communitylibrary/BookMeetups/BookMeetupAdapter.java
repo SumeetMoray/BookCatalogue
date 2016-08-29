@@ -75,7 +75,7 @@ public class BookMeetupAdapter extends RecyclerView.Adapter<BookMeetupAdapter.Vi
             holder.dateAndTime.setText(calendar.getTime().toLocaleString());
         }else
         {
-            holder.dateAndTime.setText("Date Not Available !");
+            holder.dateAndTime.setText(R.string.meetup_date_not_available);
         }
 
         String imagePath = UtilityGeneral.getImageEndpointURL(context)

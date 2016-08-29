@@ -324,7 +324,7 @@ public class BookMeetupsActivity extends AppCompatActivity implements OnMapReady
             BookMeetup meetup = dataset.get(0);
             LatLng latLng = new LatLng(meetup.getLatitude(),meetup.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
-            Log.d("dataset","Dataset Size Map Ready : " + String.valueOf(dataset.size()));
+//            Log.d("dataset","Dataset Size Map Ready : " + String.valueOf(dataset.size()));
 
         }else
         {

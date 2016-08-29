@@ -215,7 +215,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
                 if (response.code() == 200)
                 {
-                    Toast.makeText(EditProfile.this,"Update Successful !",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfile.this,getString(R.string.udate_successful_api_response),Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -223,7 +223,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Network request failed !");
+                showToastMessage(getString(R.string.network_not_available));
             }
         });
     }
@@ -376,7 +376,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
         if (response.code() != 201) {
 
-                showToastMessage("Image Upload error at the server !");
+                showToastMessage(getString(R.string.api_response_image_upload_failed));
 
         }
 
@@ -399,7 +399,7 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
     public void onFailure(Call<Image> call, Throwable t) {
 
 
-        showToastMessage("Image Upload failed !");
+        showToastMessage(getString(R.string.api_response_image_upload_failed));
 
         memberForEdit.setProfileImageURL("");
 
@@ -416,14 +416,14 @@ public class EditProfile extends AppCompatActivity implements Callback<Image> {
 
             if(response.code()==200)
             {
-                showToastMessage("Previous Image removed !");
+                showToastMessage(getString(R.string.api_response_previous_image_removed));
             }
         }
 
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-            showToastMessage("Image remove failed !");
+            showToastMessage(getString(R.string.api_response_image_remove_failed));
 
         }
     }

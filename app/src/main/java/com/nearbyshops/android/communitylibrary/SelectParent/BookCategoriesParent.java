@@ -296,7 +296,7 @@ public class BookCategoriesParent extends AppCompatActivity
             @Override
             public void onFailure(Call<BookCategoryEndpoint> call, Throwable t) {
 
-                showToastMessage("Network request failed. Please check your connection !");
+                showToastMessage(getString(R.string.network_not_available));
             }
         });
 
@@ -478,7 +478,7 @@ public class BookCategoriesParent extends AppCompatActivity
     {
         if(listAdapter.getSelection()==null)
         {
-            showToastMessage("No item selected. Please make a selection !");
+            showToastMessage(getString(R.string.no_item_selected));
             return;
         }
 

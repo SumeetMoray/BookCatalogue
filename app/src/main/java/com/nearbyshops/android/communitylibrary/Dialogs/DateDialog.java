@@ -28,7 +28,7 @@ public class DateDialog extends DialogFragment
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
 
 
-        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+//        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
 
 
 

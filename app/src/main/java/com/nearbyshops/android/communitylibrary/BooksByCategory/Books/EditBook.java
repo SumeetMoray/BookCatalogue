@@ -29,6 +29,7 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -58,7 +59,7 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
     @BindView(R.id.bookDescription) EditText bookDescription;
     @BindView(R.id.publisher_name) EditText publisherName;
     @BindView(R.id.pages_total) EditText pagesTotal;
-    @BindView(R.id.set_date) TextView dateText;
+//    @BindView(R.id.set_date) TextView dateText;
 
     @BindView(R.id.itemID) EditText itemID;
     @BindView(R.id.saveButton) Button buttonUpdateItem;
@@ -182,6 +183,15 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
             pagesTotal.setText(String.valueOf(itemForEdit.getPagesTotal()));
 
+
+            calendar.setTimeInMillis(itemForEdit.getDateOfPublishInMillis());
+            setDateTimeLabel();
+
+
+
+
+
+
 /*
             if(itemForEdit.getDateOfPublish()!=null)
             {
@@ -196,7 +206,7 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
 
 
-    Timestamp date;
+
 
 
 
@@ -213,15 +223,6 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
         Log.d("date",date.toGMTString());
     }
 
-
-
-    @OnClick(R.id.set_date)
-    void setDateClick()
-    {
-        DialogFragment newFragment = new DateDialog();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-
-    }
 
 
     void getDataFromEditText(Book book)
@@ -244,6 +245,7 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 //        itemForEdit.setDateOfPublish();
 
 
+            itemForEdit.setDateOfPublish(new Timestamp(calendar.getTimeInMillis()));
 
             itemForEdit.setNameOfPublisher(publisherName.getText().toString());
 
@@ -472,10 +474,6 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
     }
 
-    @Override
-    public void onDateNotified(int year, int month, int day) {
-
-    }
 
 
     private class DeleteImageCallback implements Callback<ResponseBody> {
@@ -497,4 +495,70 @@ public class EditBook extends AppCompatActivity implements Callback<Image> , Dat
 
         }
     }
+
+
+
+
+    // Code for Setting and Editing Date of Publish
+
+
+    Timestamp date;
+
+    @BindView(R.id.set_date)
+    TextView dateText;
+
+
+    int year, month, day = -1;
+    int hourOfDay, minutes = -1;
+
+    Calendar calendar = Calendar.getInstance();
+
+    @BindView(R.id.date_time_label)
+    TextView labelDateTime;
+
+    boolean isDateSet = false;
+
+
+
+
+    @OnClick(R.id.set_date)
+    void setDateClick()
+    {
+        DialogFragment newFragment = new DateDialog();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+
+
+    @Override
+    public void onDateNotified(int year, int month, int day) {
+
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DATE,day);
+
+//        dateText.setText("Date of Meetup :\n" + calendar.getTime().toString());
+
+        isDateSet = true;
+
+        setDateTimeLabel();
+    }
+
+
+
+    void setDateTimeLabel()
+    {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d ''yyyy");
+        labelDateTime.setText("Date of Publish : " + dateFormat.format(calendar.getTime()));
+//        labelDateTime.setText(calendar.getTime().toString());
+    }
+
+    // Code for Setting and Editing Date of Publish : Ends
 }

@@ -105,7 +105,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         if(rating_count == 0)
         {
 //            holder.bookRating.setText("Not Yet Rated");
-            rv.setTextViewText(R.id.book_rating,"Not Yet Rated");
+            rv.setTextViewText(R.id.book_rating,mContext.getString(R.string.rating_not_available));
 
         }else
         {

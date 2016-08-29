@@ -112,14 +112,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
             holder.bookTitle.setText(dataset.get(position).getBookName());
         }else
         {
-            holder.bookTitle.setText("Title Book ");
+            holder.bookTitle.setText(R.string.book_title_not_available);
 
         }
 
 
         if(rating_count == 0)
         {
-            holder.bookRating.setText("Not Yet Rated");
+            holder.bookRating.setText(R.string.book_ratings_not_available);
 
         }else
         {
@@ -198,6 +198,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
             }
 
             Intent intent = new Intent(context, BookDetail.class);
+
+            // the timestamp is not parcelable hence we save timestamp into long
+
+            if(dataset.get(getLayoutPosition()).getDateOfPublish()!=null)
+            {
+                dataset.get(getLayoutPosition())
+                        .setDateOfPublishInMillis(
+                                dataset.get(getLayoutPosition()).getDateOfPublish().getTime()
+                        );
+            }
+
             intent.putExtra(BookDetail.BOOK_DETAIL_INTENT_KEY,dataset.get(getLayoutPosition()));
             context.startActivity(intent);
         }
@@ -241,31 +252,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
 
 
-
-        /*@OnClick(R.id.itemCategoryListItem)
-        public void itemCategoryListItemClick()
-        {
-
-            if (dataset == null) {
-
-                return;
-            }
-
-            if(dataset.size()==0)
-            {
-                return;
-            }
-
-
-
-//            notificationReceiver.notifyRequestSubCategory(dataset.get(getLayoutPosition()));
-
-//            selectedItems.clear();
-
-        }
-
-
-*/
         public void deleteItemCategory()
         {
 
@@ -305,7 +291,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    showToastMessage("Network request failed ! Please check your connection!");
+                    showToastMessage(context.getString(R.string.network_not_available));
                 }
             });
         }
@@ -331,21 +317,21 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder>{
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                    builder.setTitle("Confirm Delete Book !")
-                            .setMessage("Do you want to delete this Book ?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.alert_title_confirm_delete_book)
+                            .setMessage(R.string.alert_message_delete_book)
+                            .setPositiveButton(context.getString(R.string.alert_dialog_yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     deleteItemCategory();
                                 }
                             })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(context.getString(R.string.alert_dialog_no), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
 
-                                    showToastMessage("Cancelled !");
+                                    showToastMessage(context.getString(R.string.alert_dialog_cancelled));
                                 }
                             })
                             .show();

@@ -28,6 +28,8 @@ public class Book implements Parcelable{
     // ! ---- To Be Introduced
 
     public static final String DATE_OF_PUBLISH = "DATE_OF_PUBLISH";
+    public static final String DATE_OF_PUBLISH_LONG = "DATE_LONG";
+
     public static final String PUBLISHER_NAME = "PUBLISHER_NAME";
     public static final String PAGES_TOTAL = "PAGES_TOTAL";
     public static final String ISBN = "ISBN";
@@ -83,7 +85,10 @@ public class Book implements Parcelable{
     private Timestamp timestampCreated;
     private Timestamp timeStampUpdated;
 
-//    private Timestamp dateOfPublish;
+    private Timestamp dateOfPublish;
+    private long dateOfPublishInMillis;
+
+
     private String nameOfPublisher;
     private int pagesTotal;
 
@@ -96,10 +101,6 @@ public class Book implements Parcelable{
     public Book() {
     }
 
-
-    // Getter and Setters
-
-
     protected Book(Parcel in) {
         bookID = in.readInt();
         bookCategoryID = in.readInt();
@@ -108,13 +109,11 @@ public class Book implements Parcelable{
         backdropImageURL = in.readString();
         authorName = in.readString();
         bookDescription = in.readString();
+        dateOfPublishInMillis = in.readLong();
         nameOfPublisher = in.readString();
         pagesTotal = in.readInt();
         rt_rating_avg = in.readFloat();
         rt_rating_count = in.readFloat();
-
-//        dateOfPublish = new Timestamp(in.readLong());
-
     }
 
     @Override
@@ -126,15 +125,11 @@ public class Book implements Parcelable{
         dest.writeString(backdropImageURL);
         dest.writeString(authorName);
         dest.writeString(bookDescription);
+        dest.writeLong(dateOfPublishInMillis);
         dest.writeString(nameOfPublisher);
         dest.writeInt(pagesTotal);
         dest.writeFloat(rt_rating_avg);
         dest.writeFloat(rt_rating_count);
-
-//        if(dateOfPublish!=null)
-//        {
-//            dest.writeLong(dateOfPublish.getTime());
-//        }
     }
 
     @Override
@@ -153,6 +148,25 @@ public class Book implements Parcelable{
             return new Book[size];
         }
     };
+
+    public Timestamp getDateOfPublish() {
+        return dateOfPublish;
+    }
+
+    public void setDateOfPublish(Timestamp dateOfPublish) {
+        this.dateOfPublish = dateOfPublish;
+    }
+
+// Getter and Setters
+
+
+    public long getDateOfPublishInMillis() {
+        return dateOfPublishInMillis;
+    }
+
+    public void setDateOfPublishInMillis(long dateOfPublishInMillis) {
+        this.dateOfPublishInMillis = dateOfPublishInMillis;
+    }
 
     public float getRt_rating_avg() {
         return rt_rating_avg;

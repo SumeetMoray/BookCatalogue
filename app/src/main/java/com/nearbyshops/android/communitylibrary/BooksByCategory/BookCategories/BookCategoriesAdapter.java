@@ -273,7 +273,7 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    showToastMessage("Network request failed ! Please check your connection!");
+                    showToastMessage(context.getString(R.string.network_not_available));
                 }
             });
         }
@@ -299,21 +299,21 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                    builder.setTitle("Confirm Delete Book Category !")
-                            .setMessage("Do you want to delete this Book Category ?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.alert_title_delete_book_category)
+                            .setMessage(R.string.alert_message_delete_book_category)
+                            .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     deleteItemCategory();
                                 }
                             })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(R.string.alert_dialog_no, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
 
-                                    showToastMessage("Cancelled !");
+                                    showToastMessage(context.getString(R.string.alert_dialog_cancelled));
                                 }
                             })
                             .show();

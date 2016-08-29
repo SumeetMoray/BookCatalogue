@@ -368,7 +368,7 @@ public class RateReviewDialog extends DialogFragment{
 
                     if (response.code()==200)
                     {
-                        showToastMessage("Updated !");
+                        showToastMessage(getString(R.string.udate_successful_api_response));
 
                         if(getActivity() instanceof NotifyReviewUpdate)
                         {
@@ -384,7 +384,7 @@ public class RateReviewDialog extends DialogFragment{
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    showToastMessage("Failed to Update !");
+                    showToastMessage(getString(R.string.api_response_no_item_updated));
                 }
             });
 

@@ -1,10 +1,7 @@
 package com.nearbyshops.android.communitylibrary.BooksByCategory;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
@@ -102,7 +99,7 @@ public class BookCategoriesTabs extends AppCompatActivity
 
         fab_menu = (FloatingActionMenu) findViewById(R.id.menu_red);
 
-        getSupportActionBar().setTitle("Book Categories");
+        getSupportActionBar().setTitle(R.string.title_activity_book_categories_tabs);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -229,7 +226,7 @@ public class BookCategoriesTabs extends AppCompatActivity
     @Override
     public void itemCategoryChanged(BookCategory currentCategory, boolean backPressed) {
 
-        Log.d("applog","Item Category Changed : " + currentCategory.getBookCategoryName() + " : " + String.valueOf(currentCategory.getBookCategoryID()));
+//        Log.d("applog","Item Category Changed : " + currentCategory.getBookCategoryName() + " : " + String.valueOf(currentCategory.getBookCategoryID()));
 
 
         getSupportActionBar().setTitle(currentCategory.getBookCategoryName());
@@ -271,7 +268,7 @@ public class BookCategoriesTabs extends AppCompatActivity
 
 //        dy = -dy;
 
-        Log.d("translationz", String.valueOf(dy));
+//        Log.d("translationz", String.valueOf(dy));
 
 
         /*if(exampleButton.getTranslationY()==0)
@@ -481,15 +478,15 @@ public class BookCategoriesTabs extends AppCompatActivity
 
         if(position==0)
         {
-            fab_add.setLabelText("Add Book Category");
-            fab_change_parent.setLabelText("Change Parent for Selected Categories");
+            fab_add.setLabelText(getString(R.string.fab_label_add_book_category));
+            fab_change_parent.setLabelText(getString(R.string.fab_label_change_parent_categories));
 
             fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.phonographyBlue));
 
         }else if(position == 1)
         {
-            fab_add.setLabelText("Add Book");
-            fab_change_parent.setLabelText("Change Category for Selected Books");
+            fab_add.setLabelText(getString(R.string.fab_label_add_book));
+            fab_change_parent.setLabelText(getString(R.string.fab_label_change_parent_for_books));
             fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.orangeDark));
 
         }

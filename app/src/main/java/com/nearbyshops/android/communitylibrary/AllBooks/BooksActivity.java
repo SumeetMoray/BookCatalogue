@@ -2,7 +2,6 @@ package com.nearbyshops.android.communitylibrary.AllBooks;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -29,6 +28,7 @@ import com.nearbyshops.android.communitylibrary.ModelEndpoint.BookEndpoint;
 import com.nearbyshops.android.communitylibrary.R;
 import com.nearbyshops.android.communitylibrary.RetrofitRestContract.BookService;
 import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
+import com.nearbyshops.android.communitylibrary.zzzDeprecatedCode.AllBookAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,6 +166,11 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
 
     void setOfflineMessage(boolean isOffline)
     {
+        if(offlineMessage==null)
+        {
+            return;
+        }
+
         if(isOffline)
         {
             offlineMessage.setVisibility(View.VISIBLE);
@@ -354,6 +359,7 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
                 }
 
 
+
                 setOfflineMessage(false);
 
                 stopRefresh();
@@ -390,6 +396,11 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
             values.put(Book.AUTHOR_NAME,book.getAuthorName());
             values.put(Book.BOOK_DESCRIPTION,book.getBookDescription());
 //            values.put(Book.TIMESTAMP_CREATED,book.getTimestampCreated());
+            if(book.getDateOfPublish()!=null)
+            {
+                values.put(Book.DATE_OF_PUBLISH_LONG,book.getDateOfPublish().getTime());
+            }
+
             values.put(Book.PUBLISHER_NAME,book.getNameOfPublisher());
             values.put(Book.PAGES_TOTAL,book.getPagesTotal());
             values.put(Book.RT_RATING_AVG,book.getRt_rating_avg());

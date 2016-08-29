@@ -94,7 +94,7 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
             case R.id.dialog_dismiss_icon:
 
                 dismiss();
-                Toast.makeText(getActivity(),"Dismissed !",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.dialog_dismissed,Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -137,13 +137,13 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
 
                 if(response.code()== 401)
                 {
-                    showToastMessage("Login Unauthorized. Please check username or password !");
+                    showToastMessage(getString(R.string.toast_login_unauthorized));
                 }else
                 {
                     if(UtilityGeneral.getUser(getActivity())!=null)
                     {
 
-                        showToastMessage("Login Successful !");
+                        showToastMessage(getString(R.string.toast_login_successful));
 
                         if(getActivity() instanceof NotifyAboutLogin)
                         {
@@ -162,7 +162,7 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener 
             public void onFailure(Call<Member> call, Throwable t) {
 
 
-                showToastMessage("Network request failed. Check Internet Connection !");
+                showToastMessage(getString(R.string.network_not_available));
 
             }
         });

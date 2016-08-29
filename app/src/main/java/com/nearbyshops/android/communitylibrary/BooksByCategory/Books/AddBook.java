@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.DaggerComponentBuilder;
 import com.nearbyshops.android.communitylibrary.Dialogs.DateDialog;
+import com.nearbyshops.android.communitylibrary.Dialogs.DateDialogMeetup;
 import com.nearbyshops.android.communitylibrary.Model.Book;
 import com.nearbyshops.android.communitylibrary.Model.BookCategory;
 import com.nearbyshops.android.communitylibrary.Model.Image;
@@ -34,6 +35,7 @@ import com.yalantis.ucrop.UCrop;
 import java.io.File;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -54,7 +56,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
     boolean isImageAdded = false;
 
-    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
+//    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
 
     @BindView(R.id.bookName)
     EditText bookName;
@@ -117,11 +119,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
 
 
-    Timestamp date;
-
-    @BindView(R.id.set_date)
-    TextView dateText;
-
 
     public void onDateNotified(Calendar calendar) {
 
@@ -130,18 +127,10 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
         dateText.setText("Date of Publish :\n" + date.toString());
 
 
-        Log.d("date",date.toGMTString());
+//        Log.d("date",date.toGMTString());
     }
 
 
-
-    @OnClick(R.id.set_date)
-    void setDateClick()
-    {
-        DialogFragment newFragment = new DateDialog();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-
-    }
 
 
     void addNewItem(String imagePath) {
@@ -166,10 +155,11 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
         itemForEdit.setBookName(bookName.getText().toString());
         itemForEdit.setAuthorName(authorName.getText().toString());
         itemForEdit.setBookDescription(bookDescription.getText().toString());
+
+
 //        itemForEdit.setDateOfPublish(dateOfPublish.getText().toString());
 
-
-
+        itemForEdit.setDateOfPublish(new Timestamp(calendar.getTimeInMillis()));
 
         itemForEdit.setNameOfPublisher(publisherName.getText().toString());
 
@@ -189,7 +179,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
                 if (response.code() == 201) {
                     //showMessageSnackBar("Item added Successfully !");
-                    showToastMessage("Item added Successfully !");
+                    showToastMessage(getString(R.string.create_book_successful));
                 }
 
                 //Item responseItem = response.body();
@@ -202,7 +192,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
                 //showMessageSnackBar("Network request failed !");
 
-                showToastMessage("Network request failed ! ");
+                showToastMessage(getString(R.string.network_not_available));
 
             }
         });
@@ -229,9 +219,6 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
-
 
 
 
@@ -400,7 +387,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
 
             addNewItem(null);
 
-            showToastMessage("Image upload failed !");
+            showToastMessage(getString(R.string.image_upload_failed));
         }
 
     }
@@ -409,7 +396,7 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     public void onFailure(Call<Image> call, Throwable t) {
 
 
-        showToastMessage("Image upload failed !");
+        showToastMessage(getString(R.string.image_upload_failed));
 
         addNewItem(null);
     }
@@ -420,8 +407,68 @@ public class AddBook extends AppCompatActivity implements Callback<Image> , Date
     }
 
 
+
+
+
+    Timestamp date;
+
+    @BindView(R.id.set_date)
+    TextView dateText;
+
+
+    int year, month, day = -1;
+    int hourOfDay, minutes = -1;
+
+    Calendar calendar = Calendar.getInstance();
+
+    @BindView(R.id.date_time_label)
+    TextView labelDateTime;
+
+    boolean isDateSet = false;
+
+
+
+
+    @OnClick(R.id.set_date)
+    void setDateClick()
+    {
+        DialogFragment newFragment = new DateDialog();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+
+
     @Override
     public void onDateNotified(int year, int month, int day) {
 
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DATE,day);
+
+//        dateText.setText("Date of Meetup :\n" + calendar.getTime().toString());
+
+        isDateSet = true;
+
+        setDateTimeLabel();
     }
+
+
+
+    void setDateTimeLabel()
+    {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format_simple));
+        labelDateTime.setText("Date of Publish : " + dateFormat.format(calendar.getTime()));
+//        labelDateTime.setText(calendar.getTime().toString());
+    }
+
+
+
+
 }

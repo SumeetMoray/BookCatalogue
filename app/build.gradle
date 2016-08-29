@@ -2,6 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
+    signingConfigs {
+            release {
+                keyAlias 'sumeet'
+                keyPassword 'password'
+                storeFile file('androidudacity.jks')
+                storePassword 'abcde12345'
+            }
+    }
+
+    //storeFile file('/media/sumeet/data/BookDiscovery/keystore/androidudacity.jks')
+
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
@@ -13,69 +24,47 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
         }
     }
-
-
     repositories {
         maven { url "https://clojars.org/repo/" }
-    }
 
+        jcenter()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-
     compile 'com.android.support:multidex:1.0.1'
-
     //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
-
     // Butterknife
-
-    
-
     // Retrofit Dependencies
-
-    
     // Picasso : Image Loading library
-    
     // Ucrop : Image Crop Utility Library
-    
-
     // Android Support Library Dependencies
-    
     // ice pack dependencies
-
-    
     // palette support library
-
-    
     // floating action button with menu
-
-    
     // dagger 2 dependencies
-
-    
-
-
-//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
-    
+    //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
     // Stetho library
-
-    
-
     // google play services Maps and Location
-
-    
     compile 'com.jakewharton:butterknife:8.2.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
@@ -100,6 +89,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.6'
     provided 'frankiesardo:icepick-processor:3.2.0'
     provided 'javax.annotation:jsr250-api:1.0'
-
     compile 'com.wunderlist:sliding-layer:1.2.5'
+    /*Android validation library : Saripaar*/
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 }

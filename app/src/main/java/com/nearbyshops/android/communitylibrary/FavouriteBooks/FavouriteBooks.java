@@ -224,7 +224,7 @@ public class FavouriteBooks extends AppCompatActivity implements SwipeRefreshLay
         {
 
             swipeContainer.setRefreshing(false);
-            showToastMessage("You are not logged in !");
+            showToastMessage(getString(R.string.login_message_user_not_logged_in));
             return;
 
         }
@@ -252,7 +252,7 @@ public class FavouriteBooks extends AppCompatActivity implements SwipeRefreshLay
             @Override
             public void onFailure(Call<BookEndpoint> call, Throwable t) {
 
-                showToastMessage("Network Request failed !");
+                showToastMessage(getString(R.string.network_not_available));
 
                 swipeContainer.setRefreshing(false);
 

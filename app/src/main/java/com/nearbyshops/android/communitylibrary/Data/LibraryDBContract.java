@@ -46,6 +46,7 @@ public class LibraryDBContract {
                         Book.TIMESTAMP_UPDATED,
 
                         Book.DATE_OF_PUBLISH,
+                        Book.DATE_OF_PUBLISH_LONG,
                         Book.PUBLISHER_NAME,
                         Book.PAGES_TOTAL,
 

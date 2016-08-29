@@ -119,7 +119,7 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
             case R.id.dialog_dismiss_icon:
 
                 dismiss();
-                Toast.makeText(getActivity(),"Dismissed !",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),getString(R.string.dialog_dismissed),Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -248,10 +248,10 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
             NotifySort notifySort = (NotifySort) getActivity();
             notifySort.applySort(sort_by,whetherDescending);
 
-            showToastMessage("Applied !");
+            showToastMessage(getString(R.string.sort_dialog_sort_applied));
         }else
         {
-            showToastMessage("Unable to apply !");
+            showToastMessage(getString(R.string.sort_dialog_sort_unable_to_apply));
         }
 
 
@@ -265,7 +265,7 @@ public class SortFIlterBookDialog extends DialogFragment implements View.OnClick
     void cancel_click()
     {
 
-        showToastMessage("Cancelled !");
+        showToastMessage(getString(R.string.alert_dialog_cancelled));
         dismiss();
     }
 

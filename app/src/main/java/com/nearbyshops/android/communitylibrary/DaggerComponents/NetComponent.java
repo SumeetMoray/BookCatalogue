@@ -2,7 +2,7 @@ package com.nearbyshops.android.communitylibrary.DaggerComponents;
 
 
 
-import com.nearbyshops.android.communitylibrary.AllBooks.Backups.BooksActivityBackup;
+import com.nearbyshops.android.communitylibrary.zzzDeprecatedCode.BooksActivityBackup;
 import com.nearbyshops.android.communitylibrary.AllBooks.BooksActivity;
 import com.nearbyshops.android.communitylibrary.BookDetails.BookDetail;
 import com.nearbyshops.android.communitylibrary.BookMeetups.AddBookMeetup;

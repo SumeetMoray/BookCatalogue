@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs;
@@ -40,7 +38,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 import okhttp3.ResponseBody;
@@ -391,6 +388,10 @@ public class BookFragment extends Fragment
             @Override
             public void onResponse(Call<BookEndpoint> call, Response<BookEndpoint> response) {
 
+                if(isFragmentStopped)
+                {
+                    return;
+                }
 
                 item_count = response.body().getItemCount();
 
@@ -413,7 +414,13 @@ public class BookFragment extends Fragment
             @Override
             public void onFailure(Call<BookEndpoint> call, Throwable t) {
 
-                showToastMessage("Network request failed. Please check your connection !");
+                if(isFragmentStopped)
+                {
+                    return;
+                }
+
+
+                showToastMessage(getString(R.string.network_not_available));
                 swipeContainer.setRefreshing(false);
 
             }
@@ -422,6 +429,15 @@ public class BookFragment extends Fragment
     }
 
 
+    boolean isFragmentStopped = false;
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        isFragmentStopped = true;
+    }
 
     private void showToastMessage(String message)
     {
@@ -447,6 +463,8 @@ public class BookFragment extends Fragment
     public void onResume() {
         super.onResume();
 
+        // reset the flag
+        isFragmentStopped = false;
 
 
 //        swipeContainer.post(new Runnable() {
@@ -553,7 +571,7 @@ public class BookFragment extends Fragment
 
                 if(response.code() == 200)
                 {
-                    showToastMessage("Change Parent Successful !");
+                    showToastMessage(getString(R.string.change_parent_successful));
 
 //                    dataset.clear();
 //                    offset = 0 ; // reset the offset
@@ -563,7 +581,7 @@ public class BookFragment extends Fragment
 
                 }else
                 {
-                    showToastMessage("Change Parent Failed !");
+                    showToastMessage(getString(R.string.change_parent_failed));
                 }
 
                 listAdapter.setRequestedChangeParent(null);
@@ -572,7 +590,7 @@ public class BookFragment extends Fragment
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Network request failed. Please check your connection !");
+                showToastMessage(getString(R.string.network_not_available));
 
                 listAdapter.setRequestedChangeParent(null);
 
@@ -587,7 +605,7 @@ public class BookFragment extends Fragment
 
         if(listAdapter.selectedItems.size()==0)
         {
-            showToastMessage("No item selected. Please make a selection !");
+            showToastMessage(getString(R.string.change_parent_no_item_selected));
 
             return;
         }
@@ -618,24 +636,24 @@ public class BookFragment extends Fragment
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.code() == 200)
                 {
-                    showToastMessage("Update Successful !");
+                    showToastMessage(getString(R.string.udate_successful_api_response));
 
                     clearSelectedItems();
 
                 }else if (response.code() == 206)
                 {
-                    showToastMessage("Partially Updated. Check data changes !");
+                    showToastMessage(getString(R.string.api_response_partially_updated));
 
                     clearSelectedItems();
 
                 }else if(response.code() == 304)
                 {
 
-                    showToastMessage("No item updated !");
+                    showToastMessage(getString(R.string.api_response_no_item_updated));
 
                 }else
                 {
-                    showToastMessage("Unknown server error or response !");
+                    showToastMessage(getString(R.string.api_response_unknown_server_error));
                 }
 
 
@@ -649,7 +667,7 @@ public class BookFragment extends Fragment
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
 
-                showToastMessage("Network Request failed. Check your internet / network connection !");
+                showToastMessage(getString(R.string.network_not_available));
 
             }
         });

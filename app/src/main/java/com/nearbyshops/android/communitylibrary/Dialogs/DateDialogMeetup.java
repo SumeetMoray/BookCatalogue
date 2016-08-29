@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.Window;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -26,7 +27,9 @@ public class DateDialogMeetup extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
-        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+//        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         // Create a new instance of DatePickerDialog and return it
         return dialog;

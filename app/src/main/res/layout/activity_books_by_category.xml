@@ -69,6 +69,7 @@
 
 
     <com.github.clans.fab.FloatingActionMenu
+        android:contentDescription="@string/floating_action_menu"
         android:id="@+id/menu_red"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -87,6 +88,7 @@
         <!--android:src="@drawable/fab_add"-->
 
         <com.github.clans.fab.FloatingActionButton
+            android:contentDescription="@string/add_book_category"
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,6 +101,7 @@
         <!--app:fab_colorPressed="@color/blueGrey800"-->
 
         <com.github.clans.fab.FloatingActionButton
+            android:contentDescription="@string/content_description_change_parent_for_selected"
             android:id="@+id/fab_change_parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

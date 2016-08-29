@@ -39,7 +39,9 @@ import com.nearbyshops.android.communitylibrary.Utility.UtilityGeneral;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -188,7 +190,8 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
             }
 
             authorName.setText(book.getAuthorName());
-            publisherName.setText(book.getNameOfPublisher());
+
+            publisherName.setText("Published By : " + book.getNameOfPublisher());
 
             /*if(book.getDateOfPublish()!=null)
             {
@@ -202,7 +205,19 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 publishDate.setText(dateFormat.format(book.getDateOfPublish()));
             }*/
 
+            if(book.getDateOfPublishInMillis()==0)
+            {
+                publishDate.setText(R.string.book_date_of_publish_not_available);
 
+            }else
+            {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(book.getDateOfPublishInMillis());
+                SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format_simple));
+
+                //"MMMM d ''yyyy"
+                publishDate.setText(getString(R.string.date_of_publish) + dateFormat.format(calendar.getTime()));
+            }
 
 
             // set Book Cover Image
@@ -226,8 +241,8 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
 
             if (book.getRt_rating_count() == 0) {
 
-                ratingText.setText("Rating : N/A");
-                ratingsCount.setText(("Not Yet Rated !"));
+                ratingText.setText(R.string.rating_not_available);
+                ratingsCount.setText((getString(R.string.not_yet_rated)));
                 ratingsBar.setVisibility(View.GONE);
 
             } else {
@@ -281,7 +296,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 user_review_ratings_block.setVisibility(View.VISIBLE);
                 edit_review_block.setVisibility(View.GONE);
 
-                edit_review_text.setText("Be the first to review and rate this book. ");
+                edit_review_text.setText(R.string.book_review_be_the_first_to_review);
             } else if (book.getRt_rating_count() > 0) {
 
 

@@ -234,13 +234,13 @@ public class HomeActivity extends AppCompatActivity
         if(UtilityGeneral.getUser(this)==null)
         {
             // No user Logged in !
-            navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Login");
+            navigationView.getMenu().findItem(R.id.nav_camera).setTitle(R.string.nav_menu_label_login);
 
 
         }else
         {
             // user already logged in !
-            navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
+            navigationView.getMenu().findItem(R.id.nav_camera).setTitle(R.string.nav_menu_label_logout);
             navigationView.getMenu().getItem(1).setVisible(true);
 
         }
@@ -253,7 +253,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void NotifyLogin()
     {
-        navigationView.getMenu().findItem(R.id.nav_camera).setTitle("Logout !");
+        navigationView.getMenu().findItem(R.id.nav_camera).setTitle(getString(R.string.nav_menu_label_logout));
 //        showToastMessage("User ID : " + String.valueOf(UtilityGeneral.getUserID(this)));
 
 //        UtilityGeneral.saveUser(null,this);
@@ -314,9 +314,9 @@ public class HomeActivity extends AppCompatActivity
                 UtilityGeneral.saveUser(null,this);
                 UtilityGeneral.saveUserID(-1);
 
-                showToastMessage("Logged Out !");
+                showToastMessage(getString(R.string.toast_user_logged_out));
                 navigationView.getMenu().getItem(1).setVisible(false);
-                item.setTitle("Login");
+                item.setTitle(getString(R.string.nav_menu_label_login));
                 setNavigationHeader();
             }
 
@@ -562,14 +562,14 @@ public class HomeActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
 
 
-                showToastMessage("Permission granted !");
+                showToastMessage(getString(R.string.toast_permission_granted));
 
                 onConnected(null);
 
             } else {
 
 
-                showToastMessage("Permission not granted !");
+                showToastMessage(getString(R.string.toast_permission_not_granted));
             }
         }
     }
@@ -750,7 +750,7 @@ public class HomeActivity extends AppCompatActivity
                 }
                 else
                 {
-                    showToastMessage("Permission denied cant access location !");
+                    showToastMessage(getString(R.string.toast_permission_denied_location));
                 }
 
 
@@ -768,7 +768,7 @@ public class HomeActivity extends AppCompatActivity
                 }
                 else
                 {
-                    showToastMessage("Permission denied cant access location !");
+                    showToastMessage(getString(R.string.toast_permission_denied_location));
                 }
 
 

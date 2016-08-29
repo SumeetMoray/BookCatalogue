@@ -59,7 +59,7 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
 
         if(currentMarker==null)
         {
-            Toast.makeText(this,"Location not selected !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_location_not_selected, Toast.LENGTH_SHORT).show();
 
             return;
         }

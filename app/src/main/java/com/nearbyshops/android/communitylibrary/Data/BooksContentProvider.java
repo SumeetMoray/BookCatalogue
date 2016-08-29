@@ -30,6 +30,7 @@ public class BooksContentProvider extends ContentProvider{
         URI_MATCHER.addURI(LibraryDBContract.AUTHORITY,Book.TABLE_NAME,BOOK_ITEM_LIST);
 //        URI_MATCHER.addURI(MoviesContract.AUTHORITY, Book.TABLE_NAME +"/#",BOOK_ITEM_ID);
 
+
     }
 
 
@@ -153,7 +154,6 @@ public class BooksContentProvider extends ContentProvider{
         getContext().getContentResolver().notifyChange(uri,null);
 
 
-
         return delCount;
     }
 
@@ -169,8 +169,5 @@ public class BooksContentProvider extends ContentProvider{
 
         return rowsUpdated;
     }
-
-
-
 
 }
