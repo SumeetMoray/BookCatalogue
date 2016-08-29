@@ -101,7 +101,7 @@
             android:id="@+id/rating_text"
             android:layout_marginTop="10dp"
             android:textSize="24sp"
-            android:gravity="right"
+            android:gravity="end"
             android:text="Rating : 4.3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -190,19 +190,23 @@
             <TextView
                 android:id="@+id/member_name"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/member_profile_image"
+                android:layout_toEndOf="@id/member_profile_image"
                 android:text="Member Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:background="@color/Gray88Alpha"
                 android:textColor="@color/white"
                 android:text="YOU"
                 android:layout_toRightOf="@id/member_name"
+                android:layout_toEndOf="@id/member_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -210,17 +214,21 @@
                 android:rating="4"
                 android:id="@+id/member_rating"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_below="@id/member_name"
                 android:layout_toRightOf="@id/member_profile_image"
+                android:layout_toEndOf="@id/member_profile_image"
                 style="@style/Base.Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="2015-sep-15"
                 android:layout_below="@id/member_rating"
                 android:layout_toRightOf="@id/member_profile_image"
+                android:layout_toEndOf="@id/member_profile_image"
                 android:id="@+id/review_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -231,7 +239,9 @@
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/member_profile_image"
+                android:layout_toEndOf="@id/member_profile_image"
                 android:layout_below="@id/member_profile_image"
                 android:text="Review Title"
                 android:layout_width="wrap_content"
@@ -241,7 +251,9 @@
                 android:id="@+id/review_description"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/member_profile_image"
+                android:layout_toEndOf="@id/member_profile_image"
                 android:layout_below="@id/review_title"
                 android:text="Review Description"
                 android:layout_width="wrap_content"
@@ -253,6 +265,7 @@
                 android:gravity="center"
                 android:id="@+id/edit_review_label"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:text="EDIT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -262,14 +275,13 @@
                 android:layout_alignTop="@id/edit_review_label"
                 android:layout_alignBottom="@id/edit_review_label"
                 android:layout_toLeftOf="@id/edit_review_label"
+                android:layout_toStartOf="@id/edit_review_label"
                 app:srcCompat="@drawable/ic_edit_black_18px"
                 android:id="@+id/edit_icon"
                 android:layout_width="30dp"
                 android:layout_height="25dp" />
 
         </RelativeLayout>
-
-
 
         <LinearLayout
             android:layout_below="@id/edit_review_block"

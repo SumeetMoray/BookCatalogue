@@ -24,8 +24,6 @@ public class BooksDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
 
-
-
         // CreateTableStatement
         String createBookCategory = "CREATE TABLE IF NOT EXISTS "
                 + BookCategory.TABLE_NAME + "("

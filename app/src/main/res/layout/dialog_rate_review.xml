@@ -17,6 +17,7 @@
         <ImageView
             android:contentDescription="@string/content_description_close_dialog"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/dialog_dismiss_icon"
             app:srcCompat="@drawable/ic_clear_black_24px"
             android:layout_width="50dp"
@@ -42,6 +43,7 @@
             android:layout_marginEnd="10dp"
             android:background="#000000"
             android:layout_alignLeft="@id/dialog_dismiss_icon"
+            android:layout_alignStart="@id/dialog_dismiss_icon"
             android:layout_alignTop="@id/dialog_dismiss_icon"
             android:layout_alignBottom="@id/dialog_dismiss_icon"
             android:layout_width="1dp"
@@ -61,7 +63,9 @@
             android:gravity="center"
             android:text="by Member Name"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/member_name"
+            android:layout_toEndOf="@id/member_profile_image"
             android:layout_toRightOf="@id/member_profile_image"
             android:layout_alignTop="@id/member_profile_image"
             android:layout_width="wrap_content"
@@ -155,6 +159,7 @@
         <TextView
             android:visibility="gone"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
             android:layout_below="@id/login_button_row"
             android:text="Forgot Password ?"

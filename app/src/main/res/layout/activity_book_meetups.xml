@@ -114,6 +114,7 @@
 
                         android:id="@+id/sort_by_distance"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:padding="10dp"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -137,6 +138,7 @@
                         android:id="@+id/sort_by_meetup_time"
                         android:layout_below="@id/sort_bar"
                         android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingLeft="2dp"
@@ -181,6 +183,7 @@
                     <TextView
                         android:id="@+id/sort_descending"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:background="#22000000"
                         android:padding="10dp"
                         android:gravity="center"

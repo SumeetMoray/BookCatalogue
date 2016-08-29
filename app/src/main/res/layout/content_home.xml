@@ -19,7 +19,7 @@
 
 
         <TextView
-            android:gravity="right"
+            android:gravity="end"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -49,7 +49,7 @@
 
 
         <TextView
-            android:gravity="right"
+            android:gravity="end"
             android:layout_below="@id/usage_instructions"
             android:layout_marginTop="10dp"
             android:padding="5dp"
@@ -76,6 +76,7 @@
             <TextView
                 android:gravity="center"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:id="@+id/text_update"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -94,7 +95,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignLeft="@id/text_update"
+                android:layout_alignStart="@id/text_update"
                 android:text="Latitude    : 00.0000\nLongitude : 00.0000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,8 +110,10 @@
             <TextView
                 android:id="@+id/text_address"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
                 android:layout_toLeftOf="@id/text_lat_lon"
+                android:layout_toStartOf="@id/text_lat_lon"
                 android:layout_marginTop="10dp"
                 android:text="Address : "
                 android:layout_width="wrap_content"
@@ -138,8 +143,10 @@
                 android:layout_height="match_parent"/>
 
             <RelativeLayout
+                android:contentDescription="@string/content_description_all_books"
                 android:id="@+id/option_all_books"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:background="@color/blueGrey800"
                 android:layout_width="0dp"
@@ -149,7 +156,7 @@
                     android:paddingBottom="10dp"
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_alignParentBottom="true"
                     android:id="@+id/text_option_one"
                     android:textColor="#ffffff"
@@ -188,8 +195,10 @@
 
 
             <RelativeLayout
+                android:contentDescription="@string/content_description_book_meetups"
                 android:id="@+id/option_book_meetups"
                 android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
 
                 android:layout_weight="1"
                 android:background="@color/gplus_color_1"
@@ -200,7 +209,7 @@
                     android:paddingBottom="10dp"
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_alignParentBottom="true"
                     android:id="@+id/text_meetup"
                     android:textColor="#ffffff"
@@ -224,6 +233,7 @@
 
 
             <RelativeLayout
+                android:contentDescription="@string/content_description_books_by_category"
                 android:id="@+id/option_books_by_category"
                 android:layout_weight="1"
                 android:background="@color/gplus_color_2"
@@ -237,7 +247,7 @@
                     android:layout_alignParentBottom="true"
                     android:id="@+id/text_option_two"
                     android:textColor="#ffffff"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textSize="20sp"
                     android:text="Books\nby Category"
                     android:layout_width="match_parent"

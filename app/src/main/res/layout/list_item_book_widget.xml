@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingRight="5dp"
+    android:paddingEnd="5dp"
     android:paddingBottom="5dp"
     android:layout_width="match_parent"
     android:layout_height="200dp">
@@ -33,8 +34,9 @@
         android:layout_above="@id/book_rating"
         android:id="@+id/book_title"
         android:textSize="17sp"
-        android:gravity="left"
+        android:gravity="end"
         android:paddingLeft="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="5dp"
         android:background="#44000000"
         android:textColor="@color/white"

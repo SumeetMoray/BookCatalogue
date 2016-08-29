@@ -111,4 +111,9 @@
     <string name="add_book_category">Add Book Category</string>
     <string name="content_description_change_parent_for_selected">Change Parent For Selected</string>
     <string name="content_description_add_new_book_meetup">Add new Book Meetup</string>
+    <string name="top_rated_books">Top Rated Books</string>
+    <string name="usage_instructions_select_location">Long Click To select Location.</string>
+    <string name="content_description_all_books">Click this button to see all books</string>
+    <string name="content_description_book_meetups">Click here to see book meetups !</string>
+    <string name="content_description_books_by_category">Click here to see books by category.</string>
 </resources>
