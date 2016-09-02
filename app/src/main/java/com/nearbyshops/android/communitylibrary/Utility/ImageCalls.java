@@ -61,7 +61,7 @@ public class ImageCalls {
     public void deleteImage(String imageID, Callback<ResponseBody> deleteImageCallback)
     {
 
-        if (imageID.length() > 2) {
+        if (imageID!=null && imageID.length() > 2) {
 
             imageID = imageID.substring(1);
         }

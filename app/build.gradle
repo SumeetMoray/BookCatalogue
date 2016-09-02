@@ -5,9 +5,9 @@ android {
     signingConfigs {
             release {
                 keyAlias 'sumeet'
-                keyPassword 'password'
-                storeFile file('androidudacity.jks')
-                storePassword 'abcde12345'
+                keyPassword 'abcde23870'
+                storeFile file('/media/sumeet/data/BookDiscovery/keystore/androidplaystore.jks')
+                storePassword 'bluetree'
             }
     }
 
@@ -20,8 +20,8 @@ android {
         applicationId "com.nearbyshops.android.communitylibrary"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.release

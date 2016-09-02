@@ -206,7 +206,12 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyCVGFtuD4fMtv1qNg35eMdcDONm3W_tduE" />
+
+        <!--Old Key : AIzaSyCc8M6nUhJoWt2K4xMQNqzci2do46K0o50-->
+
+        <!--Release Key : AIzaSyCVGFtuD4fMtv1qNg35eMdcDONm3W_tduE-->
+
 
         <activity
             android:name=".BookMeetups.PickLocationActivity"

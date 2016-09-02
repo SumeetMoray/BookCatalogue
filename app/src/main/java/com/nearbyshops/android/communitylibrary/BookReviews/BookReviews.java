@@ -251,7 +251,7 @@ public class BookReviews extends AppCompatActivity implements SwipeRefreshLayout
             @Override
             public void onResponse(Call<BookReviewEndpoint> call, Response<BookReviewEndpoint> response) {
 
-                if(response.body().getResults()!=null)
+                if(response.body()!=null && response.body().getResults()!=null)
                 {
                     dataset.addAll(response.body().getResults());
                     adapter.notifyDataSetChanged();

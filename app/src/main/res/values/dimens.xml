@@ -10,4 +10,5 @@
     <dimen name="image_view_height">200dp</dimen>
     <dimen name="slidinglayerwidth">20dp</dimen>
     <dimen name="widget_margin">5dp</dimen>
+    <dimen name="book_description_height">150dp</dimen>
 </resources>

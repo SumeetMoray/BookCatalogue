@@ -1,9 +1,11 @@
 package com.nearbyshops.android.communitylibrary.BookDetails;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,11 +14,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -702,6 +707,7 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 public void onResponse(Call<FavouriteBookEndpoint> call, Response<FavouriteBookEndpoint> response) {
 
 
+
                     if(response.body()!=null)
                     {
                         if(response.body().getItemCount()>=1)
@@ -724,9 +730,46 @@ public class BookDetail extends AppCompatActivity implements Target, RatingBar.O
                 }
             });
 
-
         }
+    }
 
+
+
+
+    @OnClick(R.id.share_buttons)
+    void shareButtonClick()
+    {
+
+        Intent intent = ShareCompat.IntentBuilder.from(this)
+                .setType("image/jpg")
+                .getIntent();
+
+        String url = UtilityGeneral.getServiceURL(this)+ "/api/Images" + String.valueOf(book.getBookCoverImageURL());
+//        intent.putExtra(Intent.EXTRA_TEXT,url);
+        intent.putExtra(Intent.EXTRA_TEXT,url);
+//        intent.putExtra(Intent.EXTRA_TITLE,book.getBookName());
+        startActivity(Intent.createChooser(intent,"Share Link"));
+    }
+
+
+    @BindView(R.id.read_full_button)
+    TextView readFullDescription;
+
+    @OnClick(R.id.read_full_button)
+    void readFullButtonClick()
+    {
+/*
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.BELOW,R.id.author_name);
+        layoutParams.setMargins(0,10,0,0);
+        bookDescription.setLayoutParams(layoutParams);
+*/
+
+
+        bookDescription.setMaxLines(Integer.MAX_VALUE);
+
+
+        readFullDescription.setVisibility(View.GONE);
     }
 
 
