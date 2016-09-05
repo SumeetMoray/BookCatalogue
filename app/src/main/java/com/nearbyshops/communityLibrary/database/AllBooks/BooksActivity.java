@@ -246,6 +246,8 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
         {
             spanCount = 1;
         }
+
+        
         layoutManager.setSpanCount(spanCount);
     }
 
