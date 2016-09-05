@@ -22,6 +22,7 @@
     -->
 
     <RelativeLayout
+        android:animateLayoutChanges="true"
         android:id="@+id/content_book_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -166,6 +167,7 @@
             android:layout_height="1dp"/>
 
         <LinearLayout
+            android:animateLayoutChanges="true"
             android:visibility="gone"
             android:layout_below="@id/border_one"
             android:id="@+id/user_rating_review"
@@ -196,6 +198,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:animateLayoutChanges="true"
             android:visibility="gone"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"

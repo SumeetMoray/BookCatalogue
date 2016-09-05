@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/coordinatorLayout"
-    tools:context="com.nearbyshops.android.communitylibrary.BookDetails.BookDetail">
+    tools:context="com.nearbyshops.communityLibrary.database.BookDetails.BookDetail">
 
     <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    package="com.nearbyshops.android.communitylibrary"
+    package="com.nearbyshops.communityLibrary.database"
     android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,14 +19,14 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
     <application
 
-        android:name=".MyApplication"
+        android:name="com.nearbyshops.communityLibrary.database.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_local_library_black"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeActivity"
+            android:name="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -36,129 +36,129 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BooksByCategory.BookCategoriesTabs"
+            android:name="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs"
             android:label="@string/title_activity_books_by_category"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
-            android:name=".Sample.BasicActivity"
+            android:name="com.nearbyshops.communityLibrary.database.Sample.BasicActivity"
             android:label="@string/title_activity_basic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BooksByCategory.BookCategories.AddBookCategory"
+            android:name="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategories.AddBookCategory"
             android:label="Add Book Category"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
-            android:name=".BooksByCategory.BookCategories.EditBookCategory"
+            android:name="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategories.EditBookCategory"
             android:label="Edit Item Category"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".BooksByCategory.Books.AddBook"
+            android:name="com.nearbyshops.communityLibrary.database.BooksByCategory.Books.AddBook"
             android:label="Add Book"
-            android:parentActivityName=".BooksByCategory.BookCategoriesTabs"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BooksByCategory.BookCategoriesTabs" />
+                android:value="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs" />
         </activity>
         <activity
-            android:name=".BooksByCategory.Books.EditBook"
+            android:name="com.nearbyshops.communityLibrary.database.BooksByCategory.Books.EditBook"
             android:label="Edit Book"
-            android:parentActivityName=".BooksByCategory.BookCategoriesTabs"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BooksByCategory.BookCategoriesTabs" />
+                android:value="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs" />
         </activity>
         <activity
-            android:name=".SelectParent.BookCategoriesParent"
+            android:name="com.nearbyshops.communityLibrary.database.SelectParent.BookCategoriesParent"
             android:label="Select Parent Category"
-            android:parentActivityName=".BooksByCategory.BookCategoriesTabs"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BooksByCategory.BookCategoriesTabs" />
+                android:value="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs" />
         </activity>
         <activity
-            android:name=".BookDetails.BookDetail"
+            android:name="com.nearbyshops.communityLibrary.database.BookDetails.BookDetail"
             android:label="@string/title_activity_book_detail"
-            android:parentActivityName=".BooksByCategory.BookCategoriesTabs"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nearbyshops.android.communitylibrary.BooksByCategory.BookCategoriesTabs" />
+                android:value="com.nearbyshops.communityLibrary.database.BooksByCategory.BookCategoriesTabs" />
         </activity>
         <activity
-            android:name=".BookReviews.BookReviews"
+            android:name="com.nearbyshops.communityLibrary.database.BookReviews.BookReviews"
             android:label="@string/title_activity_book_reviews"
-            android:parentActivityName=".BookDetails.BookDetail"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.BookDetails.BookDetail"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nearbyshops.android.communitylibrary.BookDetails.BookDetail" />
+                android:value="com.nearbyshops.communityLibrary.database.BookDetails.BookDetail" />
         </activity>
         <activity
-            android:name=".FavouriteBooks.FavouriteBooks"
+            android:name="com.nearbyshops.communityLibrary.database.FavouriteBooks.FavouriteBooks"
             android:label="Favourite Books"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
-            android:name=".AllBooks.BooksActivity"
+            android:name="com.nearbyshops.communityLibrary.database.AllBooks.BooksActivity"
             android:label="Books All"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
 
         <!-- Sign Up and Login -->
 
         <activity
-            android:name=".Login.SignUp"
+            android:name="com.nearbyshops.communityLibrary.database.Login.SignUp"
             android:label="Sign Up"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
-            android:name=".Login.EditProfile"
+            android:name="com.nearbyshops.communityLibrary.database.Login.EditProfile"
             android:label="Edit Profile"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
 
         <!-- Content Provider Declaration -->
 
         <provider
-            android:name=".Data.BooksContentProvider"
+            android:name="com.nearbyshops.communityLibrary.database.Data.BooksContentProvider"
             android:authorities="org.nearbyshops.communitylibrary"
             android:exported="true"
             android:grantUriPermissions="true"
@@ -169,31 +169,33 @@
         <!-- Book Meetups Feature -->
 
         <activity
-            android:name=".BookMeetups.BookMeetupsFragment"
+            android:name="com.nearbyshops.communityLibrary.database.BookMeetups.BookMeetupsFragment"
             android:label="@string/title_activity_book_reviews"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
+
+
         <activity
-            android:name=".BookMeetups.AddBookMeetup"
+            android:name="com.nearbyshops.communityLibrary.database.BookMeetups.AddBookMeetup"
             android:label="Add Book Meetup"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
         <activity
-            android:name=".BookMeetups.EditBookMeetup"
+            android:name="com.nearbyshops.communityLibrary.database.BookMeetups.EditBookMeetup"
             android:label="Edit Item Category"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
 
         <!--
@@ -214,22 +216,22 @@
 
 
         <activity
-            android:name=".BookMeetups.PickLocationActivity"
+            android:name="com.nearbyshops.communityLibrary.database.BookMeetups.PickLocationActivity"
             android:label="@string/title_activity_pick_location">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
 
         <!-- Intent Service for fetching address for Lat lon , using Geocoding Service -->
         <service
-            android:name=".UtilityGeocoding.FetchAddressIntentService"
+            android:name="com.nearbyshops.communityLibrary.database.UtilityGeocoding.FetchAddressIntentService"
             android:exported="false" />
 
         <activity
-            android:name=".BookMeetups.BookMeetupsActivity"
+            android:name="com.nearbyshops.communityLibrary.database.BookMeetups.BookMeetupsActivity"
             android:label="@string/title_activity_book_meetups"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName="com.nearbyshops.communityLibrary.database.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -244,7 +246,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nearbyshops.android.communitylibrary.HomeActivity" />
+                android:value="com.nearbyshops.communityLibrary.database.HomeActivity" />
         </activity>
 
 
@@ -264,7 +266,7 @@
         <!--Widget Feature -->
 
 
-        <receiver android:name=".Widgets.ExampleAppWidgetProvider" >
+        <receiver android:name="com.nearbyshops.communityLibrary.database.Widgets.ExampleAppWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -273,7 +275,7 @@
         </receiver>
 
 
-        <service android:name=".Widgets.StackWidgetService"
+        <service android:name="com.nearbyshops.communityLibrary.database.Widgets.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
