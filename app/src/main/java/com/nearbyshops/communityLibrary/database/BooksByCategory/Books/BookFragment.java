@@ -194,7 +194,7 @@ public class BookFragment extends Fragment
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        int spanCount = (int) (metrics.widthPixels/(130 * metrics.density));
+        int spanCount = (int) (metrics.widthPixels/(150 * metrics.density));
         if(spanCount == 0)
         {
             spanCount = 1;
@@ -776,9 +776,24 @@ public class BookFragment extends Fragment
 
     void notifyTitleChanged()
     {
+
+        String titleCategory = "";
+
+        if(notifiedCurrentCategory!=null)
+        {
+            titleCategory = notifiedCurrentCategory.getBookCategoryName();
+        }
+
         if(notifyPagerAdapter!=null)
         {
-            notifyPagerAdapter.NotifyTitleChanged("Books (" + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count) + ")",1);
+            notifyPagerAdapter.NotifyTitleChanged
+                    (
+                                    titleCategory
+                                    + " Books ("
+                                    + String.valueOf(dataset.size()) + "/"
+                                    + String.valueOf(item_count) + ")"
+                            ,1
+                    );
         }
     }
 

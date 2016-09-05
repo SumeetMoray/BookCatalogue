@@ -241,13 +241,12 @@ public class BooksActivity extends AppCompatActivity implements SwipeRefreshLayo
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 
-        int spanCount = (int) (metrics.widthPixels/(130 * metrics.density));
+        int spanCount = (int) (metrics.widthPixels/(150 * metrics.density));
         if(spanCount == 0)
         {
             spanCount = 1;
         }
 
-        
         layoutManager.setSpanCount(spanCount);
     }
 

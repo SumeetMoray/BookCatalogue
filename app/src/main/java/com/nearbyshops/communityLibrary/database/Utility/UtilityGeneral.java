@@ -158,8 +158,7 @@ public class UtilityGeneral {
         context = MyApplication.getAppContext();
 
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://192.168.1.35:8080");
-
+        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "http://cbdb.nearbyshops.org");
 
         // http://192.168.1.35:5000
         // Standard Service URL "http://cbdb.nearbyshops.org"

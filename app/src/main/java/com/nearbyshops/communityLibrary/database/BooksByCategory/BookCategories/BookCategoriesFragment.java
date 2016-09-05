@@ -96,7 +96,7 @@ public class BookCategoriesFragment extends Fragment
                 .getNetComponent().Inject(this);
 
         currentCategory = new BookCategory();
-        currentCategory.setBookCategoryName("Book Categories");
+        currentCategory.setBookCategoryName("");
         currentCategory.setBookCategoryID(1);
         currentCategory.setParentCategoryID(-1);
     }
@@ -225,7 +225,7 @@ public class BookCategoriesFragment extends Fragment
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        int spanCount = (int) (metrics.widthPixels/(130 * metrics.density));
+        int spanCount = (int) (metrics.widthPixels/(150 * metrics.density));
 
         if(spanCount == 0)
         {
@@ -879,7 +879,16 @@ public class BookCategoriesFragment extends Fragment
     {
         if(notifyPagerAdapter!=null)
         {
-            notifyPagerAdapter.NotifyTitleChanged("Subcategories (" +  String.valueOf(item_count) + ")",0);
+            if(currentCategory.getBookCategoryName().equals(""))
+            {
+                notifyPagerAdapter.NotifyTitleChanged(
+                                "Categories (" +  String.valueOf(item_count) + ")",0);
+            }else
+            {
+                notifyPagerAdapter.NotifyTitleChanged(
+                        currentCategory.getBookCategoryName()
+                                + " Subcategories (" +  String.valueOf(item_count) + ")",0);
+            }
         }
     }
 

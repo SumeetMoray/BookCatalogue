@@ -99,7 +99,7 @@ public class BookCategoriesTabs extends AppCompatActivity
 
         fab_menu = (FloatingActionMenu) findViewById(R.id.menu_red);
 
-        getSupportActionBar().setTitle(R.string.title_activity_book_categories_tabs);
+//        getSupportActionBar().setTitle(R.string.title_activity_book_categories_tabs);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -229,7 +229,15 @@ public class BookCategoriesTabs extends AppCompatActivity
 //        Log.d("applog","Item Category Changed : " + currentCategory.getBookCategoryName() + " : " + String.valueOf(currentCategory.getBookCategoryID()));
 
 
-        getSupportActionBar().setTitle(currentCategory.getBookCategoryName());
+
+        if(!currentCategory.getBookCategoryName().equals(""))
+        {
+            getSupportActionBar().setTitle(currentCategory.getBookCategoryName());
+        }
+        else
+        {
+            getSupportActionBar().setTitle("Book Categories");
+        }
 
         if(tabsNotificationReceiver!=null)
         {

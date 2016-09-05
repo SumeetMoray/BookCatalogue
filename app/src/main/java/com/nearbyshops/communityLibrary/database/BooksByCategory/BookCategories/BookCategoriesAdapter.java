@@ -122,29 +122,19 @@ public class BookCategoriesAdapter extends RecyclerView.Adapter<BookCategoriesAd
         String imagePath = UtilityGeneral.getImageEndpointURL(context)
                 + dataset.get(position).getImageURL();
 
-        if(!dataset.get(position).getImageURL().equals(""))
-        {
-            Log.d("imagepath",imagePath);
-            Picasso.with(context).load(imagePath)
-                    .placeholder(R.drawable.book_placeholder_image)
-                    .into(holder.bookCategoryImage);
-        }else
-        {
-            Picasso.with(context).load(imagePath)
-                    .placeholder(R.drawable.book_placeholder_image)
-                    .into(holder.bookCategoryImage);
-        }
+
+        String imageURL = dataset.get(position).getImageURL();
 
 
-//        Log.d("applog",imagePath);
-
+        Picasso.with(context).load(imagePath)
+                .placeholder(R.drawable.book_placeholder_image)
+                .into(holder.bookCategoryImage);
     }
 
 
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
-
 
     }
 
