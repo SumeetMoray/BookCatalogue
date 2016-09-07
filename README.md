@@ -11,6 +11,9 @@ Operated by a Nonprofit to be registered soon.
 
 Everything including the software and the database is provided under open source or creative commons license.
 
-The software backend and frontend is available under Apache 2 open source liscence and database content is available under Creative commons license. For more information visit this link : https://github.com/SumeetMoray/BookDiscoveryApp
-
 Feel free to add as many books as you want and update the database in any way you feel relevant in helping book lovers accross the world.
+
+
+Disclaimers: 
+
+Copyright 2016 Sumeet Moray
