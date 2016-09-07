@@ -48,6 +48,7 @@ public class AddBookMeetup extends AppCompatActivity implements Callback<Image>,
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.uploadImage) ImageView resultView;
 
+    
     // Upload the image after picked up
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
     Image image = null;
